@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [ 'main' ]
+  pull_request:
+    branches: [ 'main' ]
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  GITHUB_USERNAME: ${{ github.actor }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: build
+
+      - name: Publish to Container Registry
+        run: |
+          GROUP=group-happynewyear
+          SERVICE=studynight-backend
+          
+          TAG=$(TZ=":Asia/Seoul" date "+%Y%m%d-%H%M%S")
+          IMG=ghcr.io/"$GROUP"/"$SERVICE":"$TAG"
+          
+          docker build -t "$SERVICE" .
+          docker tag "$SERVICE" "$IMG"
+          
+          echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_USERNAME" --password-stdin
+          docker push "$IMG"

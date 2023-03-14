@@ -1,0 +1,1 @@
+rootProject.name = "studynight-backend"

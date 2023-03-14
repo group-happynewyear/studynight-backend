@@ -20,6 +20,7 @@ class SecurityConfiguration {
             .csrf().disable()
 
         httpSecurity.authorizeHttpRequests()
+            .requestMatchers(GET, "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
             .requestMatchers(GET, "/api/health-check").permitAll()
             .anyRequest().authenticated()
 

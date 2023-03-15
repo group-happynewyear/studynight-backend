@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: "studynight"
+
   jpa:
     open-in-view: false
 

@@ -23,7 +23,7 @@ class SecurityConfiguration {
         httpSecurity.authorizeHttpRequests()
             .requestMatchers(GET, "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
             .requestMatchers(GET, "/api/health-check").permitAll()
-            .requestMatchers(POST, "/api/accounts", "/api/login").permitAll()
+            .requestMatchers(POST, "/api/accounts", "/api/login", "/api/refresh").permitAll()
             .requestMatchers(GET, "/api/social-login/**").permitAll()
             .anyRequest().authenticated()
 

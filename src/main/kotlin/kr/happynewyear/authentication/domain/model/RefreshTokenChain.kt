@@ -16,6 +16,12 @@ class RefreshTokenChain(
     user: User
 ) {
 
+    companion object {
+        fun create(user: User): RefreshTokenChain {
+            return RefreshTokenChain(user)
+        }
+    }
+
     @Id
     val id: UUID = UUID.randomUUID()
 
@@ -34,5 +40,9 @@ class RefreshTokenChain(
     )
     private val mutableRefreshTokens: MutableList<RefreshToken> = mutableListOf()
     val refreshTokens: List<RefreshToken> get() = mutableRefreshTokens.toList()
+
+    fun add(refreshToken: RefreshToken) {
+        mutableRefreshTokens.add(refreshToken)
+    }
 
 }

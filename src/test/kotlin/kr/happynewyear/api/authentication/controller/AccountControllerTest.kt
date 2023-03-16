@@ -23,4 +23,6 @@ class AccountControllerTest : ApiTest() {
         assertThat(redirect).isNotNull
     }
 
+    // TODO email duplicated
+
 }

@@ -13,3 +13,11 @@ spring:
 
   profiles:
     active: test
+
+token:
+  refresh:
+    expiration-days: 14
+
+logging:
+  level:
+    kr.happynewyear: debug

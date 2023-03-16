@@ -12,6 +12,12 @@ plugins {
     idea
 }
 
+allOpen {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
+}
+
 jacoco {
     toolVersion = "0.8.8"
 }

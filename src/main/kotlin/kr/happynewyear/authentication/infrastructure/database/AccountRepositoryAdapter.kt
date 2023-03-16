@@ -13,4 +13,8 @@ class AccountRepositoryAdapter(
         accountJpaRepository.save(account)
     }
 
+    override fun findByEmail(email: String): Account? {
+        return accountJpaRepository.findByEmail(email)
+    }
+
 }

@@ -1,6 +1,7 @@
 package kr.happynewyear.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -21,6 +22,8 @@ import org.springframework.test.web.servlet.result.isEqualTo
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 abstract class ApiTest {
+
+    private val log = LoggerFactory.getLogger(javaClass)
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -128,9 +131,12 @@ abstract class ApiTest {
         status: HttpStatus
     ): ResultActions {
         return try {
-            mockMvc
+            log.debug("Performing...")
+            val result = mockMvc
                 .perform(request)
                 .andExpect(MockMvcResultMatchers.status().isEqualTo(status.value()))
+            log.debug("Performed.")
+            result
         } catch (e: Exception) {
             throw RuntimeException(e)
         }

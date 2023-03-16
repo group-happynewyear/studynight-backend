@@ -19,6 +19,12 @@ class Account(
     password: String
 ) {
 
+    companion object {
+        fun create(email: String, password: String): Account {
+            return Account(email, password)
+        }
+    }
+
     @Id
     val id: UUID = randomUUID()
 

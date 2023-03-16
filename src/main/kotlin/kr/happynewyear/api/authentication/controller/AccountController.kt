@@ -18,7 +18,7 @@ class AccountController(
     @PostMapping
     fun create(@RequestBody req: AccountCreateRequest): ResponseEntity<Void> {
         val account = accountService.create(req.email, req.password)
-        val location = "/api/accounts/${account.accountId}"
+        val location = "/api/accounts/${account.id}"
         return ResponseEntity.created(URI.create(location)).build()
     }
 

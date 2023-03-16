@@ -23,7 +23,7 @@ class AccountControllerTest : ApiTest() {
         val password = "password"
 
         given(accountService.create(email, password))
-            .willReturn(Account())
+            .willReturn(Account(email, password))
 
         val request = AccountCreateRequest(email, password)
         val redirect = redirect(

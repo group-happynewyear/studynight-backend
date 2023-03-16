@@ -3,3 +3,11 @@ spring:
     url: jdbc:postgresql://${POSTGRES_HOST}:5432/studynight
     username: username
     password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true

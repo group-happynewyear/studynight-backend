@@ -26,6 +26,7 @@ class LoginControllerTest : ApiTest() {
         )
 
         assertThat(response).isNotNull
+        // TODO password encoded
     }
 
     // TODO accountNotFound

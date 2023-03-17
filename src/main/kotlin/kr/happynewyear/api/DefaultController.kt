@@ -1,5 +1,7 @@
 package kr.happynewyear.api
 
+import kr.happynewyear.library.security.Authenticated
+import kr.happynewyear.library.security.Principal
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,6 +19,10 @@ class DefaultController(
         return "[$applicationName] is on [$profile]"
     }
 
-    // TODO hello with authentication and locale
+    @GetMapping("/hello")
+    fun hello(@Authenticated principal: Principal): String {
+        return "Hello, [${principal.userId}]!"
+    }
+    // TODO with locale
 
 }

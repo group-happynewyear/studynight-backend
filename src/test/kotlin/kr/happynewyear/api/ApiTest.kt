@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders.LOCATION
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD
 import org.springframework.test.web.servlet.MockMvc
@@ -43,11 +43,31 @@ abstract class ApiTest {
     }
 
     protected fun run(
+        method: HttpMethod, url: String, jwt: String,
+        status: HttpStatus
+    ) {
+        perform(
+            jwt(build(method, url), jwt),
+            status
+        )
+    }
+
+    protected fun run(
         method: HttpMethod, url: String, requestBody: Any,
         status: HttpStatus
     ) {
         perform(
-            build(method, url, requestBody),
+            json(build(method, url), requestBody),
+            status
+        )
+    }
+
+    protected fun run(
+        method: HttpMethod, url: String, requestBody: Any, jwt: String,
+        status: HttpStatus
+    ) {
+        perform(
+            jwt(json(build(method, url), requestBody), jwt),
             status
         )
     }
@@ -64,11 +84,31 @@ abstract class ApiTest {
     }
 
     protected fun redirect(
+        method: HttpMethod, url: String, jwt: String,
+        status: HttpStatus
+    ): String {
+        return performAndRedirect(
+            jwt(build(method, url), jwt),
+            status
+        )
+    }
+
+    protected fun redirect(
         method: HttpMethod, url: String, requestBody: Any,
         status: HttpStatus
     ): String {
         return performAndRedirect(
-            build(method, url, requestBody),
+            json(build(method, url), requestBody),
+            status
+        )
+    }
+
+    protected fun redirect(
+        method: HttpMethod, url: String, requestBody: Any, jwt: String,
+        status: HttpStatus
+    ): String {
+        return performAndRedirect(
+            jwt(json(build(method, url), requestBody), jwt),
             status
         )
     }
@@ -85,11 +125,31 @@ abstract class ApiTest {
     }
 
     protected fun call(
+        method: HttpMethod, url: String, jwt: String,
+        status: HttpStatus
+    ): String {
+        return performAndReturn(
+            jwt(build(method, url), jwt),
+            status
+        )
+    }
+
+    protected fun call(
         method: HttpMethod, url: String, requestBody: Any,
         status: HttpStatus
     ): String {
         return performAndReturn(
-            build(method, url, requestBody),
+            json(build(method, url), requestBody),
+            status
+        )
+    }
+
+    protected fun call(
+        method: HttpMethod, url: String, requestBody: Any, jwt: String,
+        status: HttpStatus
+    ): String {
+        return performAndReturn(
+            jwt(json(build(method, url), requestBody), jwt),
             status
         )
     }
@@ -105,11 +165,31 @@ abstract class ApiTest {
     }
 
     protected fun <T> call(
+        method: HttpMethod, url: String, jwt: String,
+        status: HttpStatus, responseType: Class<T>
+    ): T {
+        return performAndUnmarshal(
+            jwt(build(method, url), jwt),
+            status, responseType
+        )
+    }
+
+    protected fun <T> call(
         method: HttpMethod, url: String, requestBody: Any,
         status: HttpStatus, responseType: Class<T>
     ): T {
         return performAndUnmarshal(
-            build(method, url, requestBody),
+            json(build(method, url), requestBody),
+            status, responseType
+        )
+    }
+
+    protected fun <T> call(
+        method: HttpMethod, url: String, requestBody: Any, jwt: String,
+        status: HttpStatus, responseType: Class<T>
+    ): T {
+        return performAndUnmarshal(
+            jwt(json(build(method, url), requestBody), jwt),
             status, responseType
         )
     }
@@ -119,10 +199,12 @@ abstract class ApiTest {
         return MockMvcRequestBuilders.request(method, url)
     }
 
-    private fun build(method: HttpMethod, url: String, requestBody: Any): MockHttpServletRequestBuilder {
-        return build(method, url)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(requestBody))
+    private fun json(request: MockHttpServletRequestBuilder, requestBody: Any): MockHttpServletRequestBuilder {
+        return request.contentType(APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody))
+    }
+
+    private fun jwt(request: MockHttpServletRequestBuilder, jwt: String): MockHttpServletRequestBuilder {
+        return request.header("Authorization", "Bearer $jwt")
     }
 
 

@@ -26,14 +26,14 @@ class RefreshTokenChain(
         name = "user_id",
         nullable = false, updatable = false, unique = false
     )
-    val user: User = user
+    private val user: User = user
 
     @OneToMany(
         mappedBy = "refreshTokenChain",
         cascade = [ALL], orphanRemoval = true
     )
     private val _refreshTokens: MutableList<RefreshToken> = mutableListOf()
-    val refreshTokens: List<RefreshToken> get() = _refreshTokens.toList()
+    private val refreshTokens: List<RefreshToken> get() = _refreshTokens.toList()
 
 
     fun add(refreshToken: RefreshToken) {

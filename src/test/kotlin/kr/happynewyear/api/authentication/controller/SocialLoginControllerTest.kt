@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpStatus.FOUND
 import org.springframework.http.HttpStatus.OK
+import java.util.*
 
 class SocialLoginControllerTest : ApiTest() {
 
@@ -33,7 +34,7 @@ class SocialLoginControllerTest : ApiTest() {
             FOUND
         )
 
-        assertThat(redirect).isNotNull;
+        assertThat(redirect).isNotNull
     }
 
     @Test
@@ -42,7 +43,7 @@ class SocialLoginControllerTest : ApiTest() {
         val code = "authorization-code"
 
         given(socialAccountService.login(provider, code))
-            .willReturn(TokenResult("accessToken", "refreshToken"))
+            .willReturn(TokenResult("accessToken", UUID.randomUUID()))
 
         val response = call(
             GET, "/api/social-login/callback/providers/$provider?code=$code",

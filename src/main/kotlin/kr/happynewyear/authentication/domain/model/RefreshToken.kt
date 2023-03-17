@@ -25,6 +25,13 @@ class RefreshToken(
         }
     }
 
+    fun reproduce(expirationDays: Long): RefreshToken {
+        used = true
+        val child = RefreshToken(expirationDays, refreshTokenChain)
+        refreshTokenChain.add(child)
+        return child
+    }
+
 
     @Column(
         name = "expired_at",
@@ -36,8 +43,7 @@ class RefreshToken(
         name = "used",
         nullable = false, updatable = true, unique = false
     )
-    var used: Boolean = false
-        protected set
+    private var used: Boolean = false
 
     @ManyToOne(
         fetch = LAZY, optional = false,
@@ -47,10 +53,10 @@ class RefreshToken(
         name = "refresh_token_chain_id",
         nullable = false, updatable = false, unique = false
     )
-    val refreshTokenChain: RefreshTokenChain = refreshTokenChain
+    private val refreshTokenChain: RefreshTokenChain = refreshTokenChain
 
 
-    fun isExpired(): Boolean {
+    private fun isExpired(): Boolean {
         return now().isAfter(expiredAt)
     }
 

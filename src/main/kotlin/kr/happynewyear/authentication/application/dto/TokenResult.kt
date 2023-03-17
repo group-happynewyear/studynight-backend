@@ -5,11 +5,11 @@ import java.util.*
 
 data class TokenResult(
     val accessToken: String,
-    val refreshToken: String
+    val refreshTokenId: UUID
 ) {
     companion object {
-        fun of(accessToken: UUID, refreshToken: RefreshToken): TokenResult {
-            return TokenResult(accessToken.toString(), refreshToken.id.toString())
+        fun of(accessToken: String, refreshToken: RefreshToken): TokenResult {
+            return TokenResult(accessToken, refreshToken.id)
         }
     }
 }

@@ -8,7 +8,7 @@ data class TokenResponse(
 ) {
     companion object {
         fun from(token: TokenResult): TokenResponse {
-            return TokenResponse(token.accessToken, token.refreshToken)
+            return TokenResponse(token.accessToken, token.refreshTokenId.toString())
         }
     }
 }

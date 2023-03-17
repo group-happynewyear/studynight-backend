@@ -1,6 +1,7 @@
 package kr.happynewyear.authentication.application.service
 
 import kr.happynewyear.authentication.application.dto.TokenResult
+import kr.happynewyear.authentication.application.exception.RefreshTokenNotFoundException
 import kr.happynewyear.authentication.domain.model.RefreshToken
 import kr.happynewyear.authentication.domain.model.User
 import kr.happynewyear.authentication.domain.repository.RefreshTokenRepository
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
-import java.util.UUID.randomUUID
 
 @Service
 @Transactional(readOnly = true)
@@ -19,14 +19,18 @@ class TokenService(
 
     @Transactional
     fun issue(user: User): TokenResult {
-        val accessToken = randomUUID()
+        val accessToken = "jwt" // TODO jwt
         val refreshToken = RefreshToken.create(expirationDays, user)
         refreshTokenRepository.save(refreshToken)
         return TokenResult.of(accessToken, refreshToken)
     }
 
-    fun refresh(refreshTokenId: String): TokenResult {
-        TODO("impl")
+    @Transactional
+    fun refresh(refreshTokenId: UUID): TokenResult {
+        val accessToken = "jwt" // TODO jwt
+        val oldRefreshToken = refreshTokenRepository.findById(refreshTokenId) ?: throw RefreshTokenNotFoundException()
+        val newRefreshToken = oldRefreshToken.reproduce(expirationDays)
+        return TokenResult.of(accessToken, newRefreshToken)
     }
 
 }

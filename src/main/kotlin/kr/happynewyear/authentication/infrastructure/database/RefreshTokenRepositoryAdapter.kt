@@ -2,7 +2,9 @@ package kr.happynewyear.authentication.infrastructure.database
 
 import kr.happynewyear.authentication.domain.model.RefreshToken
 import kr.happynewyear.authentication.domain.repository.RefreshTokenRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 class RefreshTokenRepositoryAdapter(
@@ -11,6 +13,10 @@ class RefreshTokenRepositoryAdapter(
 
     override fun save(refreshToken: RefreshToken) {
         refreshTokenJpaRepository.save(refreshToken)
+    }
+
+    override fun findById(refreshTokenId: UUID): RefreshToken? {
+        return refreshTokenJpaRepository.findByIdOrNull(refreshTokenId)
     }
 
 }

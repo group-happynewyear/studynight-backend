@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 @RequestMapping("/api/refresh")
@@ -17,7 +18,8 @@ class RefreshController(
 
     @PostMapping
     fun refresh(@RequestBody req: RefreshRequest): ResponseEntity<TokenResponse> {
-        val token = tokenService.refresh(req.refreshToken)
+        val refreshTokenId = UUID.fromString(req.refreshToken)
+        val token = tokenService.refresh(refreshTokenId)
         val res = TokenResponse.from(token)
         return ResponseEntity.ok(res)
     }

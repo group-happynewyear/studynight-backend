@@ -56,6 +56,8 @@ class RefreshToken(
     private val refreshTokenChain: RefreshTokenChain = refreshTokenChain
 
 
+    val user: User get() = refreshTokenChain.user
+
     private fun isExpired(): Boolean {
         return now().isAfter(expiredAt)
     }

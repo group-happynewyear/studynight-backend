@@ -13,5 +13,8 @@ spring:
         format_sql: true
 
 token:
+  access:
+    secret: secret
+    expiration-minutes: 30
   refresh:
     expiration-days: 14

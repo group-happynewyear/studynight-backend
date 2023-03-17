@@ -1,5 +1,7 @@
 package kr.happynewyear.authentication.application.service
 
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm.HS256
 import kr.happynewyear.authentication.application.dto.TokenResult
 import kr.happynewyear.authentication.application.exception.RefreshTokenNotFoundException
 import kr.happynewyear.authentication.domain.model.RefreshToken
@@ -14,23 +16,37 @@ import java.util.*
 @Transactional(readOnly = true)
 class TokenService(
     private val refreshTokenRepository: RefreshTokenRepository,
+    @Value("\${token.access.secret}") private val secret: String,
+    @Value("\${token.access.expiration-minutes}") private val expirationMinutes: Long,
     @Value("\${token.refresh.expiration-days}") private val expirationDays: Long
 ) {
 
+    private val encodedSecret = Base64.getEncoder().encodeToString(secret.toByteArray())
+
+
     @Transactional
     fun issue(user: User): TokenResult {
-        val accessToken = "jwt" // TODO jwt
         val refreshToken = RefreshToken.create(expirationDays, user)
         refreshTokenRepository.save(refreshToken)
+        val accessToken = writeJwt(user, expirationMinutes)
         return TokenResult.of(accessToken, refreshToken)
     }
 
     @Transactional
     fun refresh(refreshTokenId: UUID): TokenResult {
-        val accessToken = "jwt" // TODO jwt
         val oldRefreshToken = refreshTokenRepository.findById(refreshTokenId) ?: throw RefreshTokenNotFoundException()
         val newRefreshToken = oldRefreshToken.reproduce(expirationDays)
+        val accessToken = writeJwt(newRefreshToken.user, expirationMinutes)
         return TokenResult.of(accessToken, newRefreshToken)
+    }
+
+
+    private fun writeJwt(user: User, expirationMinutes: Long): String {
+        val claims = Jwts.claims()
+        claims.subject = user.id.toString()
+        claims.issuedAt = Date()
+        claims.expiration = Date(claims.issuedAt.time + expirationMinutes * 60 * 1000)
+        return Jwts.builder().signWith(HS256, encodedSecret).setClaims(claims).compact()
     }
 
 }

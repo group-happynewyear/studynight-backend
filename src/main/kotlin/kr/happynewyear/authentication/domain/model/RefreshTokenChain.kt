@@ -26,7 +26,7 @@ class RefreshTokenChain(
         name = "user_id",
         nullable = false, updatable = false, unique = false
     )
-    private val user: User = user
+    val user: User = user
 
     @OneToMany(
         mappedBy = "refreshTokenChain",

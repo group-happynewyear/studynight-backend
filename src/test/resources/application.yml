@@ -15,6 +15,9 @@ spring:
     active: test
 
 token:
+  access:
+    secret: secret
+    expiration-minutes: 30
   refresh:
     expiration-days: 14
 

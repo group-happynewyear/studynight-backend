@@ -1,23 +1,15 @@
 package kr.happynewyear.authentication.domain.model
 
 import jakarta.persistence.Entity
-import jakarta.persistence.Id
 import jakarta.persistence.Table
-import lombok.EqualsAndHashCode
-import lombok.ToString
-import java.util.*
+import kr.happynewyear.library.entity.Identifiable
 
 @Entity
 @Table(
     name = "users"
 )
-@EqualsAndHashCode(of = ["id"])
-@ToString(of = ["id"])
 class User(
 
-) {
-
-    @Id
-    val id: UUID = UUID.randomUUID()
+) : Identifiable() {
 
 }

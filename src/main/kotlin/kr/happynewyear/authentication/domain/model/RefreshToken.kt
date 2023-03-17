@@ -1,24 +1,20 @@
 package kr.happynewyear.authentication.domain.model
 
 import jakarta.persistence.*
-import jakarta.persistence.CascadeType.MERGE
+import jakarta.persistence.CascadeType.PERSIST
 import jakarta.persistence.FetchType.LAZY
-import lombok.EqualsAndHashCode
-import lombok.ToString
+import kr.happynewyear.library.entity.Identifiable
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
-import java.util.*
 
 @Entity
 @Table(
     name = "refresh_tokens"
 )
-@EqualsAndHashCode(of = ["id"])
-@ToString(of = ["id"])
 class RefreshToken(
     expirationDays: Long,
     refreshTokenChain: RefreshTokenChain
-) {
+) : Identifiable() {
 
     companion object {
         fun create(expirationDays: Long, user: User): RefreshToken {
@@ -28,9 +24,6 @@ class RefreshToken(
             return refreshToken
         }
     }
-
-    @Id
-    val id: UUID = UUID.randomUUID()
 
     @Column(
         name = "expired_at",
@@ -46,7 +39,7 @@ class RefreshToken(
 
     @ManyToOne(
         fetch = LAZY, optional = false,
-        cascade = [MERGE]
+        cascade = [PERSIST]
     )
     @JoinColumn(
         name = "refresh_token_chain_id",

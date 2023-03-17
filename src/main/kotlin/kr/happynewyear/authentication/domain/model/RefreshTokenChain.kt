@@ -2,28 +2,21 @@ package kr.happynewyear.authentication.domain.model
 
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
-import lombok.EqualsAndHashCode
-import lombok.ToString
-import java.util.*
+import kr.happynewyear.library.entity.Identifiable
 
 @Entity
 @Table(
     name = "refresh_token_chains"
 )
-@EqualsAndHashCode(of = ["id"])
-@ToString(of = ["id"])
 class RefreshTokenChain(
     user: User
-) {
+) : Identifiable() {
 
     companion object {
         fun create(user: User): RefreshTokenChain {
             return RefreshTokenChain(user)
         }
     }
-
-    @Id
-    val id: UUID = UUID.randomUUID()
 
     @OneToOne(
         fetch = FetchType.LAZY, optional = false
@@ -38,11 +31,11 @@ class RefreshTokenChain(
         mappedBy = "refreshTokenChain",
         cascade = [ALL], orphanRemoval = true
     )
-    private val mutableRefreshTokens: MutableList<RefreshToken> = mutableListOf()
-    val refreshTokens: List<RefreshToken> get() = mutableRefreshTokens.toList()
+    private val _refreshTokens: MutableList<RefreshToken> = mutableListOf()
+    val refreshTokens: List<RefreshToken> get() = _refreshTokens.toList()
 
     fun add(refreshToken: RefreshToken) {
-        mutableRefreshTokens.add(refreshToken)
+        _refreshTokens.add(refreshToken)
     }
 
 }

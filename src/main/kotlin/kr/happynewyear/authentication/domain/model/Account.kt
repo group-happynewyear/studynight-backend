@@ -3,30 +3,22 @@ package kr.happynewyear.authentication.domain.model
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
 import jakarta.persistence.FetchType.LAZY
-import lombok.EqualsAndHashCode
-import lombok.ToString
-import java.util.*
-import java.util.UUID.randomUUID
+import kr.happynewyear.library.entity.Identifiable
 
 @Entity
 @Table(
     name = "accounts"
 )
-@EqualsAndHashCode(of = ["id"])
-@ToString(of = ["id"])
 class Account(
     email: String,
     password: String
-) {
+) : Identifiable() {
 
     companion object {
         fun create(email: String, password: String): Account {
             return Account(email, password)
         }
     }
-
-    @Id
-    val id: UUID = randomUUID()
 
     @Column(
         name = "email",

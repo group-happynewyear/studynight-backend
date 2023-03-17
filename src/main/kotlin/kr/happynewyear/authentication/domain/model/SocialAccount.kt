@@ -5,8 +5,7 @@ import jakarta.persistence.CascadeType.ALL
 import jakarta.persistence.EnumType.STRING
 import jakarta.persistence.FetchType.LAZY
 import kr.happynewyear.authentication.constant.SocialAccountProvider
-import lombok.EqualsAndHashCode
-import lombok.ToString
+import kr.happynewyear.library.entity.Identifiable
 import java.util.*
 
 @Entity
@@ -14,15 +13,10 @@ import java.util.*
     name = "social_accounts",
     uniqueConstraints = [UniqueConstraint(columnNames = ["provider", "external_id"])]
 )
-@EqualsAndHashCode(of = ["id"])
-@ToString(of = ["id"])
 class SocialAccount(
     provider: SocialAccountProvider,
     externalId: String
-) {
-
-    @Id
-    val id: UUID = UUID.randomUUID()
+) : Identifiable() {
 
     @Enumerated(STRING)
     @Column(

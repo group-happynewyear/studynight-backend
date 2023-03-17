@@ -9,7 +9,12 @@ import kr.happynewyear.library.entity.Identifiable
     name = "users"
 )
 class User(
-
 ) : Identifiable() {
+
+    companion object {
+        fun create(): User {
+            return User()
+        }
+    }
 
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/login")
 class LoginController(
-    val accountService: AccountService
+    private val accountService: AccountService
 ) {
 
     @PostMapping

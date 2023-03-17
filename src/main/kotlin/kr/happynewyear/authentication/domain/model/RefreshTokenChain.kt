@@ -18,6 +18,7 @@ class RefreshTokenChain(
         }
     }
 
+
     @OneToOne(
         fetch = FetchType.LAZY, optional = false
     )
@@ -33,6 +34,7 @@ class RefreshTokenChain(
     )
     private val _refreshTokens: MutableList<RefreshToken> = mutableListOf()
     val refreshTokens: List<RefreshToken> get() = _refreshTokens.toList()
+
 
     fun add(refreshToken: RefreshToken) {
         _refreshTokens.add(refreshToken)

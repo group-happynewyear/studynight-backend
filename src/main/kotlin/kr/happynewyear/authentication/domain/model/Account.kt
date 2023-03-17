@@ -20,17 +20,20 @@ class Account(
         }
     }
 
+
     @Column(
         name = "email",
         nullable = false, updatable = true, unique = true
     )
     var email: String = email
+        protected set
 
     @Column(
         name = "password",
         nullable = false, updatable = true, unique = false
     )
     var password: String = password
+        protected set
 
     @OneToOne(
         fetch = LAZY, optional = false,

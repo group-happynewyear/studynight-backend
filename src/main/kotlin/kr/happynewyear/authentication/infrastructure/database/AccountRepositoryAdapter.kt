@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class AccountRepositoryAdapter(
-    val accountJpaRepository: AccountJpaRepository
+    private val accountJpaRepository: AccountJpaRepository
 ) : AccountRepository {
 
     override fun save(account: Account) {

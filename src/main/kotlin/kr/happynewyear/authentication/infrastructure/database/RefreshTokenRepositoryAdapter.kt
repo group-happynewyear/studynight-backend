@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class RefreshTokenRepositoryAdapter(
-    val refreshTokenJpaRepository: RefreshTokenJpaRepository
+    private val refreshTokenJpaRepository: RefreshTokenJpaRepository
 ) : RefreshTokenRepository {
 
     override fun save(refreshToken: RefreshToken) {

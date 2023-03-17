@@ -18,18 +18,25 @@ class SocialAccount(
     externalId: String
 ) : Identifiable() {
 
+    companion object {
+        fun create(provider: SocialAccountProvider, externalId: String): SocialAccount {
+            return SocialAccount(provider, externalId)
+        }
+    }
+
+
     @Enumerated(STRING)
     @Column(
         name = "provider",
         nullable = false, updatable = false, unique = false
     )
-    val provider: SocialAccountProvider = provider
+    private val provider: SocialAccountProvider = provider
 
     @Column(
         name = "external_id",
         nullable = false, updatable = false, unique = false
     )
-    val externalId: String = externalId
+    private val externalId: String = externalId
 
     @OneToOne(
         fetch = LAZY, optional = false,

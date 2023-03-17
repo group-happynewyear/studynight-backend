@@ -12,7 +12,7 @@ import java.net.URI
 @RestController
 @RequestMapping("/api/accounts")
 class AccountController(
-    val accountService: AccountService
+    private val accountService: AccountService
 ) {
 
     @PostMapping

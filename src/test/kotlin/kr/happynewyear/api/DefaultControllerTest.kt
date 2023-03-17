@@ -6,13 +6,10 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpStatus.OK
 
-class HealthCheckControllerTest : ApiTest() {
-
-    @Value("\${spring.application.name}")
-    lateinit var applicationName: String
-
-    @Value("\${spring.profiles.active}")
-    lateinit var activeProfiles: String
+class DefaultControllerTest(
+    @Value("\${spring.application.name}") private val applicationName: String,
+    @Value("\${spring.profiles.active}") private val activeProfiles: String
+) : ApiTest() {
 
 
     @Test
@@ -22,7 +19,7 @@ class HealthCheckControllerTest : ApiTest() {
             OK
         )
 
-        assertThat(response).isEqualTo("$applicationName is on $activeProfiles")
+        assertThat(response).isEqualTo("[$applicationName] is on [$activeProfiles]")
     }
 
 }

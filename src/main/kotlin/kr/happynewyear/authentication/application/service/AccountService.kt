@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class AccountService(
-    val accountRepository: AccountRepository,
-    val tokenService: TokenService
+    private val accountRepository: AccountRepository,
+    private val tokenService: TokenService
 ) {
 
     @Transactional

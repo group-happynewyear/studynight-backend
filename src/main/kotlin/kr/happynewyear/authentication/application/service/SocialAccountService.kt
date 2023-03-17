@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class SocialAccountService {
+class SocialAccountService(
+
+) {
 
     fun locatePage(provider: SocialAccountProvider): String {
         TODO("impl")

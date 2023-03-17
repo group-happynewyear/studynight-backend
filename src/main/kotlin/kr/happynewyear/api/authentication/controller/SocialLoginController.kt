@@ -11,7 +11,7 @@ import java.net.URI
 @RestController
 @RequestMapping("/api/social-login")
 class SocialLoginController(
-    val socialAccountService: SocialAccountService
+    private val socialAccountService: SocialAccountService
 ) {
 
     @GetMapping("/page/providers/{provider}")

@@ -25,17 +25,19 @@ class RefreshToken(
         }
     }
 
+
     @Column(
         name = "expired_at",
         nullable = false, updatable = false, unique = false
     )
-    val expiredAt: LocalDateTime = now().plusDays(expirationDays)
+    private val expiredAt: LocalDateTime = now().plusDays(expirationDays)
 
     @Column(
         name = "used",
         nullable = false, updatable = true, unique = false
     )
     var used: Boolean = false
+        protected set
 
     @ManyToOne(
         fetch = LAZY, optional = false,
@@ -46,5 +48,10 @@ class RefreshToken(
         nullable = false, updatable = false, unique = false
     )
     val refreshTokenChain: RefreshTokenChain = refreshTokenChain
+
+
+    fun isExpired(): Boolean {
+        return now().isAfter(expiredAt)
+    }
 
 }

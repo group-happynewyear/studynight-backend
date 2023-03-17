@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/refresh")
 class RefreshController(
-    val tokenService: TokenService
+    private val tokenService: TokenService
 ) {
 
     @PostMapping

@@ -13,8 +13,8 @@ import java.util.UUID.randomUUID
 @Service
 @Transactional(readOnly = true)
 class TokenService(
-    val refreshTokenRepository: RefreshTokenRepository,
-    @Value("\${token.refresh.expiration-days}") val expirationDays: Long
+    private val refreshTokenRepository: RefreshTokenRepository,
+    @Value("\${token.refresh.expiration-days}") private val expirationDays: Long
 ) {
 
     @Transactional

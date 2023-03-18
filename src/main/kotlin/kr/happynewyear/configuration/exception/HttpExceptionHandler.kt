@@ -5,6 +5,7 @@ import kr.happynewyear.authentication.application.exception.DuplicatedEmailExcep
 import kr.happynewyear.authentication.application.exception.InvalidPasswordException
 import kr.happynewyear.authentication.application.exception.RefreshTokenNotFoundException
 import kr.happynewyear.library.exception.ErrorResponse
+import kr.happynewyear.library.notification.AlertSender
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
-class HttpExceptionHandler {
+class HttpExceptionHandler(
+    private val alertSender: AlertSender
+) {
 
     @ExceptionHandler(
         AccountNotFoundException::class,
@@ -43,9 +46,9 @@ class HttpExceptionHandler {
 
     @ExceptionHandler
     fun onNotExpected(e: Exception): ResponseEntity<ErrorResponse> {
-        // TODO alert
-        // TODO bug report email
-        val message = "예상하지 못한 오류가 발생하였습니다."
+        alertSender.sendAsync(e)
+
+        val message = "예상하지 못한 오류가 발생하였습니다." // TODO bug report email
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(ErrorResponse(message))
     }
 

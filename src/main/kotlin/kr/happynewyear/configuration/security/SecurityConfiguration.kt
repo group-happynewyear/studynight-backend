@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.HttpStatus.UNAUTHORIZED
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
@@ -31,7 +32,6 @@ class SecurityConfiguration(
             .formLogin().disable()
             .sessionManagement().disable()
             .csrf().disable()
-            .userDetailsService { throw IllegalStateException() }
             .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         httpSecurity.authorizeHttpRequests()
@@ -52,6 +52,11 @@ class SecurityConfiguration(
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder()
+    }
+
+    @Bean
+    fun userDetailsService(): UserDetailsService {
+        return UserDetailsService { throw IllegalStateException() }
     }
 
 }

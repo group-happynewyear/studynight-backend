@@ -14,11 +14,11 @@ class LogMailSender : MailSender {
 
     override fun send(address: String, title: String, content: String) {
         log.info(
-            """
-            - address: $address
-            - title: $title
-            $content
-            """.trimEnd()
+            "\n" +
+                "- address: $address\n" +
+                "- title: $title\n" +
+                "$content\n" +
+                "=== eof."
         )
     }
 

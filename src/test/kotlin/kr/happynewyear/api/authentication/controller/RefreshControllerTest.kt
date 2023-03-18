@@ -84,7 +84,6 @@ class RefreshControllerTest : ApiTest() {
 
         // reuse
         run(POST, "/api/refresh", RefreshRequest(t1), UNAUTHORIZED)
-        // TODO then alert
 
         // valid after reuse
         run(POST, "/api/refresh", RefreshRequest(t2), UNAUTHORIZED)

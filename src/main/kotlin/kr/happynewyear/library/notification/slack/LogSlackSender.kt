@@ -14,10 +14,10 @@ class LogSlackSender : SlackSender {
 
     override fun send(address: String, message: String) {
         log.info(
-            """
-            - address: $address
-            $message
-            """.trimEnd()
+            "\n" +
+                "- address: $address\n" +
+                "$message\n" +
+                "===eof."
         )
     }
 

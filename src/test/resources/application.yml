@@ -29,3 +29,7 @@ server:
   servlet:
     encoding:
       force: true
+
+alert:
+  slack:
+    address: "https://hooks.slack.com/services/etc"

@@ -18,3 +18,7 @@ token:
     expiration-minutes: 30
   refresh:
     expiration-days: 14
+
+alert:
+  slack:
+    address: "https://hooks.slack.com/services/etc"

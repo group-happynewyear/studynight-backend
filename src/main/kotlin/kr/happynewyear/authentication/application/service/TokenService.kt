@@ -4,10 +4,12 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm.HS256
 import kr.happynewyear.authentication.application.dto.TokenResult
 import kr.happynewyear.authentication.application.exception.RefreshTokenNotFoundException
+import kr.happynewyear.authentication.application.exception.RefreshTokenReusedException
 import kr.happynewyear.authentication.domain.model.RefreshToken
 import kr.happynewyear.authentication.domain.model.User
 import kr.happynewyear.authentication.domain.repository.RefreshTokenChainRepository
 import kr.happynewyear.authentication.domain.repository.RefreshTokenRepository
+import kr.happynewyear.library.notification.AlertSender
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,6 +20,7 @@ import java.util.*
 class TokenService(
     private val refreshTokenRepository: RefreshTokenRepository,
     private val refreshTokenChainRepository: RefreshTokenChainRepository,
+    private val alertSender: AlertSender,
     @Value("\${token.access.secret}") private val secret: String,
     @Value("\${token.access.expiration-minutes}") private val expirationMinutes: Long,
     @Value("\${token.refresh.expiration-days}") private val expirationDays: Long
@@ -38,7 +41,10 @@ class TokenService(
     @Transactional
     fun validate(refreshTokenId: UUID) {
         val refreshToken = refreshTokenRepository.findById(refreshTokenId) ?: throw RefreshTokenNotFoundException()
-        if (refreshToken.used) refreshTokenChainRepository.delete(refreshToken.refreshTokenChain)
+        if (refreshToken.used) {
+            refreshTokenChainRepository.delete(refreshToken.refreshTokenChain)
+            alertSender.sendAsync(RefreshTokenReusedException())
+        }
     }
 
     @Transactional

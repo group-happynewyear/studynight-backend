@@ -1,5 +1,6 @@
 package kr.happynewyear.api.authentication.controller
 
+import jakarta.validation.Valid
 import kr.happynewyear.api.authentication.dto.RefreshRequest
 import kr.happynewyear.api.authentication.dto.TokenResponse
 import kr.happynewyear.authentication.application.service.TokenService
@@ -17,8 +18,9 @@ class RefreshController(
 ) {
 
     @PostMapping
-    fun refresh(@RequestBody req: RefreshRequest): ResponseEntity<TokenResponse> {
+    fun refresh(@Valid @RequestBody req: RefreshRequest): ResponseEntity<TokenResponse> {
         val refreshTokenId = UUID.fromString(req.refreshToken)
+        tokenService.validate(refreshTokenId)
         val token = tokenService.refresh(refreshTokenId)
         val res = TokenResponse.from(token)
         return ResponseEntity.ok(res)

@@ -5,13 +5,20 @@ import kr.happynewyear.api.authentication.dto.AccountCreateRequest
 import kr.happynewyear.api.authentication.dto.LoginRequest
 import kr.happynewyear.api.authentication.dto.RefreshRequest
 import kr.happynewyear.api.authentication.dto.TokenResponse
+import kr.happynewyear.authentication.application.service.TokenService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod.POST
-import org.springframework.http.HttpStatus.CREATED
-import org.springframework.http.HttpStatus.OK
+import org.springframework.http.HttpStatus.*
+import org.springframework.test.util.ReflectionTestUtils
+import java.util.*
 
 class RefreshControllerTest : ApiTest() {
+
+    @Autowired
+    lateinit var tokenService: TokenService
+
 
     @Test
     fun refresh() {
@@ -29,7 +36,58 @@ class RefreshControllerTest : ApiTest() {
         assertThat(response.refreshToken).isNotEqualTo(token.refreshToken)
     }
 
-    // TODO notfound
-    // TODO expired
-    // TODO reuse
+    @Test
+    fun refresh_malformedUuid() {
+        val refreshToken = "malformed_uuid"
+
+        run(
+            POST, "/api/refresh", RefreshRequest(refreshToken),
+            BAD_REQUEST
+        )
+    }
+
+    @Test
+    fun refresh_notExist() {
+        val refreshToken = UUID.randomUUID().toString()
+
+        run(
+            POST, "/api/refresh", RefreshRequest(refreshToken),
+            UNAUTHORIZED
+        )
+    }
+
+    @Test
+    fun refresh_expired() {
+        val email = "email@email.com"
+        val password = "password"
+        run(POST, "/api/accounts", AccountCreateRequest(email, password), CREATED)
+
+        ReflectionTestUtils.setField(tokenService, "expirationDays", 0)
+        val token = call(POST, "/api/login", LoginRequest(email, password), OK, TokenResponse::class.java)
+
+        run(
+            POST, "/api/refresh", RefreshRequest(token.refreshToken),
+            UNAUTHORIZED
+        )
+    }
+
+    @Test
+    fun refresh_reused() {
+        val email = "email@email.com"
+        val password = "password"
+        run(POST, "/api/accounts", AccountCreateRequest(email, password), CREATED)
+
+        // login
+        val t1 = call(POST, "/api/login", LoginRequest(email, password), OK, TokenResponse::class.java).refreshToken
+        // valid refresh
+        val t2 = call(POST, "/api/refresh", RefreshRequest(t1), OK, TokenResponse::class.java).refreshToken
+
+        // reuse
+        run(POST, "/api/refresh", RefreshRequest(t1), UNAUTHORIZED)
+        // TODO then alert
+
+        // valid after reuse
+        run(POST, "/api/refresh", RefreshRequest(t2), UNAUTHORIZED)
+    }
+
 }

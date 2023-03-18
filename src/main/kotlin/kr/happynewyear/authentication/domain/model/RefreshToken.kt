@@ -43,7 +43,8 @@ class RefreshToken(
         name = "used",
         nullable = false, updatable = true, unique = false
     )
-    private var used: Boolean = false
+    var used: Boolean = false
+        protected set
 
     @ManyToOne(
         fetch = LAZY, optional = false,
@@ -53,12 +54,12 @@ class RefreshToken(
         name = "refresh_token_chain_id",
         nullable = false, updatable = false, unique = false
     )
-    private val refreshTokenChain: RefreshTokenChain = refreshTokenChain
+    val refreshTokenChain: RefreshTokenChain = refreshTokenChain
 
 
     val user: User get() = refreshTokenChain.user
 
-    private fun isExpired(): Boolean {
+    fun isExpired(): Boolean {
         return now().isAfter(expiredAt)
     }
 

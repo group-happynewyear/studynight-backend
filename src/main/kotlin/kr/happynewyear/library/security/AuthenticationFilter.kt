@@ -22,8 +22,12 @@ class AuthenticationFilter(
     }
 
     private fun doFilter(req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain) {
-        authenticate(req)
-        chain.doFilter(req, res)
+        try {
+            authenticate(req)
+        } catch (_: Exception) {
+        } finally {
+            chain.doFilter(req, res)
+        }
     }
 
     private fun authenticate(req: HttpServletRequest) {

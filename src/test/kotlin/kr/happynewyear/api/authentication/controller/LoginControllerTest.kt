@@ -7,8 +7,7 @@ import kr.happynewyear.api.authentication.dto.TokenResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpMethod.POST
-import org.springframework.http.HttpStatus.CREATED
-import org.springframework.http.HttpStatus.OK
+import org.springframework.http.HttpStatus.*
 
 class LoginControllerTest : ApiTest() {
 
@@ -25,10 +24,27 @@ class LoginControllerTest : ApiTest() {
             OK, TokenResponse::class.java
         )
 
-        assertThat(response).isNotNull
-        // TODO password encoded
+        assertThat(response.accessToken).isNotNull
+        assertThat(response.refreshToken).isNotNull
     }
 
-    // TODO accountNotFound
+    @Test
+    fun login_notExistAccount() {
+        run(
+            POST, "/api/login", LoginRequest("email@email.com", "password"),
+            UNAUTHORIZED
+        )
+    }
+
+    @Test
+    fun login_invalidPassword() {
+        val email = "email@email.com"
+        run(POST, "/api/accounts", AccountCreateRequest(email, "password"), CREATED)
+
+        run(
+            POST, "/api/login", LoginRequest(email, "wrong"),
+            UNAUTHORIZED
+        )
+    }
 
 }

@@ -1,20 +1,20 @@
-package kr.happynewyear.library.notification.mail
+package kr.happynewyear.library.notification.slack
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class MailSenderTest {
+class SlackSenderTest {
 
     @Autowired
-    lateinit var mailSender: MailSender
+    lateinit var slackSender: SlackSender
 
 
     @Test
     fun send() {
-        val email = "email@email.com"
-        mailSender.send(email, "title", "content")
+        val url = "https://hooks.slack.com/services/etc"
+        slackSender.send(url, "message")
     }
 
 }

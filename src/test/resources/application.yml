@@ -24,3 +24,8 @@ token:
 logging:
   level:
     kr.happynewyear: debug
+
+server:
+  servlet:
+    encoding:
+      force: true

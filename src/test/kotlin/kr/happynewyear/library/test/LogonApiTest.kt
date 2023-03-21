@@ -32,6 +32,7 @@ abstract class LogonApiTest {
     @Autowired
     private lateinit var accountService: AccountService // TODO user
 
+    protected lateinit var userId: UUID
     private lateinit var accessToken: String
 
 
@@ -42,11 +43,16 @@ abstract class LogonApiTest {
 
     protected fun loginWithNewAccount() {
         log.debug("Login started from create account...")
+
         val email = "${UUID.randomUUID().toString().substring(8)}@email.com"
         val password = "password"
-        accountService.create(email, password)
+
+        val account = accountService.create(email, password)
+        userId = account.userId
+
         val token = accountService.login(email, password)
         accessToken = token.accessToken
+
         log.debug("Login finished.")
     }
 

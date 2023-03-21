@@ -1,6 +1,8 @@
 package kr.happynewyear.api.studynight.controller
 
 import kr.happynewyear.api.studynight.dto.StudyCreateRequest
+import kr.happynewyear.api.studynight.dto.StudyListResponse
+import kr.happynewyear.api.studynight.dto.StudyResponse
 import kr.happynewyear.library.test.LogonApiTest
 import kr.happynewyear.studynight.application.dto.StudyResult
 import kr.happynewyear.studynight.application.service.StudyService
@@ -15,8 +17,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.OK
 import java.util.*
 
 class StudyControllerTest : LogonApiTest() {
@@ -26,8 +30,8 @@ class StudyControllerTest : LogonApiTest() {
 
 
     @Test
-    fun crete() {
-        given(studyService.create()).willReturn(StudyResult(UUID.randomUUID()))
+    fun create() {
+        given(studyService.create()).willReturn(defaultStudyResult())
 
         val title = "title"
         val description = "description"
@@ -51,6 +55,57 @@ class StudyControllerTest : LogonApiTest() {
         )
 
         assertThat(location).startsWith("/api/studies/")
+    }
+
+
+    @Test
+    fun list() {
+        given(studyService.list(userId)).willReturn(listOf(defaultStudyResult()))
+
+        val response = call(
+            GET, "/api/studies",
+            OK, StudyListResponse::class.java
+        )
+
+        // TODO filter mine
+        assertThat(response.studies).isNotEmpty
+    }
+
+
+    @Test
+    fun get() {
+        val studyResult = defaultStudyResult()
+        val studyId = studyResult.id
+        given(studyService.get(studyId)).willReturn(studyResult)
+
+        val response = call(
+            GET, "/api/studies/$studyId",
+            OK, StudyResponse::class.java
+        )
+
+        assertThat(response).isNotNull
+    }
+    // TODO not found
+    // TODO not mine
+
+
+    private fun defaultStudyResult(): StudyResult {
+        val title = "title"
+        val description = "description"
+        val contactType = MAIL
+        val contactAddress = "email@email.com"
+        val schedule = WEEKEND_AFTERNOON
+        val region = GANGNAM
+        val experiences = setOf(JUNIOR)
+        val positions = setOf(SERVER)
+        val intensity = HARD
+        val scale = M
+        return StudyResult(
+            UUID.randomUUID(),
+            title, description,
+            contactType, contactAddress,
+            schedule, region, experiences, positions, intensity, scale
+        )
     }
 
 }

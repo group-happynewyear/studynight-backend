@@ -44,6 +44,8 @@ class SecurityConfiguration(
             .requestMatchers(POST, "/api/students").authenticated()
             .requestMatchers(POST, "/api/studies").authenticated()
             .requestMatchers(GET, "/api/studies", "/api/studies/*").authenticated()
+            .requestMatchers(POST, "/api/matches").authenticated()
+            .requestMatchers(GET, "/api/matches/*").authenticated()
             .anyRequest().denyAll()
             .and().exceptionHandling()
             .authenticationEntryPoint { _, response, _ -> response?.sendError(UNAUTHORIZED.value()) }

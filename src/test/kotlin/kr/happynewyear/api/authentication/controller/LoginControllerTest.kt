@@ -1,6 +1,6 @@
 package kr.happynewyear.api.authentication.controller
 
-import kr.happynewyear.api.ApiTest
+import kr.happynewyear.library.test.ApiTest
 import kr.happynewyear.api.authentication.dto.AccountCreateRequest
 import kr.happynewyear.api.authentication.dto.LoginRequest
 import kr.happynewyear.api.authentication.dto.TokenResponse

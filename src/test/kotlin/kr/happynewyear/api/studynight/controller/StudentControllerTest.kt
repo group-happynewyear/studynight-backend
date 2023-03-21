@@ -1,7 +1,7 @@
 package kr.happynewyear.api.studynight.controller
 
-import kr.happynewyear.api.ApiTest
 import kr.happynewyear.api.studynight.dto.StudentCreateRequest
+import kr.happynewyear.library.test.LogonApiTest
 import kr.happynewyear.studynight.application.dto.StudentResult
 import kr.happynewyear.studynight.application.service.StudentService
 import kr.happynewyear.studynight.constant.Experience.JUNIOR
@@ -18,7 +18,7 @@ import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus.CREATED
 import java.util.*
 
-class StudentControllerTest : ApiTest() {
+class StudentControllerTest : LogonApiTest() {
 
     @MockBean
     lateinit var studentService: StudentService
@@ -26,8 +26,6 @@ class StudentControllerTest : ApiTest() {
 
     @Test
     fun crete() {
-        val accessToken = loginNewAccount()
-
         given(studentService.create()).willReturn(StudentResult(UUID.randomUUID()))
 
         val nickname = "nick"
@@ -40,7 +38,7 @@ class StudentControllerTest : ApiTest() {
 
         val request = StudentCreateRequest(nickname, schedules, regions, experience, position, intensity, scale)
         val location = redirect(
-            POST, "/api/students", request, accessToken,
+            POST, "/api/students", request,
             CREATED
         )
 

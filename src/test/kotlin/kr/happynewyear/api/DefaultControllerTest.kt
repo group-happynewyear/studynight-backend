@@ -5,6 +5,7 @@ import kr.happynewyear.api.authentication.dto.LoginRequest
 import kr.happynewyear.api.authentication.dto.TokenResponse
 import kr.happynewyear.authentication.application.service.TokenService
 import kr.happynewyear.authentication.infrastructure.database.AccountJpaRepository
+import kr.happynewyear.library.test.ApiTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

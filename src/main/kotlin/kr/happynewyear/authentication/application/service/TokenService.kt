@@ -33,7 +33,7 @@ class TokenService(
     fun issue(user: User): TokenResult {
         val refreshToken = RefreshToken.create(expirationDays, user)
         refreshTokenRepository.save(refreshToken)
-        val accessToken = writeJwt(user, expirationMinutes)
+        val accessToken = writeJwt(user)
         return TokenResult.of(accessToken, refreshToken)
     }
 
@@ -53,12 +53,12 @@ class TokenService(
         if (oldRefreshToken == null || oldRefreshToken.isExpired()) throw RefreshTokenNotFoundException()
 
         val newRefreshToken = oldRefreshToken.reproduce(expirationDays)
-        val accessToken = writeJwt(newRefreshToken.user, expirationMinutes)
+        val accessToken = writeJwt(newRefreshToken.user)
         return TokenResult.of(accessToken, newRefreshToken)
     }
 
 
-    private fun writeJwt(user: User, expirationMinutes: Long): String {
+    private fun writeJwt(user: User): String {
         val claims = Jwts.claims()
         claims.subject = user.id.toString()
         claims.issuedAt = Date()

@@ -1,6 +1,7 @@
 package kr.happynewyear.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.happynewyear.authentication.application.service.AccountService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -25,6 +26,7 @@ abstract class ApiTest {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
+
     @Autowired
     private lateinit var mockMvc: MockMvc
 
@@ -32,7 +34,22 @@ abstract class ApiTest {
     private lateinit var objectMapper: ObjectMapper
 
 
-    protected fun run(
+    @Autowired
+    private lateinit var accountService: AccountService
+
+
+    protected final fun loginNewAccount(): String {
+        log.debug("Login started from create account...")
+        val email = "test@email.com"
+        val password = "password"
+        accountService.create(email, password)
+        val token = accountService.login(email, password)
+        log.debug("Login finished.")
+        return token.accessToken
+    }
+
+
+    protected final fun run(
         method: HttpMethod, url: String,
         status: HttpStatus
     ) {
@@ -42,7 +59,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun run(
+    protected final fun run(
         method: HttpMethod, url: String, jwt: String,
         status: HttpStatus
     ) {
@@ -52,7 +69,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun run(
+    protected final fun run(
         method: HttpMethod, url: String, requestBody: Any,
         status: HttpStatus
     ) {
@@ -62,7 +79,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun run(
+    protected final fun run(
         method: HttpMethod, url: String, requestBody: Any, jwt: String,
         status: HttpStatus
     ) {
@@ -73,7 +90,7 @@ abstract class ApiTest {
     }
 
 
-    protected fun redirect(
+    protected final fun redirect(
         method: HttpMethod, url: String,
         status: HttpStatus
     ): String {
@@ -83,7 +100,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun redirect(
+    protected final fun redirect(
         method: HttpMethod, url: String, jwt: String,
         status: HttpStatus
     ): String {
@@ -93,7 +110,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun redirect(
+    protected final fun redirect(
         method: HttpMethod, url: String, requestBody: Any,
         status: HttpStatus
     ): String {
@@ -103,7 +120,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun redirect(
+    protected final fun redirect(
         method: HttpMethod, url: String, requestBody: Any, jwt: String,
         status: HttpStatus
     ): String {
@@ -114,7 +131,7 @@ abstract class ApiTest {
     }
 
 
-    protected fun call(
+    protected final fun call(
         method: HttpMethod, url: String,
         status: HttpStatus
     ): String {
@@ -124,7 +141,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun call(
+    protected final fun call(
         method: HttpMethod, url: String, jwt: String,
         status: HttpStatus
     ): String {
@@ -134,7 +151,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun call(
+    protected final fun call(
         method: HttpMethod, url: String, requestBody: Any,
         status: HttpStatus
     ): String {
@@ -144,7 +161,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun call(
+    protected final fun call(
         method: HttpMethod, url: String, requestBody: Any, jwt: String,
         status: HttpStatus
     ): String {
@@ -154,7 +171,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun <T> call(
+    protected final fun <T> call(
         method: HttpMethod, url: String,
         status: HttpStatus, responseType: Class<T>
     ): T {
@@ -164,7 +181,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun <T> call(
+    protected final fun <T> call(
         method: HttpMethod, url: String, jwt: String,
         status: HttpStatus, responseType: Class<T>
     ): T {
@@ -174,7 +191,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun <T> call(
+    protected final fun <T> call(
         method: HttpMethod, url: String, requestBody: Any,
         status: HttpStatus, responseType: Class<T>
     ): T {
@@ -184,7 +201,7 @@ abstract class ApiTest {
         )
     }
 
-    protected fun <T> call(
+    protected final fun <T> call(
         method: HttpMethod, url: String, requestBody: Any, jwt: String,
         status: HttpStatus, responseType: Class<T>
     ): T {

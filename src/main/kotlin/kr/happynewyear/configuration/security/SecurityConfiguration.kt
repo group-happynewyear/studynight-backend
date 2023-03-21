@@ -41,6 +41,7 @@ class SecurityConfiguration(
             .requestMatchers(GET, "/api/hello").authenticated()
             .requestMatchers(POST, "/api/accounts", "/api/login", "/api/refresh").permitAll()
             .requestMatchers(GET, "/api/social-login/**").permitAll()
+            .requestMatchers(POST, "/api/students").authenticated()
             .anyRequest().denyAll()
             .and().exceptionHandling()
             .authenticationEntryPoint { _, response, _ -> response?.sendError(UNAUTHORIZED.value()) }

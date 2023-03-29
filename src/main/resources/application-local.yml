@@ -19,6 +19,14 @@ token:
   refresh:
     expiration-days: 14
 
+social-login:
+  google:
+    client:
+      client-id: "client-id"
+      client-secret: "client-secret"
+      scope: "openid email profile"
+      redirect-uri: "http://localhost:8080/social-login/callback/provider/GOOGLE"
+
 alert:
   slack:
     address: "https://hooks.slack.com/services/etc"

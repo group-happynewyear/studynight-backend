@@ -2,6 +2,7 @@ package kr.happynewyear.authentication.domain.model
 
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
+import jakarta.persistence.FetchType.LAZY
 import kr.happynewyear.library.entity.Identifiable
 
 @Entity
@@ -19,8 +20,8 @@ class RefreshTokenChain(
     }
 
 
-    @OneToOne(
-        fetch = FetchType.LAZY, optional = false
+    @ManyToOne(
+        fetch = LAZY, optional = false
     )
     @JoinColumn(
         name = "user_id",

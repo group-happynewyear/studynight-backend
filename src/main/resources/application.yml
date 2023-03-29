@@ -9,3 +9,9 @@ server:
   servlet:
     encoding:
       force: true
+
+social-login:
+  google:
+    login-page: "https://accounts.google.com/o/oauth2/v2/auth"
+    token-url: "https://oauth2.googleapis.com/token"
+    userinfo-url: "https://googleapis.com/userinfo/v2/me"

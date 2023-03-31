@@ -1,15 +1,18 @@
 package kr.happynewyear.api
 
+import kr.happynewyear.library.notification.AlertSender
 import kr.happynewyear.library.security.Authenticated
 import kr.happynewyear.library.security.Principal
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api")
 class DefaultController(
+    private val alertSender: AlertSender,
     @Value("\${spring.application.name}") private val applicationName: String,
     @Value("\${spring.profiles.active}") private val profile: String
 ) {
@@ -24,5 +27,10 @@ class DefaultController(
         return "Hello, [${principal.userId}]!"
     }
     // TODO with locale
+
+    @PostMapping("/alert")
+    fun alert(@Authenticated principal: Principal) {
+        alertSender.sendAsync(RuntimeException("Alert Test"))
+    }
 
 }

@@ -1,0 +1,6 @@
+### healthCheck
+GET {{studynight}}/api/health-check
+
+### hello
+
+### alert

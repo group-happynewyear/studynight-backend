@@ -2,12 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [ 'main' ]
-  pull_request:
-    branches: [ 'main' ]
+    branches: [ 'main' ] # TODO disable direct push to main.
 
 permissions:
   contents: read
+  actions: read
   packages: write
 
 env:
@@ -37,11 +36,24 @@ jobs:
           GROUP=group-happynewyear
           SERVICE=studynight-backend
           
+          IMG=ghcr.io/"$GROUP"/"$SERVICE"
           TAG=$(TZ=":Asia/Seoul" date "+%Y%m%d-%H%M%S")
-          IMG=ghcr.io/"$GROUP"/"$SERVICE":"$TAG"
-          
-          docker build -t "$SERVICE" .
-          docker tag "$SERVICE" "$IMG"
           
           echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_USERNAME" --password-stdin
-          docker push "$IMG"
+          
+          docker buildx create --use
+          docker buildx build . \
+          --platform=linux/amd64,linux/arm64 \
+          --tag "$IMG":"$TAG" \
+          --tag "$IMG":latest \
+          --push
+
+      - name: Send Result to Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: "[GitHub Actions] PUSH on MAIN"
+          fields: repo,commit,workflow,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()

@@ -46,6 +46,7 @@ class HttpExceptionHandler(
 
     @ExceptionHandler
     fun onNotExpected(e: Exception): ResponseEntity<ErrorResponse> {
+        e.printStackTrace()
         alertSender.sendAsync(e)
 
         val message = "예상하지 못한 오류가 발생하였습니다." // TODO bug report email

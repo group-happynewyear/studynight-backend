@@ -8,6 +8,20 @@
 
 [SWAGGER](http://localhost:8080/swagger-ui.html) (운영 전까지는 로컬에서 `stage` 프로파일로 실행 후 접근해주세요.)
 
+## DNS
+
+### FE
+
+> local: http://localhost:3000  
+> stage: 가변. BE `application.yml`의 `cors.allowed-origin` 변경 필요.  
+> live : https://www.DOMAIN
+
+### BE
+
+> local: http://localhost:8080   
+> stage: 가변.  
+> live : http://api.DOMAIN
+
 ## RUN
 
 `.env/$profile/`

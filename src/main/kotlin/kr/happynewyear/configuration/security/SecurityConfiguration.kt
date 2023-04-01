@@ -1,6 +1,8 @@
 package kr.happynewyear.configuration.security
 
-import kr.happynewyear.library.security.AuthenticationFilter
+import jakarta.servlet.Filter
+import kr.happynewyear.library.security.authentication.AuthenticationFilter
+import kr.happynewyear.library.security.cors.SimpleCorsConfigurationSource
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,14 +17,17 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
-    @Value("\${token.access.secret}") private val secret: String
+    @Value("\${token.access.secret}") private val secret: String,
+    @Value("\${cors.allowed-origin}") private val allowedOrigin: String
 ) {
 
-    private val authenticationFilter: AuthenticationFilter = AuthenticationFilter(secret)
+    private val authenticationFilter: Filter = AuthenticationFilter(secret)
+    private val corsConfigurationSource: CorsConfigurationSource = SimpleCorsConfigurationSource(allowedOrigin)
 
 
     @Bean
@@ -33,6 +38,7 @@ class SecurityConfiguration(
             .sessionManagement().disable()
             .csrf().disable()
             .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .cors().configurationSource(corsConfigurationSource)
 
         httpSecurity.authorizeHttpRequests()
             .requestMatchers(GET, "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()

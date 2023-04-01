@@ -40,3 +40,6 @@ server:
   servlet:
     encoding:
       force: true
+
+cors:
+  allowed-origin: "http://localhost:3000"

@@ -30,3 +30,6 @@ social-login:
 alert:
   slack:
     address: "https://hooks.slack.com/services/etc"
+
+cors:
+  allowed-origin: "http://localhost:3000"

@@ -1,8 +1,8 @@
 package kr.happynewyear.api
 
 import kr.happynewyear.library.notification.AlertSender
-import kr.happynewyear.library.security.Authenticated
-import kr.happynewyear.library.security.Principal
+import kr.happynewyear.library.security.authentication.Authenticated
+import kr.happynewyear.library.security.authentication.Principal
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping

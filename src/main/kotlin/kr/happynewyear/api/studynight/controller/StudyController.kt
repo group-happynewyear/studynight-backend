@@ -4,8 +4,8 @@ import jakarta.validation.Valid
 import kr.happynewyear.api.studynight.dto.StudyCreateRequest
 import kr.happynewyear.api.studynight.dto.StudyListResponse
 import kr.happynewyear.api.studynight.dto.StudyResponse
-import kr.happynewyear.library.security.Authenticated
-import kr.happynewyear.library.security.Principal
+import kr.happynewyear.library.security.authentication.Authenticated
+import kr.happynewyear.library.security.authentication.Principal
 import kr.happynewyear.studynight.application.service.StudyService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

@@ -1,4 +1,4 @@
-package kr.happynewyear.library.security
+package kr.happynewyear.library.security.authentication
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 

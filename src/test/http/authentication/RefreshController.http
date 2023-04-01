@@ -1,0 +1,12 @@
+### refresh
+POST {{studynight}}/api/refresh
+Content-Type: application/json
+
+{
+ "refreshToken": "{{refreshToken}}"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}

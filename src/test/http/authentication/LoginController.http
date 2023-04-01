@@ -1,1 +1,13 @@
 ### login
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "josh910830@gmail.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}

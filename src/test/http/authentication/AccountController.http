@@ -1,0 +1,8 @@
+### create
+POST {{studynight}}/api/accounts
+Content-Type: application/json
+
+{
+  "email": "josh910830@gmail.com",
+  "password": "password"
+}

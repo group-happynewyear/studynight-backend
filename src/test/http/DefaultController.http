@@ -2,5 +2,9 @@
 GET {{studynight}}/api/health-check
 
 ### hello
+GET {{studynight}}/api/hello
+Authorization: Bearer {{accessToken}}
 
 ### alert
+POST {{studynight}}/api/alert
+Authorization: Bearer {{accessToken}}

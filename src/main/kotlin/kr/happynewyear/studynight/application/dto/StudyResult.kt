@@ -1,6 +1,7 @@
 package kr.happynewyear.studynight.application.dto
 
-import kr.happynewyear.studynight.constant.*
+import kr.happynewyear.studynight.constant.ContactType
+import kr.happynewyear.studynight.constant.condition.*
 import java.util.*
 
 data class StudyResult(

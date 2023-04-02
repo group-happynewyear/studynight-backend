@@ -3,7 +3,7 @@ package kr.happynewyear.api.studynight.dto
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
-import kr.happynewyear.studynight.constant.*
+import kr.happynewyear.studynight.constant.condition.*
 
 data class StudentCreateRequest(
 

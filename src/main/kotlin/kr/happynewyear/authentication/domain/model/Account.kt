@@ -11,12 +11,14 @@ import kr.happynewyear.library.entity.Identifiable
 )
 class Account(
     email: String,
-    password: String
+    password: String,
+    user: User
 ) : Identifiable() {
 
     companion object {
         fun create(email: String, password: String): Account {
-            return Account(email, password)
+            val user = User.create()
+            return Account(email, password, user)
         }
     }
 
@@ -43,6 +45,6 @@ class Account(
         name = "user_id",
         nullable = false, updatable = false, unique = true
     )
-    val user: User = User()
+    val user: User = user
 
 }

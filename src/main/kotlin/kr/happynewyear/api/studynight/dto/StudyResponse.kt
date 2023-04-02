@@ -1,7 +1,8 @@
 package kr.happynewyear.api.studynight.dto
 
 import kr.happynewyear.studynight.application.dto.StudyResult
-import kr.happynewyear.studynight.constant.*
+import kr.happynewyear.studynight.constant.ContactType
+import kr.happynewyear.studynight.constant.condition.*
 
 data class StudyResponse(
     val id: String,

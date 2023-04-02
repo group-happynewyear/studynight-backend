@@ -15,12 +15,14 @@ import java.util.*
 )
 class SocialAccount(
     provider: SocialAccountProvider,
-    externalId: String
+    externalId: String,
+    user: User
 ) : Identifiable() {
 
     companion object {
         fun create(provider: SocialAccountProvider, externalId: String): SocialAccount {
-            return SocialAccount(provider, externalId)
+            val user = User.create()
+            return SocialAccount(provider, externalId, user)
         }
     }
 
@@ -46,6 +48,6 @@ class SocialAccount(
         name = "user_id",
         nullable = false, updatable = false, unique = true
     )
-    val user: User = User()
+    val user: User = user
 
 }

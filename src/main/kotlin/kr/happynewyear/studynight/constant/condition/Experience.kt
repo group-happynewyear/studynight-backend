@@ -1,4 +1,4 @@
-package kr.happynewyear.studynight.constant
+package kr.happynewyear.studynight.constant.condition
 
 enum class Experience {
 

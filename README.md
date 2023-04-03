@@ -4,9 +4,19 @@
 
 개발자 스터디 매칭 서비스
 
+- [API](#API)
+- [DNS](#DNS)
+- [RUN](#RUN)
+- [CI](#CI)
+- [DIAGRAM](#DIAGRAM)
+
+---
+
 ## API
 
 [SWAGGER](http://localhost:8080/swagger-ui.html) (운영 전까지는 로컬에서 `stage` 프로파일로 실행 후 접근해주세요.)
+
+---
 
 ## DNS
 
@@ -20,13 +30,16 @@
 
 > local: http://localhost:8080   
 > stage: 가변.  
-> live : http://api.DOMAIN
+> live : https://api.DOMAIN
+
+---
 
 ## RUN
 
 `.env/$profile/`
 
-> 환경변수 `$HAPPYNEWYEAR_HOME`에 프로젝트의 상위 디렉토리가 설정되어 있어야 합니다.
+> 환경변수 `$HAPPYNEWYEAR_HOME`에 프로젝트의 상위 디렉토리가 설정되어 있어야 합니다.  
+> 환경변수 `$GITHUB_USERNAME`과 `$GITHUB_TOKEN`가 설정되어 있어야 합니다. [발급](https://github.com/settings/tokens)
 
 ### local
 
@@ -49,13 +62,15 @@
 
 ...
 
-## DevOps
+---
 
-### CI
+## CI
 
 `main`에 `push`될 때 `GitHub Actions`를 통해 테스트와 빌드가 이루어집니다.  
-도커 이미지가 `GitHub Container Registry`에 등록됩니다.
+도커 이미지가 `GitHub Container Registry`에 등록되며, CI 결과는 슬랙으로 전달됩니다.
 
-### Notification
+---
 
-CI 알림은 슬랙으로, 오류 알림은 슬랙과 메일로 발송됩니다.
+## DIAGRAM
+
+![diagram](./.docs/diagram.jpg)

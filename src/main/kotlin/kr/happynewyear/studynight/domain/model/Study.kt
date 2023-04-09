@@ -14,16 +14,18 @@ import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
 )
 class Study(
     title: String, description: String,
-    contactType: ContactType, contactAddress: String
+    contactType: ContactType, contactAddress: String,
+    condition: String
 ) : Identifiable() {
 
     companion object {
         fun create(
             creator: Student,
             title: String, description: String,
-            contactType: ContactType, contactAddress: String
+            contactType: ContactType, contactAddress: String,
+            condition: String
         ): Study {
-            val study = Study(title, description, contactType, contactAddress)
+            val study = Study(title, description, contactType, contactAddress, condition)
             EngagementRegistrationService.register(study, creator, MANAGER)
             return study
         }
@@ -54,6 +56,12 @@ class Study(
         nullable = false, updatable = true, unique = false
     )
     val contactAddress: String = contactAddress
+
+    @Column(
+        name = "condition",
+        nullable = false, updatable = true, unique = false
+    )
+    val condition: String = condition
 
     @OneToMany(
         mappedBy = "study",

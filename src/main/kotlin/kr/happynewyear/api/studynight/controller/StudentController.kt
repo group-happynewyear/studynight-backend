@@ -33,7 +33,7 @@ class StudentController(
     ): ResponseEntity<Void> {
         val student = studentService.create(
             principal.userId, req.nickname,
-            StudentMatchCondition(req.schedules, req.regions, req.experience, req.position, req.intensity, req.scale)
+            req.condition
         )
         val location = "/api/students/${student.id}"
         return ResponseEntity.created(URI.create(location)).build()

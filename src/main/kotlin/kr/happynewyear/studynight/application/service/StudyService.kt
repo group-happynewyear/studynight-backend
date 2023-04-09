@@ -1,5 +1,6 @@
 package kr.happynewyear.studynight.application.service
 
+import kr.happynewyear.library.component.JsonIO
 import kr.happynewyear.studynight.application.dto.StudyResult
 import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.domain.model.Study
@@ -14,7 +15,8 @@ import java.util.*
 @Transactional(readOnly = true)
 class StudyService(
     private val studyRepository: StudyRepository,
-    private val studentRepository: StudentRepository
+    private val studentRepository: StudentRepository,
+    private val jsonIO: JsonIO
 ) {
 
     @Transactional
@@ -22,10 +24,14 @@ class StudyService(
         userId: UUID,
         title: String, description: String,
         contactType: ContactType, contactAddress: String,
-        condition: StudyMatchCondition // TODO use
+        condition: StudyMatchCondition
     ): StudyResult {
-        val student = studentRepository.findByUserId(userId)!!
-        val study = Study.create(student, title, description, contactType, contactAddress)
+        val study = Study.create(
+            studentRepository.findByUserId(userId)!!,
+            title, description,
+            contactType, contactAddress,
+            jsonIO.write(condition)
+        )
         studyRepository.save(study)
         return StudyResult.from(study)
     }

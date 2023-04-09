@@ -1,6 +1,6 @@
 package kr.happynewyear.library.test
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import kr.happynewyear.library.component.JsonIO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestComponent
 import org.springframework.http.HttpMethod
@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 class RequestBuilder {
 
     @Autowired
-    private lateinit var objectMapper: ObjectMapper
+    private lateinit var jsonIO: JsonIO
 
 
     fun build(method: HttpMethod, url: String): MockHttpServletRequestBuilder {
@@ -20,7 +20,7 @@ class RequestBuilder {
     }
 
     fun json(request: MockHttpServletRequestBuilder, requestBody: Any): MockHttpServletRequestBuilder {
-        return request.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody))
+        return request.contentType(MediaType.APPLICATION_JSON).content(jsonIO.write(requestBody))
     }
 
     fun jwt(request: MockHttpServletRequestBuilder, jwt: String): MockHttpServletRequestBuilder {

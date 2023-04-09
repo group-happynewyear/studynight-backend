@@ -1,6 +1,6 @@
 package kr.happynewyear.library.test
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import kr.happynewyear.library.component.JsonIO
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestComponent
@@ -22,7 +22,7 @@ class RequestPerformer {
     private lateinit var mockMvc: MockMvc
 
     @Autowired
-    private lateinit var objectMapper: ObjectMapper
+    private lateinit var jsonIO: JsonIO
 
 
     fun perform(
@@ -71,7 +71,7 @@ class RequestPerformer {
     ): T {
         return try {
             val responseBody = performAndReturn(request, status)
-            objectMapper.readValue(responseBody, responseType)
+            jsonIO.read(responseBody, responseType)
         } catch (e: Exception) {
             throw RuntimeException(e)
         }

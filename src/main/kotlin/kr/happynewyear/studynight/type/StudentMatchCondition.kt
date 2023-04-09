@@ -1,14 +1,27 @@
 package kr.happynewyear.studynight.type
 
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
 import kr.happynewyear.studynight.constant.condition.*
 
 data class StudentMatchCondition(
 
+    @field:NotEmpty
     val schedules: Set<Schedule>,
+
+    @field:NotEmpty
     val regions: Set<Region>,
+
+    @field:NotNull
     val experience: Experience,
+
+    @field:NotNull
     val position: Position,
-    val intensity: Intensity?,
-    val scale: Scale?
+
+    @field:NotNull
+    val intensity: Intensity,
+
+    @field:NotNull
+    val scale: Scale
 
 )

@@ -8,7 +8,9 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.studynight.constant.EngagementRole.GUEST
+import kr.happynewyear.studynight.constant.condition.ConditionKey.*
 import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
+import kr.happynewyear.studynight.type.StudentMatchCondition
 import java.util.*
 
 @Entity
@@ -21,8 +23,15 @@ class Student(
 ) : Identifiable() {
 
     companion object {
-        fun create(userId: UUID, nickname: String): Student {
-            return Student(userId, nickname)
+        fun create(userId: UUID, nickname: String, condition: StudentMatchCondition): Student {
+            val student = Student(userId, nickname)
+            condition.schedules.forEach { student.add(Condition.create(student, SCHEDULE, it.name)) }
+            condition.regions.forEach { student.add(Condition.create(student, REGION, it.name)) }
+            student.add(Condition.create(student, EXPERIENCE, condition.experience.name))
+            student.add(Condition.create(student, POSITION, condition.position.name))
+            student.add(Condition.create(student, INTENSITY, condition.intensity.name))
+            student.add(Condition.create(student, SCALE, condition.scale.name))
+            return student
         }
     }
 
@@ -43,6 +52,12 @@ class Student(
         mappedBy = "student",
         cascade = [ALL], orphanRemoval = true
     )
+    private val _conditions: MutableList<Condition> = mutableListOf()
+
+    @OneToMany(
+        mappedBy = "student",
+        cascade = [ALL], orphanRemoval = true
+    )
     private val _engagements: MutableList<Engagement> = mutableListOf()
 
     @OneToMany(
@@ -51,6 +66,10 @@ class Student(
     )
     private val _invitations: MutableList<Invitation> = mutableListOf()
 
+
+    private fun add(condition: Condition) {
+        _conditions.add(condition)
+    }
 
     fun add(engagement: Engagement) {
         _engagements.add(engagement)

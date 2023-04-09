@@ -18,7 +18,7 @@ class StudyControllerTest : LogonApiTest() {
     fun create() {
         run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
 
-        val req = studyCreateRequestFixture() // TODO invalid
+        val req = studyCreateRequestFixture()
         val location = redirect(
             POST, "/api/studies", req,
             CREATED

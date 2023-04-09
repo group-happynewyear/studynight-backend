@@ -5,7 +5,7 @@ import kr.happynewyear.api.studynight.dto.StudentCreateRequest
 import kr.happynewyear.api.studynight.dto.StudentExistResponse
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
-import kr.happynewyear.studynight.application.dto.StudentMatchCondition
+import kr.happynewyear.studynight.type.StudentMatchCondition
 import kr.happynewyear.studynight.application.service.StudentService
 import kr.happynewyear.studynight.constant.condition.*
 import org.springframework.http.ResponseEntity

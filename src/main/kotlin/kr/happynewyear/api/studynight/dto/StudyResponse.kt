@@ -2,7 +2,6 @@ package kr.happynewyear.api.studynight.dto
 
 import kr.happynewyear.studynight.application.dto.StudyResult
 import kr.happynewyear.studynight.constant.ContactType
-import kr.happynewyear.studynight.constant.condition.*
 
 data class StudyResponse(
     val id: String,
@@ -13,12 +12,7 @@ data class StudyResponse(
     val contactType: ContactType,
     val contactAddress: String,
 
-    val schedule: Schedule,
-    val region: Region,
-    val experiences: Set<Experience>,
-    val positions: Set<Position>,
-    val intensity: Intensity,
-    val scale: Scale
+    // val condition: StudyMatchCondition
 ) {
     companion object {
         fun from(study: StudyResult): StudyResponse {
@@ -26,7 +20,7 @@ data class StudyResponse(
                 study.id.toString(),
                 study.title, study.description,
                 study.contactType, study.contactAddress,
-                study.schedule, study.region, study.experiences, study.positions, study.intensity, study.scale
+//                study.condition
             )
         }
     }

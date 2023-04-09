@@ -1,7 +1,7 @@
 package kr.happynewyear.studynight.application.dto
 
 import kr.happynewyear.studynight.constant.ContactType
-import kr.happynewyear.studynight.constant.condition.*
+import kr.happynewyear.studynight.domain.model.Study
 import java.util.*
 
 data class StudyResult(
@@ -13,10 +13,17 @@ data class StudyResult(
     val contactType: ContactType,
     val contactAddress: String,
 
-    val schedule: Schedule,
-    val region: Region,
-    val experiences: Set<Experience>,
-    val positions: Set<Position>,
-    val intensity: Intensity,
-    val scale: Scale
-)
+//    val condition: StudyMatchCondition
+) {
+
+    companion object {
+        fun from(study: Study): StudyResult {
+            return StudyResult(
+                study.id,
+                study.title, study.description,
+                study.contactType, study.contactAddress
+            )
+        }
+    }
+
+}

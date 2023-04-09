@@ -1,4 +1,4 @@
-package kr.happynewyear.studynight.application.dto
+package kr.happynewyear.studynight.type
 
 import kr.happynewyear.studynight.constant.condition.*
 

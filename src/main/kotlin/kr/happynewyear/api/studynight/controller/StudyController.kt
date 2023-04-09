@@ -7,6 +7,7 @@ import kr.happynewyear.api.studynight.dto.StudyResponse
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
 import kr.happynewyear.studynight.application.service.StudyService
+import kr.happynewyear.studynight.type.StudyMatchCondition
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -19,8 +20,16 @@ class StudyController(
 ) {
 
     @PostMapping
-    fun create(@Valid @RequestBody req: StudyCreateRequest): ResponseEntity<Void> {
-        val study = studyService.create()
+    fun create(
+        @Authenticated principal: Principal,
+        @Valid @RequestBody req: StudyCreateRequest
+    ): ResponseEntity<Void> {
+        val study = studyService.create(
+            principal.userId,
+            req.title, req.description,
+            req.contactType, req.contactAddress,
+            StudyMatchCondition(req.schedule, req.region, req.experiences, req.positions, req.intensity, req.scale)
+        )
         val location = "/api/studies/${study.id}"
         return ResponseEntity.created(URI.create(location)).build()
     }

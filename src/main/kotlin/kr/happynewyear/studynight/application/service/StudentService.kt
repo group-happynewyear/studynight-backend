@@ -1,6 +1,6 @@
 package kr.happynewyear.studynight.application.service
 
-import kr.happynewyear.studynight.application.dto.StudentMatchCondition
+import kr.happynewyear.studynight.type.StudentMatchCondition
 import kr.happynewyear.studynight.application.dto.StudentResult
 import kr.happynewyear.studynight.domain.model.Student
 import kr.happynewyear.studynight.domain.repository.StudentRepository

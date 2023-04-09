@@ -14,6 +14,10 @@ class StudentRepositoryAdapter(
         return studentJpaRepository.existsByUserId(userId)
     }
 
+    override fun findByUserId(userId: UUID): Student? {
+        return studentJpaRepository.findByUserId(userId)
+    }
+
     override fun save(student: Student) {
         studentJpaRepository.save(student)
     }

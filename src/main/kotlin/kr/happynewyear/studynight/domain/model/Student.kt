@@ -16,12 +16,13 @@ import java.util.*
     name = "students"
 )
 class Student(
-    userId: UUID
+    userId: UUID,
+    nickname: String
 ) : Identifiable() {
 
     companion object {
-        fun create(userId: UUID): Student {
-            return Student(userId)
+        fun create(userId: UUID, nickname: String): Student {
+            return Student(userId, nickname)
         }
     }
 
@@ -31,6 +32,12 @@ class Student(
         nullable = false, updatable = false, unique = true
     )
     private val userId: UUID = userId
+
+    @Column(
+        name = "nickname",
+        nullable = false, updatable = true, unique = false
+    )
+    private val nickname: String = nickname
 
     @OneToMany(
         mappedBy = "student",

@@ -5,7 +5,9 @@ import kr.happynewyear.api.studynight.dto.StudentCreateRequest
 import kr.happynewyear.api.studynight.dto.StudentExistResponse
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
+import kr.happynewyear.studynight.application.dto.StudentMatchCondition
 import kr.happynewyear.studynight.application.service.StudentService
+import kr.happynewyear.studynight.constant.condition.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -25,8 +27,14 @@ class StudentController(
     }
 
     @PostMapping
-    fun create(@Valid @RequestBody req: StudentCreateRequest): ResponseEntity<Void> {
-        val student = studentService.create()
+    fun create(
+        @Authenticated principal: Principal,
+        @Valid @RequestBody req: StudentCreateRequest
+    ): ResponseEntity<Void> {
+        val student = studentService.create(
+            principal.userId, req.nickname,
+            StudentMatchCondition(req.schedules, req.regions, req.experience, req.position, req.intensity, req.scale)
+        )
         val location = "/api/students/${student.id}"
         return ResponseEntity.created(URI.create(location)).build()
     }

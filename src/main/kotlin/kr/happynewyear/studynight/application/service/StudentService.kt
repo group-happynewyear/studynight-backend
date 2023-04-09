@@ -1,6 +1,9 @@
 package kr.happynewyear.studynight.application.service
 
+import kr.happynewyear.studynight.application.dto.StudentMatchCondition
 import kr.happynewyear.studynight.application.dto.StudentResult
+import kr.happynewyear.studynight.domain.model.Student
+import kr.happynewyear.studynight.domain.repository.StudentRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -8,15 +11,22 @@ import java.util.*
 @Service
 @Transactional(readOnly = true)
 class StudentService(
-
+    private val studentRepository: StudentRepository
 ) {
 
     fun isExist(userId: UUID): Boolean {
-        TODO("impl")
+        return studentRepository.existsByUserId(userId)
     }
 
-    fun create(): StudentResult {
-        TODO("impl")
+    @Transactional
+    fun create(
+        userId: UUID,
+        nickname: String,
+        condition: StudentMatchCondition // TODO use
+    ): StudentResult {
+        val student = Student.create(userId, nickname)
+        studentRepository.save(student)
+        return StudentResult.from(student)
     }
 
 }

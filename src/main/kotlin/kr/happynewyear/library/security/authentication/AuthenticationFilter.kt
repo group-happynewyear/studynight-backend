@@ -34,7 +34,7 @@ class AuthenticationFilter(
         val jwt = req.getHeader("Authorization")?.replace("Bearer ", "") ?: return
 
         val claims = Jwts.parser().setSigningKey(encodedSecret).parseClaimsJws(jwt).body
-        val principal = Principal(claims.subject)
+        val principal = Principal(UUID.fromString(claims.subject))
         val authorities = emptySet<String>()
         val authentication = AuthenticationToken(principal, authorities)
 

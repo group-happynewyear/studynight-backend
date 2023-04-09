@@ -19,8 +19,7 @@ class StudentController(
 
     @GetMapping("/me/is_exists")
     fun isExist(@Authenticated principal: Principal): ResponseEntity<StudentExistResponse> {
-        val userId = UUID.fromString(principal.userId)
-        val isExist = studentService.isExist(userId)
+        val isExist = studentService.isExist(principal.userId)
         val res = StudentExistResponse(isExist)
         return ResponseEntity.ok(res)
     }

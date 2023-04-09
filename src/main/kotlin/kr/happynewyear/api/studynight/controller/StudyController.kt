@@ -27,8 +27,7 @@ class StudyController(
 
     @GetMapping
     fun list(@Authenticated principal: Principal): ResponseEntity<StudyListResponse> {
-        val userId = UUID.fromString(principal.userId)
-        val studies = studyService.list(userId)
+        val studies = studyService.list(principal.userId)
         val res = StudyListResponse(studies.map { StudyResponse.from(it) })
         return ResponseEntity.ok(res)
     }

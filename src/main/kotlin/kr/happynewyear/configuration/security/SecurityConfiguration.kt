@@ -48,6 +48,7 @@ class SecurityConfiguration(
             .requestMatchers(POST, "/api/alert").authenticated()
             .requestMatchers(POST, "/api/accounts", "/api/login", "/api/refresh").permitAll()
             .requestMatchers(GET, "/api/social-login/**").permitAll()
+            .requestMatchers(GET, "/api/students/me/is_exists").authenticated()
             .requestMatchers(POST, "/api/students").authenticated()
             .requestMatchers(POST, "/api/studies").authenticated()
             .requestMatchers(GET, "/api/studies", "/api/studies/*").authenticated()

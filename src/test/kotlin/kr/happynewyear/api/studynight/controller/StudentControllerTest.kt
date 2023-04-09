@@ -1,6 +1,7 @@
 package kr.happynewyear.api.studynight.controller
 
 import kr.happynewyear.api.studynight.dto.StudentCreateRequest
+import kr.happynewyear.api.studynight.dto.StudentExistResponse
 import kr.happynewyear.library.test.LogonApiTest
 import kr.happynewyear.studynight.application.dto.StudentResult
 import kr.happynewyear.studynight.application.service.StudentService
@@ -14,14 +15,39 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.OK
 import java.util.*
 
 class StudentControllerTest : LogonApiTest() {
 
     @MockBean
     lateinit var studentService: StudentService
+
+
+    @Test
+    fun isExist_true() {
+        given(studentService.isExist(userId)).willReturn(true)
+
+        val res = call(
+            GET, "/api/students/me/is_exists",
+            OK, StudentExistResponse::class.java
+        )
+
+        assertThat(res.isExist).isTrue
+    }
+
+    @Test
+    fun isExist_false() {
+        val res = call(
+            GET, "/api/students/me/is_exists",
+            OK, StudentExistResponse::class.java
+        )
+
+        assertThat(res.isExist).isFalse
+    }
 
 
     @Test

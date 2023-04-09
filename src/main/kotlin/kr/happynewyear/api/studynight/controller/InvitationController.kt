@@ -13,18 +13,18 @@ class InvitationController(
     private val invitationService: InvitationService
 ) {
 
-    @GetMapping("/accept") // TODO PUT
-    fun accept(@RequestParam invitationId: UUID): ResponseEntity<Void> {
-        invitationService.accept(invitationId)
-        val location = "/api/invitations/$invitationId"
-        return ResponseEntity.noContent().location(URI.create(location)).build()
-    }
-
     @GetMapping("/{invitationId}")
     fun get(@PathVariable invitationId: UUID): ResponseEntity<InvitationResponse> {
         val invitation = invitationService.get(invitationId)
         val res = InvitationResponse.from(invitation)
         return ResponseEntity.ok(res)
+    }
+
+    @PutMapping("/{invitationId}/accept")
+    fun accept(@PathVariable invitationId: UUID): ResponseEntity<Void> {
+        invitationService.accept(invitationId)
+        val location = "/api/invitations/$invitationId"
+        return ResponseEntity.noContent().location(URI.create(location)).build()
     }
 
 }

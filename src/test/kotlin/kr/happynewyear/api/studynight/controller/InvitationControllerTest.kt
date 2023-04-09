@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpMethod.GET
+import org.springframework.http.HttpMethod.PUT
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.HttpStatus.OK
 import java.util.*
@@ -27,7 +28,7 @@ class InvitationControllerTest : LogonApiTest() {
         given(invitationService.accept(invitationId)).will { }
 
         val location = redirect(
-            GET, "/api/invitations/accept?invitationId=$invitationId",
+            PUT, "/api/invitations/$invitationId/accept",
             NO_CONTENT
         )
 

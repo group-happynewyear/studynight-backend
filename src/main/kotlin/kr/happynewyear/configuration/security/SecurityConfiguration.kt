@@ -6,8 +6,7 @@ import kr.happynewyear.library.security.cors.SimpleCorsConfigurationSource
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod.GET
-import org.springframework.http.HttpMethod.POST
+import org.springframework.http.HttpMethod.*
 import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.HttpStatus.UNAUTHORIZED
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -54,8 +53,8 @@ class SecurityConfiguration(
             .requestMatchers(GET, "/api/studies", "/api/studies/*").authenticated()
             .requestMatchers(POST, "/api/matches").authenticated()
             .requestMatchers(GET, "/api/matches/*").authenticated()
-            .requestMatchers(GET, "/api/invitations/accept").permitAll() // TODO PUT and authenticated
-            .requestMatchers(GET, "/api/invitations/*").permitAll() // TODO authenticated
+            .requestMatchers(PUT, "/api/invitations/*/accept").authenticated()
+            .requestMatchers(GET, "/api/invitations/*").authenticated()
             .anyRequest().denyAll()
             .and().exceptionHandling()
             .authenticationEntryPoint { _, response, _ -> response?.sendError(UNAUTHORIZED.value()) }

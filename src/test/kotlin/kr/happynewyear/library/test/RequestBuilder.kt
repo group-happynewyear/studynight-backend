@@ -1,7 +1,6 @@
 package kr.happynewyear.library.test
 
-import kr.happynewyear.library.component.JsonIO
-import org.springframework.beans.factory.annotation.Autowired
+import kr.happynewyear.library.utility.JsonIO
 import org.springframework.boot.test.context.TestComponent
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
@@ -11,16 +10,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 @TestComponent
 class RequestBuilder {
 
-    @Autowired
-    private lateinit var jsonIO: JsonIO
-
-
     fun build(method: HttpMethod, url: String): MockHttpServletRequestBuilder {
         return MockMvcRequestBuilders.request(method, url)
     }
 
     fun json(request: MockHttpServletRequestBuilder, requestBody: Any): MockHttpServletRequestBuilder {
-        return request.contentType(MediaType.APPLICATION_JSON).content(jsonIO.write(requestBody))
+        return request.contentType(MediaType.APPLICATION_JSON).content(JsonIO.write(requestBody))
     }
 
     fun jwt(request: MockHttpServletRequestBuilder, jwt: String): MockHttpServletRequestBuilder {

@@ -30,25 +30,35 @@ class StudyControllerTest : LogonApiTest() {
 
     @Test
     fun list() {
+        run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
+        run(POST, "/api/studies", studyCreateRequestFixture(), CREATED)
+
+        loginWithNewAccount()
+        run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
+        run(POST, "/api/studies", studyCreateRequestFixture(), CREATED)
+        run(POST, "/api/studies", studyCreateRequestFixture(), CREATED)
+
         val response = call(
             GET, "/api/studies",
             OK, StudyListResponse::class.java
         )
 
-        // TODO filter mine
-        assertThat(response.studies).isNotEmpty
+        assertThat(response.studies).hasSize(2)
     }
 
 
     @Test
     fun get() {
-        val studyId = ""
-        val response = call(
-            GET, "/api/studies/$studyId",
+        run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
+        val createReq = studyCreateRequestFixture()
+        val location = redirect(POST, "/api/studies", createReq, CREATED)
+
+        val res = call(
+            GET, location,
             OK, StudyResponse::class.java
         )
 
-        assertThat(response).isNotNull
+        assertThat(res.condition).isEqualTo(createReq.condition)
     }
     // TODO not found
     // TODO not mine

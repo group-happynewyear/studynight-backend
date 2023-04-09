@@ -1,7 +1,9 @@
 package kr.happynewyear.studynight.application.dto
 
+import kr.happynewyear.library.utility.JsonIO
 import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.domain.model.Study
+import kr.happynewyear.studynight.type.StudyMatchCondition
 import java.util.*
 
 data class StudyResult(
@@ -13,7 +15,7 @@ data class StudyResult(
     val contactType: ContactType,
     val contactAddress: String,
 
-//    val condition: StudyMatchCondition
+    val condition: StudyMatchCondition
 ) {
 
     companion object {
@@ -21,7 +23,8 @@ data class StudyResult(
             return StudyResult(
                 study.id,
                 study.title, study.description,
-                study.contactType, study.contactAddress
+                study.contactType, study.contactAddress,
+                JsonIO.read(study.condition, StudyMatchCondition::class.java)
             )
         }
     }

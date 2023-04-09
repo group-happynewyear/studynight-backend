@@ -12,6 +12,7 @@ import kr.happynewyear.studynight.constant.condition.ConditionKey.*
 import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
 import kr.happynewyear.studynight.type.StudentMatchCondition
 import java.util.*
+import kotlin.time.measureTime
 
 @Entity
 @Table(
@@ -59,6 +60,8 @@ class Student(
         cascade = [ALL], orphanRemoval = true
     )
     private val _engagements: MutableList<Engagement> = mutableListOf()
+    val studies: List<Study> get() = _engagements.map { it.study }
+
 
     @OneToMany(
         mappedBy = "student",

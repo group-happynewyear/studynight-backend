@@ -29,7 +29,7 @@ class Engagement(
         name = "study_id",
         nullable = false, updatable = false, unique = false
     )
-    private val study: Study = study
+    val study: Study = study
 
     @ManyToOne(
         fetch = LAZY, optional = false,

@@ -1,6 +1,6 @@
 package kr.happynewyear.library.test
 
-import kr.happynewyear.library.component.JsonIO
+import kr.happynewyear.library.utility.JsonIO
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestComponent
@@ -20,9 +20,6 @@ class RequestPerformer {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
-
-    @Autowired
-    private lateinit var jsonIO: JsonIO
 
 
     fun perform(
@@ -71,7 +68,7 @@ class RequestPerformer {
     ): T {
         return try {
             val responseBody = performAndReturn(request, status)
-            jsonIO.read(responseBody, responseType)
+            JsonIO.read(responseBody, responseType)
         } catch (e: Exception) {
             throw RuntimeException(e)
         }

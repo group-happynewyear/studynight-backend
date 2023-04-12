@@ -33,7 +33,7 @@ class StudyControllerTest : LogonApiTest() {
         run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
         run(POST, "/api/studies", studyCreateRequestFixture(), CREATED)
 
-        loginWithNewAccount()
+        loginWithNewUser()
         run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
         run(POST, "/api/studies", studyCreateRequestFixture(), CREATED)
         run(POST, "/api/studies", studyCreateRequestFixture(), CREATED)

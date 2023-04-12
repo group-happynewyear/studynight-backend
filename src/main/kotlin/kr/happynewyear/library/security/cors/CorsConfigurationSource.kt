@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 
-class SimpleCorsConfigurationSource(
+class CorsConfigurationSource(
     allowedOrigin: String
 ) : CorsConfigurationSource {
 

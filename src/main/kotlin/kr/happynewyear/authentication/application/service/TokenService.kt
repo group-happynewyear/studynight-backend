@@ -1,7 +1,5 @@
 package kr.happynewyear.authentication.application.service
 
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm.HS256
 import kr.happynewyear.authentication.application.dto.TokenResult
 import kr.happynewyear.authentication.application.exception.RefreshTokenNotFoundException
 import kr.happynewyear.authentication.application.exception.RefreshTokenReusedException
@@ -10,6 +8,8 @@ import kr.happynewyear.authentication.domain.model.User
 import kr.happynewyear.authentication.domain.repository.RefreshTokenChainRepository
 import kr.happynewyear.authentication.domain.repository.RefreshTokenRepository
 import kr.happynewyear.library.notification.AlertSender
+import kr.happynewyear.library.utility.Dates
+import kr.happynewyear.library.utility.JwtIO
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,9 +25,6 @@ class TokenService(
     @Value("\${token.access.expiration-minutes}") private val expirationMinutes: Long,
     @Value("\${token.refresh.expiration-days}") private val expirationDays: Long
 ) {
-
-    private val encodedSecret = Base64.getEncoder().encodeToString(secret.toByteArray())
-
 
     @Transactional
     fun issue(user: User): TokenResult {
@@ -59,11 +56,10 @@ class TokenService(
 
 
     private fun writeJwt(user: User): String {
-        val claims = Jwts.claims()
-        claims.subject = user.id.toString()
-        claims.issuedAt = Date()
-        claims.expiration = Date(claims.issuedAt.time + expirationMinutes * 60 * 1000)
-        return Jwts.builder().signWith(HS256, encodedSecret).setClaims(claims).compact()
+        val sub = user.id.toString()
+        val iat = Dates.now()
+        val exp = Dates.plusMinutes(iat, expirationMinutes)
+        return JwtIO.write(sub, iat, exp, secret)
     }
 
 }

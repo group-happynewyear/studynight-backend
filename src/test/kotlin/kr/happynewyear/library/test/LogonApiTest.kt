@@ -1,9 +1,11 @@
 package kr.happynewyear.library.test
 
-import kr.happynewyear.authentication.application.service.AccountService
+import kr.happynewyear.library.utility.Dates
+import kr.happynewyear.library.utility.JwtIO
 import org.junit.jupiter.api.BeforeEach
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD
 import java.util.*
+import java.util.UUID.randomUUID
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -29,31 +32,17 @@ abstract class LogonApiTest {
     private lateinit var p: RequestPerformer
 
 
-    @Autowired
-    private lateinit var accountService: AccountService // TODO user
+    @Value("\${token.access.secret}")
+    private lateinit var secret: String
 
-    protected lateinit var userId: UUID
     private lateinit var accessToken: String
 
 
     @BeforeEach
-    fun setup() {
-        loginWithNewAccount()
-    }
-
-    protected fun loginWithNewAccount() {
-        log.debug("Login started from create account...")
-
-        val email = "${UUID.randomUUID().toString().substring(8)}@email.com"
-        val password = "password"
-
-        val account = accountService.create(email, password)
-        userId = account.userId
-
-        val token = accountService.login(email, password)
-        accessToken = token.accessToken
-
-        log.debug("Login finished.")
+    protected fun loginWithNewUser() {
+        val userId = randomUUID().toString()
+        accessToken = JwtIO.write(userId, Dates.now(), Dates.ofAfterMinutes(1), secret)
+        log.debug("Login with $userId.")
     }
 
 

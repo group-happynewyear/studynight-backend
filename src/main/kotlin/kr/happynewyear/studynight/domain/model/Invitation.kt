@@ -39,6 +39,6 @@ class Invitation(
         name = "student_id",
         nullable = false, updatable = false, unique = false
     )
-    private val student: Student = student
+    val student: Student = student
 
 }

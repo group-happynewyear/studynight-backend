@@ -4,7 +4,9 @@ import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
 import jakarta.persistence.FetchType.LAZY
 import kr.happynewyear.library.entity.Identifiable
+import kr.happynewyear.library.utility.JsonIO
 import kr.happynewyear.studynight.domain.service.InvitationRegistrationService
+import kr.happynewyear.studynight.type.MatchParameter
 
 @Entity
 @Table(
@@ -12,11 +14,16 @@ import kr.happynewyear.studynight.domain.service.InvitationRegistrationService
 )
 class Match(
     study: Study,
+    condition: String
 ) : Identifiable() {
 
     companion object {
-        fun create(study: Study, students: Collection<Student>): Match {
-            val match = Match(study)
+        fun create(
+            study: Study,
+            condition: MatchParameter,
+            students: Collection<Student>
+        ): Match {
+            val match = Match(study, JsonIO.write(condition))
             students.forEach { InvitationRegistrationService.register(match, it) }
             return match
         }
@@ -31,6 +38,12 @@ class Match(
         nullable = false, updatable = false, unique = false
     )
     val study: Study = study
+
+    @Column(
+        name = "condition",
+        nullable = false, updatable = true, unique = false
+    )
+    val condition: String = condition
 
     @OneToMany(
         mappedBy = "match",

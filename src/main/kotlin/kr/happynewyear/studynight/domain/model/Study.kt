@@ -8,7 +8,7 @@ import kr.happynewyear.library.utility.JsonIO
 import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.constant.EngagementRole.MANAGER
 import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
-import kr.happynewyear.studynight.type.StudyMatchCondition
+import kr.happynewyear.studynight.type.MatchParameter
 
 @Entity
 @Table(
@@ -25,7 +25,7 @@ class Study(
             creator: Student,
             title: String, description: String,
             contactType: ContactType, contactAddress: String,
-            condition: StudyMatchCondition
+            condition: MatchParameter
         ): Study {
             val study = Study(title, description, contactType, contactAddress, JsonIO.write(condition))
             EngagementRegistrationService.register(study, creator, MANAGER)

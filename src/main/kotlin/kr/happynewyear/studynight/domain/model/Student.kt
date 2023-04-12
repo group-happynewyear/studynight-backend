@@ -10,9 +10,8 @@ import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.studynight.constant.EngagementRole.GUEST
 import kr.happynewyear.studynight.constant.condition.ConditionKey.*
 import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
-import kr.happynewyear.studynight.type.StudentMatchCondition
+import kr.happynewyear.studynight.type.MatchSource
 import java.util.*
-import kotlin.time.measureTime
 
 @Entity
 @Table(
@@ -24,7 +23,7 @@ class Student(
 ) : Identifiable() {
 
     companion object {
-        fun create(userId: UUID, nickname: String, condition: StudentMatchCondition): Student {
+        fun create(userId: UUID, nickname: String, condition: MatchSource): Student {
             val student = Student(userId, nickname)
             condition.schedules.forEach { student.add(Condition.create(student, SCHEDULE, it.name)) }
             condition.regions.forEach { student.add(Condition.create(student, REGION, it.name)) }

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import kr.happynewyear.studynight.constant.ContactType
-import kr.happynewyear.studynight.type.StudyMatchCondition
+import kr.happynewyear.studynight.type.MatchParameter
 
 data class StudyCreateRequest(
 
@@ -24,6 +24,6 @@ data class StudyCreateRequest(
 
 
     @field:Valid
-    val condition: StudyMatchCondition
+    val condition: MatchParameter
 
 )

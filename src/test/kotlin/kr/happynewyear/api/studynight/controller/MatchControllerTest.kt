@@ -3,19 +3,10 @@ package kr.happynewyear.api.studynight.controller
 
 import kr.happynewyear.api.studynight.dto.MatchCreateRequest
 import kr.happynewyear.api.studynight.dto.MatchResponse
+import kr.happynewyear.api.studynight.fixture.matchParameterFixture
 import kr.happynewyear.library.test.LogonApiTest
-import kr.happynewyear.studynight.application.dto.MatchResult
-import kr.happynewyear.studynight.application.service.MatchService
-import kr.happynewyear.studynight.constant.condition.Experience.JUNIOR
-import kr.happynewyear.studynight.constant.condition.Intensity.HARD
-import kr.happynewyear.studynight.constant.condition.Position.SERVER
-import kr.happynewyear.studynight.constant.condition.Region.GANGNAM
-import kr.happynewyear.studynight.constant.condition.Scale.M
-import kr.happynewyear.studynight.constant.condition.Schedule.WEEKEND_AFTERNOON
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.BDDMockito.given
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus.CREATED
@@ -24,46 +15,31 @@ import java.util.*
 
 class MatchControllerTest : LogonApiTest() {
 
-    @MockBean
-    lateinit var matchService: MatchService
-
-
     @Test
     fun create() {
-        given(matchService.create()).willReturn(MatchResult(UUID.randomUUID(), 1))
+        val studyId = UUID.randomUUID().toString() // TODO
 
-        val studyId = UUID.randomUUID().toString()
-        val schedule = WEEKEND_AFTERNOON
-        val region = GANGNAM
-        val experiences = setOf(JUNIOR)
-        val positions = setOf(SERVER)
-        val intensity = HARD
-        val scale = M
-
-        val request = MatchCreateRequest(
-            studyId, 1,
-            schedule, region, experiences, positions, intensity, scale
-        )
+        val req = MatchCreateRequest(studyId, matchParameterFixture())
         val location = redirect(
-            POST, "/api/matches", request,
+            POST, "/api/matches", req,
             CREATED
         )
 
         assertThat(location).startsWith("/api/matches/")
     }
+    // TODO not mine
 
 
     @Test
     fun get() {
-        val matchId = UUID.randomUUID()
-        given(matchService.get(matchId)).willReturn(MatchResult(matchId, 1))
+        val matchId = UUID.randomUUID() // TODO
 
         val response = call(
             GET, "/api/matches/$matchId",
             OK, MatchResponse::class.java
         )
 
-        assertThat(response.count).isNotNull
+        assertThat(response.invitations.size).isEqualTo(2)
     }
     // TODO not mine
 

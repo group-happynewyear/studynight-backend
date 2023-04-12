@@ -2,7 +2,7 @@ package kr.happynewyear.api.studynight.dto
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
-import kr.happynewyear.studynight.type.StudentMatchCondition
+import kr.happynewyear.studynight.type.MatchSource
 
 data class StudentCreateRequest(
 
@@ -10,6 +10,6 @@ data class StudentCreateRequest(
     val nickname: String,
 
     @field:Valid
-    val condition: StudentMatchCondition
+    val condition: MatchSource
 
 )

@@ -5,7 +5,7 @@ import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.domain.model.Study
 import kr.happynewyear.studynight.domain.repository.StudentRepository
 import kr.happynewyear.studynight.domain.repository.StudyRepository
-import kr.happynewyear.studynight.type.StudyMatchCondition
+import kr.happynewyear.studynight.type.MatchParameter
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -22,7 +22,7 @@ class StudyService(
         userId: UUID,
         title: String, description: String,
         contactType: ContactType, contactAddress: String,
-        condition: StudyMatchCondition
+        condition: MatchParameter
     ): StudyResult {
         val study = Study.create(
             studentRepository.findByUserId(userId)!!,

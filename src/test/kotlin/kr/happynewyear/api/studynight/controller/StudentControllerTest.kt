@@ -4,6 +4,7 @@ import kr.happynewyear.api.studynight.dto.StudentExistResponse
 import kr.happynewyear.api.studynight.fixture.studentCreateRequestFixture
 import kr.happynewyear.library.test.LogonApiTest
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
@@ -11,6 +12,12 @@ import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.OK
 
 class StudentControllerTest : LogonApiTest() {
+
+    @BeforeEach
+    fun setup() {
+        login()
+    }
+
 
     @Test
     fun isExist_true() {

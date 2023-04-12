@@ -6,6 +6,7 @@ import kr.happynewyear.api.studynight.fixture.studentCreateRequestFixture
 import kr.happynewyear.api.studynight.fixture.studyCreateRequestFixture
 import kr.happynewyear.library.test.LogonApiTest
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
@@ -14,10 +15,23 @@ import org.springframework.http.HttpStatus.OK
 
 class StudyControllerTest : LogonApiTest() {
 
+    @BeforeEach
+    fun setup() {
+        loginAsNewStudent()
+    }
+
+    fun loginAsNewStudent() {
+        login()
+        createStudent()
+    }
+
+    fun createStudent() {
+        run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
+    }
+
+
     @Test
     fun create() {
-        run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
-
         val req = studyCreateRequestFixture()
         val location = redirect(
             POST, "/api/studies", req,
@@ -30,11 +44,9 @@ class StudyControllerTest : LogonApiTest() {
 
     @Test
     fun list() {
-        run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
         run(POST, "/api/studies", studyCreateRequestFixture(), CREATED)
 
-        loginWithNewUser()
-        run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
+        loginAsNewStudent()
         run(POST, "/api/studies", studyCreateRequestFixture(), CREATED)
         run(POST, "/api/studies", studyCreateRequestFixture(), CREATED)
 
@@ -49,7 +61,6 @@ class StudyControllerTest : LogonApiTest() {
 
     @Test
     fun get() {
-        run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
         val createReq = studyCreateRequestFixture()
         val location = redirect(POST, "/api/studies", createReq, CREATED)
 

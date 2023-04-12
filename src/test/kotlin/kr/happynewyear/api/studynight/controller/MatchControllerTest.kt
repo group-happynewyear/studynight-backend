@@ -1,45 +1,83 @@
 package kr.happynewyear.api.studynight.controller
 
-
 import kr.happynewyear.api.studynight.dto.MatchCreateRequest
 import kr.happynewyear.api.studynight.dto.MatchResponse
 import kr.happynewyear.api.studynight.fixture.matchParameterFixture
+import kr.happynewyear.api.studynight.fixture.matchSourceFixture
+import kr.happynewyear.api.studynight.fixture.studentCreateRequestFixture
+import kr.happynewyear.api.studynight.fixture.studyCreateRequestFixture
 import kr.happynewyear.library.test.LogonApiTest
+import kr.happynewyear.studynight.constant.condition.Position
+import kr.happynewyear.studynight.constant.condition.Position.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.OK
-import java.util.*
 
 class MatchControllerTest : LogonApiTest() {
 
+    fun createStudent(position: Position): String {
+        val req = studentCreateRequestFixture(matchSourceFixture(position))
+        val location = redirect(POST, "/api/students", req, CREATED)
+        return location.split("/api/students/")[1]
+    }
+
+    fun createStudy(positions: Set<Position>): String {
+        val req = studyCreateRequestFixture(matchParameterFixture(positions))
+        val location = redirect(POST, "/api/studies", req, CREATED)
+        return location.split("/api/studies/")[1]
+    }
+
+
     @Test
     fun create() {
-        val studyId = UUID.randomUUID().toString() // TODO
+        login()
+        val dataStudentId = createStudent(DATA)
 
-        val req = MatchCreateRequest(studyId, matchParameterFixture())
+        login()
+        val webStudentId = createStudent(WEB)
+
+        login()
+        val serverStudentId = createStudent(SERVER)
+        val studyId = createStudy(setOf(WEB, SERVER))
+
+        val req = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB)))
         val location = redirect(
             POST, "/api/matches", req,
             CREATED
         )
 
         assertThat(location).startsWith("/api/matches/")
+
+        // TODO then send mail
     }
     // TODO not mine
+
+    // TODO validate out-of-bound
 
 
     @Test
     fun get() {
-        val matchId = UUID.randomUUID() // TODO
+        login()
+        val dataStudentId = createStudent(DATA)
 
-        val response = call(
-            GET, "/api/matches/$matchId",
+        login()
+        val webStudentId = createStudent(WEB)
+
+        login()
+        val serverStudentId = createStudent(SERVER)
+        val studyId = createStudy(setOf(WEB, SERVER))
+        val createReq = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB)))
+        val location = redirect(POST, "/api/matches", createReq, CREATED)
+
+        val res = call(
+            GET, location,
             OK, MatchResponse::class.java
         )
 
-        assertThat(response.invitations.size).isEqualTo(2)
+        assertThat(res.invitations.size).isEqualTo(1)
     }
     // TODO not mine
 

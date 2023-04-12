@@ -2,7 +2,7 @@ package kr.happynewyear.library.test
 
 import kr.happynewyear.library.utility.Dates
 import kr.happynewyear.library.utility.JwtIO
-import org.junit.jupiter.api.BeforeEach
+import kr.happynewyear.library.utility.Randoms
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD
 import java.util.*
-import java.util.UUID.randomUUID
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,11 +37,14 @@ abstract class LogonApiTest {
     private lateinit var accessToken: String
 
 
-    @BeforeEach
-    protected fun loginWithNewUser() {
-        val userId = randomUUID().toString()
-        accessToken = JwtIO.write(userId, Dates.now(), Dates.ofAfterMinutes(1), secret)
+    protected fun login(): UUID {
+        return login(Randoms.uuid())
+    }
+
+    protected fun login(userId: UUID): UUID {
+        accessToken = JwtIO.write(userId.toString(), Dates.now(), Dates.ofAfterMinutes(1), secret)
         log.debug("Login with $userId.")
+        return userId
     }
 
 

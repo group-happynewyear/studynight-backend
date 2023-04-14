@@ -38,7 +38,7 @@ class Engagement(
         name = "student_id",
         nullable = false, updatable = false, unique = false
     )
-    private val student: Student = student
+    val student: Student = student
 
     @Column(
         name = "role",

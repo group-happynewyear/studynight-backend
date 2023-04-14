@@ -2,6 +2,7 @@ package kr.happynewyear.studynight.infrastructure.database
 
 import kr.happynewyear.studynight.domain.model.Student
 import kr.happynewyear.studynight.domain.repository.StudentRepository
+import kr.happynewyear.studynight.type.MatchParameter
 import org.springframework.stereotype.Repository
 import java.util.*
 
@@ -20,6 +21,17 @@ class StudentRepositoryAdapter(
 
     override fun save(student: Student) {
         studentJpaRepository.save(student)
+    }
+
+    override fun searchByCondition(condition: MatchParameter): List<Student> {
+        return studentJpaRepository.searchByConditions(
+            condition.schedule.name,
+            condition.region.name,
+            condition.experiences.map { it.name },
+            condition.positions.map { it.name },
+            condition.intensity.name,
+            condition.scale.name,
+        )
     }
 
 }

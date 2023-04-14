@@ -34,13 +34,13 @@ class MatchControllerTest : LogonApiTest() {
     @Test
     fun create() {
         login()
-        val dataStudentId = createStudent(DATA)
+        createStudent(DATA)
 
         login()
-        val webStudentId = createStudent(WEB)
+        createStudent(WEB)
 
         login()
-        val serverStudentId = createStudent(SERVER)
+        createStudent(SERVER)
         val studyId = createStudy(setOf(WEB, SERVER))
 
         val req = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB)))
@@ -61,13 +61,13 @@ class MatchControllerTest : LogonApiTest() {
     @Test
     fun get() {
         login()
-        val dataStudentId = createStudent(DATA)
+        createStudent(DATA)
 
         login()
         val webStudentId = createStudent(WEB)
 
         login()
-        val serverStudentId = createStudent(SERVER)
+        createStudent(SERVER)
         val studyId = createStudy(setOf(WEB, SERVER))
         val createReq = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB)))
         val location = redirect(POST, "/api/matches", createReq, CREATED)
@@ -78,6 +78,7 @@ class MatchControllerTest : LogonApiTest() {
         )
 
         assertThat(res.invitations.size).isEqualTo(1)
+        assertThat(res.invitations[0].student.id).isEqualTo(webStudentId)
     }
     // TODO not mine
 

@@ -70,6 +70,7 @@ class Study(
         cascade = [ALL], orphanRemoval = true
     )
     private val _engagements: MutableList<Engagement> = mutableListOf()
+    val students: List<Student> get() = _engagements.map { it.student }
 
     @OneToMany(
         mappedBy = "study",

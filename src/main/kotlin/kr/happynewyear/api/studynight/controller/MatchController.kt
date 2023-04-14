@@ -17,7 +17,7 @@ class MatchController(
 
     @PostMapping
     fun create(@Valid @RequestBody req: MatchCreateRequest): ResponseEntity<Void> {
-        val match = matchService.create()
+        val match = matchService.create(UUID.fromString(req.studyId), req.condition)
         val location = "/api/matches/${match.id}"
         return ResponseEntity.created(URI.create(location)).build()
     }

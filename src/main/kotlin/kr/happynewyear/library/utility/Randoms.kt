@@ -3,7 +3,7 @@ package kr.happynewyear.library.utility
 import java.util.*
 import java.util.UUID.randomUUID
 
-class Randoms { // TODO use
+class Randoms {
     companion object {
 
         fun uuid(): UUID {

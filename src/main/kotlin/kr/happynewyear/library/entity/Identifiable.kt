@@ -4,6 +4,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.MappedSuperclass
 import jakarta.persistence.PostLoad
 import jakarta.persistence.PostPersist
+import kr.happynewyear.library.utility.Randoms
 import org.hibernate.proxy.HibernateProxy
 import org.springframework.data.domain.Persistable
 import java.util.*
@@ -12,7 +13,7 @@ import java.util.*
 abstract class Identifiable : Persistable<UUID> {
 
     @Id
-    private val id: UUID = UUID.randomUUID()
+    private val id: UUID = Randoms.uuid()
 
     @Transient
     private var _isNew = true

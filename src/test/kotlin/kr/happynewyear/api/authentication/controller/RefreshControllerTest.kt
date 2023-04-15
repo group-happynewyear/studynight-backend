@@ -1,18 +1,18 @@
 package kr.happynewyear.api.authentication.controller
 
-import kr.happynewyear.library.test.ApiTest
 import kr.happynewyear.api.authentication.dto.AccountCreateRequest
 import kr.happynewyear.api.authentication.dto.LoginRequest
 import kr.happynewyear.api.authentication.dto.RefreshRequest
 import kr.happynewyear.api.authentication.dto.TokenResponse
 import kr.happynewyear.authentication.application.service.TokenService
+import kr.happynewyear.library.test.ApiTest
+import kr.happynewyear.library.utility.Randoms
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus.*
 import org.springframework.test.util.ReflectionTestUtils
-import java.util.*
 
 class RefreshControllerTest : ApiTest() {
 
@@ -48,7 +48,7 @@ class RefreshControllerTest : ApiTest() {
 
     @Test
     fun refresh_notExist() {
-        val refreshToken = UUID.randomUUID().toString()
+        val refreshToken = Randoms.uuidString()
 
         run(
             POST, "/api/refresh", RefreshRequest(refreshToken),

@@ -20,8 +20,8 @@ class SocialAccount(
 ) : Identifiable() {
 
     companion object {
-        fun create(provider: SocialAccountProvider, externalId: String): SocialAccount {
-            val user = User.create()
+        fun create(provider: SocialAccountProvider, externalId: String, email: String): SocialAccount {
+            val user = User.create(email)
             return SocialAccount(provider, externalId, user)
         }
     }

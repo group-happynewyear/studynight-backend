@@ -38,7 +38,7 @@ class GoogleAccountClientAdapter(
 
         val authorizationHeader = "Bearer ${tokenRes.access_token}"
         val userinfo = userinfoClient.exchange(authorizationHeader)
-        return GoogleAccount(userinfo.id)
+        return GoogleAccount(userinfo.id, userinfo.email)
     }
 
 }

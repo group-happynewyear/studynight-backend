@@ -5,7 +5,8 @@ import kr.happynewyear.authentication.constant.SocialAccountProvider
 import kr.happynewyear.authentication.constant.SocialAccountProvider.GOOGLE
 
 data class GoogleAccount(
-    override val id: String
+    override val id: String,
+    override val email: String
 ) : ExternalAccount {
     override val provider: SocialAccountProvider = GOOGLE
 }

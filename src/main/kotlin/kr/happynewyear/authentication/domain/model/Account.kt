@@ -17,7 +17,7 @@ class Account(
 
     companion object {
         fun create(email: String, password: String): Account {
-            val user = User.create()
+            val user = User.create(email)
             return Account(email, password, user)
         }
     }

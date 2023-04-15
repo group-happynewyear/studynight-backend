@@ -46,7 +46,7 @@ class SocialAccountService(
     private fun createIfAbsent(externalAccount: ExternalAccount) {
         if (socialAccountRepository.existsByExternalAccount(externalAccount.provider, externalAccount.id)) return
 
-        val socialAccount = SocialAccount.create(externalAccount.provider, externalAccount.id)
+        val socialAccount = SocialAccount.create(externalAccount.provider, externalAccount.id, externalAccount.email)
         socialAccountRepository.save(socialAccount)
     }
 

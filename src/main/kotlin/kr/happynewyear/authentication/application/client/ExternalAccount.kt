@@ -5,4 +5,5 @@ import kr.happynewyear.authentication.constant.SocialAccountProvider
 interface ExternalAccount {
     val provider: SocialAccountProvider
     val id: String
+    val email: String
 }

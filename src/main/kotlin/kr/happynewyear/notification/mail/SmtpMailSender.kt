@@ -1,4 +1,4 @@
-package kr.happynewyear.library.notification.mail
+package kr.happynewyear.notification.mail
 
 import kr.happynewyear.library.constant.Profiles.Companion.LIVE
 import kr.happynewyear.library.constant.Profiles.Companion.STAGE

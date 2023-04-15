@@ -1,4 +1,4 @@
-package kr.happynewyear.library.notification.slack
+package kr.happynewyear.notification.mail
 
 import kr.happynewyear.library.constant.Profiles.Companion.LOCAL
 import kr.happynewyear.library.constant.Profiles.Companion.TEST
@@ -8,16 +8,17 @@ import org.springframework.stereotype.Component
 
 @Component
 @Profile(TEST, LOCAL)
-class LogSlackSender : SlackSender {
+class LogMailSender : MailSender {
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    override fun send(address: String, message: String) {
+    override fun send(address: String, title: String, content: String) {
         log.info(
             "\n" +
                 "- address: $address\n" +
-                "$message\n" +
-                "===eof."
+                "- title: $title\n" +
+                "$content\n" +
+                "=== eof."
         )
     }
 

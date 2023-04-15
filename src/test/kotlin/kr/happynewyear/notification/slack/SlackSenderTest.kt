@@ -1,5 +1,6 @@
-package kr.happynewyear.library.notification.slack
+package kr.happynewyear.notification.slack
 
+import kr.happynewyear.notification.slack.SlackSender
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

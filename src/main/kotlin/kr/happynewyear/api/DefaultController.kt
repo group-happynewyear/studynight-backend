@@ -1,6 +1,6 @@
 package kr.happynewyear.api
 
-import kr.happynewyear.library.notification.AlertSender
+import kr.happynewyear.library.exception.AlertSender
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
 import org.springframework.beans.factory.annotation.Value

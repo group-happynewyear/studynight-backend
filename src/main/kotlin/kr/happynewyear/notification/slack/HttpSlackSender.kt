@@ -1,4 +1,4 @@
-package kr.happynewyear.library.notification.slack
+package kr.happynewyear.notification.slack
 
 import kr.happynewyear.library.constant.Profiles.Companion.LIVE
 import kr.happynewyear.library.constant.Profiles.Companion.STAGE

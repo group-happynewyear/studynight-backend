@@ -1,8 +1,7 @@
-package kr.happynewyear.library.notification
+package kr.happynewyear.library.exception
 
 import jakarta.annotation.PostConstruct
-import kr.happynewyear.library.notification.mail.MailSender
-import kr.happynewyear.library.notification.slack.SlackSender
+import kr.happynewyear.library.notification.Notifier
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Async
@@ -12,8 +11,7 @@ import java.util.stream.Collectors.joining
 
 @Component
 class AlertSender(
-    private val mailSender: MailSender,
-    private val slackSender: SlackSender,
+    private val notifier: Notifier,
     @Value("\${spring.application.name}") private val applicationName: String,
     @Value("\${alert.mail.address:}") private val mailAddress: String,
     @Value("\${alert.slack.address:}") private val slackAddress: String,
@@ -36,8 +34,8 @@ class AlertSender(
     fun sendAsync(e: Exception) {
         val head = "[$applicationName] ${e.javaClass.simpleName}: ${e.message}"
 
-        if (mailAddress.isNotBlank()) mailSender.send(mailAddress, head, fullStackTrace(e))
-        if (slackAddress.isNotBlank()) slackSender.send(slackAddress, "$head\n${coreStackTrace(e)}")
+        if (mailAddress.isNotBlank()) notifier.mailAsync(mailAddress, head, fullStackTrace(e))
+        if (slackAddress.isNotBlank()) notifier.slackAsync(slackAddress, "$head\n${coreStackTrace(e)}")
     }
 
     private fun fullStackTrace(e: Exception): String {

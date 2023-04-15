@@ -1,4 +1,4 @@
-package kr.happynewyear.library.notification.mail
+package kr.happynewyear.notification.mail
 
 interface MailSender {
 

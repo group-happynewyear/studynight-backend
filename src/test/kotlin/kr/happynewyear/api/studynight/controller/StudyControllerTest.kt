@@ -71,7 +71,5 @@ class StudyControllerTest : LogonApiTest() {
 
         assertThat(res.condition).isEqualTo(createReq.condition)
     }
-    // TODO not found
-    // TODO not mine
 
 }

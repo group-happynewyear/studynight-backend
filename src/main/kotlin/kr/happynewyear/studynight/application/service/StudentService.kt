@@ -1,6 +1,7 @@
 package kr.happynewyear.studynight.application.service
 
 import kr.happynewyear.studynight.application.dto.StudentResult
+import kr.happynewyear.studynight.application.exception.DuplicatedStudentException
 import kr.happynewyear.studynight.domain.model.Student
 import kr.happynewyear.studynight.domain.repository.StudentRepository
 import kr.happynewyear.studynight.type.MatchSource
@@ -24,6 +25,8 @@ class StudentService(
         nickname: String,
         condition: MatchSource
     ): StudentResult {
+        if (isExist(userId)) throw DuplicatedStudentException()
+
         val student = Student.create(userId, nickname, condition)
         studentRepository.save(student)
         return StudentResult.from(student)

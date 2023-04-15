@@ -1,5 +1,5 @@
 package kr.happynewyear.api.studynight.dto
 
 data class StudyListResponse(
-    val studies: List<StudyResponse>
+    val studies: List<StudyResponse> // TODO refactor
 )

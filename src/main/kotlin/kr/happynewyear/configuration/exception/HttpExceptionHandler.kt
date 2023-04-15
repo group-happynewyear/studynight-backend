@@ -6,6 +6,8 @@ import kr.happynewyear.authentication.application.exception.InvalidPasswordExcep
 import kr.happynewyear.authentication.application.exception.RefreshTokenNotFoundException
 import kr.happynewyear.library.exception.ErrorResponse
 import kr.happynewyear.library.notification.AlertSender
+import kr.happynewyear.studynight.application.exception.DuplicatedStudentException
+import kr.happynewyear.studynight.application.exception.ResourceNotFoundException
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -31,6 +33,19 @@ class HttpExceptionHandler(
     @ExceptionHandler
     fun on(e: DuplicatedEmailException): ResponseEntity<ErrorResponse> {
         val message = "이미 사용 중인 이메일입니다."
+        return ResponseEntity.status(BAD_REQUEST).body(ErrorResponse(message))
+    }
+
+
+    @ExceptionHandler
+    fun on(e: ResourceNotFoundException): ResponseEntity<ErrorResponse> {
+        val message = "요청하신 정보를 찾을 수 없습니다."
+        return ResponseEntity.status(BAD_REQUEST).body(ErrorResponse(message))
+    }
+
+    @ExceptionHandler
+    fun on(e: DuplicatedStudentException): ResponseEntity<ErrorResponse> {
+        val message = "이미 해당 계정의 학생이 등록되어 있습니다."
         return ResponseEntity.status(BAD_REQUEST).body(ErrorResponse(message))
     }
 

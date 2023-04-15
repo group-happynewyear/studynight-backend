@@ -8,8 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
-import org.springframework.http.HttpStatus.CREATED
-import org.springframework.http.HttpStatus.OK
+import org.springframework.http.HttpStatus.*
 
 class StudentControllerTest : LogonApiTest() {
 
@@ -53,6 +52,15 @@ class StudentControllerTest : LogonApiTest() {
         assertThat(location).startsWith("/api/students/")
     }
 
-    // TODO duplicate
+    @Test
+    fun create_duplicated() {
+        val req = studentCreateRequestFixture()
+        run(POST, "/api/students", req, CREATED)
+
+        run(
+            POST, "/api/students", req,
+            BAD_REQUEST
+        )
+    }
 
 }

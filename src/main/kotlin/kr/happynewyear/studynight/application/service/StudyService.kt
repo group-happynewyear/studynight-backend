@@ -1,6 +1,7 @@
 package kr.happynewyear.studynight.application.service
 
 import kr.happynewyear.studynight.application.dto.StudyResult
+import kr.happynewyear.studynight.application.exception.ResourceNotFoundException
 import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.domain.model.Study
 import kr.happynewyear.studynight.domain.repository.StudentRepository
@@ -24,10 +25,11 @@ class StudyService(
         contactType: ContactType, contactAddress: String,
         condition: MatchParameter
     ): StudyResult {
+        val student = studentRepository.findByUserId(userId)!! // TODO handle
         val study = Study.create(
-            studentRepository.findByUserId(userId)!!,
+            student,
             title, description,
-            contactType, contactAddress,
+            contactType, contactAddress, // TODO refactor
             condition
         )
         studyRepository.save(study)
@@ -40,7 +42,7 @@ class StudyService(
     }
 
     fun get(studyId: UUID): StudyResult {
-        val study = studyRepository.findById(studyId)!!
+        val study = studyRepository.findById(studyId) ?: throw ResourceNotFoundException()
         return StudyResult.from(study)
     }
 

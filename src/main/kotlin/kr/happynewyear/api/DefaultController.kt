@@ -30,7 +30,7 @@ class DefaultController(
 
     @PostMapping("/alert")
     fun alert(@Authenticated principal: Principal) {
-        alertSender.sendAsync(RuntimeException("Alert Test"))
+        alertSender.send(RuntimeException("Alert Test"))
     }
 
 }

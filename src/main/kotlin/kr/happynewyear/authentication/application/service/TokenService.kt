@@ -40,7 +40,7 @@ class TokenService(
         val refreshToken = refreshTokenRepository.findById(refreshTokenId) ?: throw RefreshTokenNotFoundException()
         if (refreshToken.used) {
             refreshTokenChainRepository.delete(refreshToken.refreshTokenChain)
-            alertSender.sendAsync(RefreshTokenReusedException())
+            alertSender.send(RefreshTokenReusedException())
         }
     }
 

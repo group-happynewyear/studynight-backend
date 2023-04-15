@@ -5,11 +5,15 @@ import kr.happynewyear.api.authentication.dto.LoginRequest
 import kr.happynewyear.api.authentication.dto.RefreshRequest
 import kr.happynewyear.api.authentication.dto.TokenResponse
 import kr.happynewyear.authentication.application.service.TokenService
+import kr.happynewyear.library.exception.AlertSender
 import kr.happynewyear.library.test.ApiTest
+import kr.happynewyear.library.test.MockitoHelper.anyObject
 import kr.happynewyear.library.utility.Randoms
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.mockito.BDDMockito.then
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus.*
 import org.springframework.test.util.ReflectionTestUtils
@@ -18,6 +22,9 @@ class RefreshControllerTest : ApiTest() {
 
     @Autowired
     lateinit var tokenService: TokenService
+
+    @SpyBean
+    lateinit var alertSender: AlertSender
 
 
     @Test
@@ -87,6 +94,8 @@ class RefreshControllerTest : ApiTest() {
 
         // valid after reuse
         run(POST, "/api/refresh", RefreshRequest(t2), UNAUTHORIZED)
+
+        then(alertSender).should().send(anyObject())
     }
 
 }

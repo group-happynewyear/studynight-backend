@@ -31,11 +31,11 @@ class AlertSender(
 
 
     @Async
-    fun sendAsync(e: Exception) {
+    fun send(e: Exception) {
         val head = "[$applicationName] ${e.javaClass.simpleName}: ${e.message}"
 
-        if (mailAddress.isNotBlank()) notifier.mailAsync(mailAddress, head, fullStackTrace(e))
-        if (slackAddress.isNotBlank()) notifier.slackAsync(slackAddress, "$head\n${coreStackTrace(e)}")
+        if (mailAddress.isNotBlank()) notifier.mail(mailAddress, head, fullStackTrace(e))
+        if (slackAddress.isNotBlank()) notifier.slack(slackAddress, "$head\n${coreStackTrace(e)}")
     }
 
     private fun fullStackTrace(e: Exception): String {

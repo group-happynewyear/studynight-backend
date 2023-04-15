@@ -81,7 +81,7 @@ class Student(
         _invitations.add(invitation)
     }
 
-    fun approve(invitation: Invitation) {
+    fun accept(invitation: Invitation) {
         EngagementRegistrationService.register(invitation.match.study, this, GUEST)
     }
 

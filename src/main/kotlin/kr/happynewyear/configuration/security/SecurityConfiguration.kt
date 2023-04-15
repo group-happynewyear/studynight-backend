@@ -47,7 +47,7 @@ class SecurityConfiguration(
             .requestMatchers(GET, "/api/studies", "/api/studies/*").authenticated()
             .requestMatchers(POST, "/api/matches").authenticated()
             .requestMatchers(GET, "/api/matches/*").authenticated()
-            .requestMatchers(PUT, "/api/invitations/*/accept").authenticated()
+            .requestMatchers(PUT, "/api/invitations/*").authenticated()
             .requestMatchers(GET, "/api/invitations/*").authenticated()
             .anyRequest().denyAll()
             .and().exceptionHandling()

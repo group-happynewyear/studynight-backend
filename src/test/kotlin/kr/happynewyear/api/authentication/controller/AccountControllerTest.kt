@@ -2,10 +2,14 @@ package kr.happynewyear.api.authentication.controller
 
 import kr.happynewyear.api.authentication.dto.AccountCreateRequest
 import kr.happynewyear.authentication.infrastructure.database.AccountJpaRepository
+import kr.happynewyear.library.notification.NotificationRequestFacade
 import kr.happynewyear.library.test.ApiTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.mockito.BDDMockito.anyString
+import org.mockito.BDDMockito.then
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus.BAD_REQUEST
@@ -16,6 +20,9 @@ class AccountControllerTest : ApiTest() {
 
     @Autowired
     lateinit var accountJpaRepository: AccountJpaRepository
+
+    @SpyBean
+    lateinit var notificationRequestFacade: NotificationRequestFacade
 
 
     @Test
@@ -32,6 +39,7 @@ class AccountControllerTest : ApiTest() {
         val accountId = UUID.fromString(location.replace("/api/accounts/", ""))
         val account = accountJpaRepository.findByIdOrNull(accountId)
         assertThat(account!!.password).isNotEqualTo(password)
+        then(notificationRequestFacade).should().channel(anyString(), anyString())
     }
 
     @Test

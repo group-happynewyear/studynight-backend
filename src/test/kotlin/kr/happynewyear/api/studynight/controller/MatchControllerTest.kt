@@ -6,17 +6,25 @@ import kr.happynewyear.api.studynight.fixture.matchParameterFixture
 import kr.happynewyear.api.studynight.fixture.matchSourceFixture
 import kr.happynewyear.api.studynight.fixture.studentCreateRequestFixture
 import kr.happynewyear.api.studynight.fixture.studyCreateRequestFixture
+import kr.happynewyear.library.notification.NotificationRequestFacade
 import kr.happynewyear.library.test.LogonApiTest
 import kr.happynewyear.studynight.constant.condition.Position
 import kr.happynewyear.studynight.constant.condition.Position.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.mockito.BDDMockito.anyString
+import org.mockito.BDDMockito.then
+import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.OK
 
 class MatchControllerTest : LogonApiTest() {
+
+    @SpyBean
+    lateinit var notificationRequestFacade: NotificationRequestFacade
+
 
     fun createStudent(position: Position): String {
         val req = studentCreateRequestFixture(matchSourceFixture(position))
@@ -51,11 +59,9 @@ class MatchControllerTest : LogonApiTest() {
 
         assertThat(location).startsWith("/api/matches/")
 
-        // TODO then send mail
+        then(notificationRequestFacade).should().mail(anyString(), anyString(), anyString())
     }
     // TODO not mine
-
-    // TODO validate out-of-bound
 
 
     @Test

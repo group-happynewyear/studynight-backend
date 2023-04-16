@@ -40,7 +40,7 @@ class Student(
         name = "user_id",
         nullable = false, updatable = false, unique = true
     )
-    private val userId: UUID = userId
+    val userId: UUID = userId
 
     @Column(
         name = "nickname",

@@ -1,4 +1,4 @@
-package kr.happynewyear.authentication.application.client.google
+package kr.happynewyear.authentication.infrastructure.google
 
 data class GoogleTokenRequest(
 

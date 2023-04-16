@@ -1,8 +1,12 @@
 package kr.happynewyear.authentication.application.client
 
+import kr.happynewyear.authentication.constant.SocialAccountProvider
 import org.springframework.web.util.UriComponentsBuilder
 
 abstract class ExternalAccountClient {
+
+    abstract val supportingProvider: SocialAccountProvider
+
 
     fun locatePage(): String {
         val builder = UriComponentsBuilder.fromUriString(getLoginPageUrl())

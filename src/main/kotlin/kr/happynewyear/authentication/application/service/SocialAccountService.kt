@@ -1,26 +1,28 @@
 package kr.happynewyear.authentication.application.service
 
 import kr.happynewyear.authentication.application.client.ExternalAccount
-import kr.happynewyear.authentication.application.client.google.GoogleAccountClientAdapter
+import kr.happynewyear.authentication.application.client.ExternalAccountClient
 import kr.happynewyear.authentication.application.dto.TokenResult
 import kr.happynewyear.authentication.constant.SocialAccountProvider
-import kr.happynewyear.authentication.constant.SocialAccountProvider.GOOGLE
 import kr.happynewyear.authentication.domain.model.SocialAccount
 import kr.happynewyear.authentication.domain.repository.SocialAccountRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.stream.Collectors.toMap
 
 @Service
 @Transactional(readOnly = true)
 class SocialAccountService(
     private val socialAccountRepository: SocialAccountRepository,
     private val tokenService: TokenService,
-    googleAccountClientAdapter: GoogleAccountClientAdapter
+    externalAccountClients: List<ExternalAccountClient>
 ) {
 
-    private val resolver = mapOf(
-        Pair(GOOGLE, googleAccountClientAdapter)
-    )
+    private val resolver: Map<SocialAccountProvider, ExternalAccountClient>
+
+    init {
+        resolver = externalAccountClients.stream().collect(toMap({ it.supportingProvider }, { it }))
+    }
 
 
     fun locatePage(provider: SocialAccountProvider): String {

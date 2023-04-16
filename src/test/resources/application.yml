@@ -21,17 +21,6 @@ token:
   refresh:
     expiration-days: 14
 
-social-login:
-  google:
-    login-page: "https://accounts.google.com/o/oauth2/v2/auth"
-    token-url: "https://oauth2.googleapis.com/token"
-    userinfo-url: "https://googleapis.com/userinfo/v2/me"
-    client:
-      client-id: "client-id"
-      client-secret: "client-secret"
-      scope: "openid email profile"
-      redirect-uri: "http://localhost:8080/social-login/callback/provider/GOOGLE"
-
 logging:
   level:
     kr.happynewyear: debug

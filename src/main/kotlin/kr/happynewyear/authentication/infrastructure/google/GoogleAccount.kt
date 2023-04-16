@@ -1,4 +1,4 @@
-package kr.happynewyear.authentication.application.client.google
+package kr.happynewyear.authentication.infrastructure.google
 
 import kr.happynewyear.authentication.application.client.ExternalAccount
 import kr.happynewyear.authentication.constant.SocialAccountProvider

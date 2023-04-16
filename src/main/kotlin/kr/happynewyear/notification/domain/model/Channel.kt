@@ -49,6 +49,6 @@ class Channel(
         name = "address",
         nullable = false, updatable = false, unique = false
     )
-    private val address: String = address
+    val address: String = address
 
 }

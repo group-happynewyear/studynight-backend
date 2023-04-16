@@ -1,10 +1,10 @@
 package kr.happynewyear.api.authentication.controller
 
-import io.jsonwebtoken.Jwts
 import kr.happynewyear.api.authentication.dto.TokenResponse
 import kr.happynewyear.authentication.constant.SocialAccountProvider
 import kr.happynewyear.authentication.infrastructure.google.*
 import kr.happynewyear.library.test.ApiTest
+import kr.happynewyear.library.utility.JwtIO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Value
@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus.OK
 import java.util.*
 
 class SocialLoginControllerTest(
-    @Value("\${token.access.secret}") private val secret: String,
+    @Value("\${security.token.access.secret}") private val secret: String,
 ) : ApiTest() {
 
     @Test
@@ -54,17 +54,15 @@ class SocialLoginControllerTest(
     }
 
     private fun callback_user(provider: SocialAccountProvider) {
-        val code = "authorization-code"
-        val req = "/api/social-login/callback/providers/$provider?code=$code"
-        val token1 = call(GET, req, OK, TokenResponse::class.java).accessToken
-        val token2 = call(GET, req, OK, TokenResponse::class.java).accessToken
+        val req = "/api/social-login/callback/providers/$provider?code=code"
+        val jwt1 = call(GET, req, OK, TokenResponse::class.java).accessToken
+        val jwt2 = call(GET, req, OK, TokenResponse::class.java).accessToken
 
-        assertThat(parseSub(token1)).isEqualTo(parseSub(token2))
+        assertThat(subjectOf(jwt1)).isEqualTo(subjectOf(jwt2))
     }
 
-    private fun parseSub(jwt: String): String {
-        val encodedSecret = Base64.getEncoder().encodeToString(secret.toByteArray())
-        return Jwts.parser().setSigningKey(encodedSecret).parseClaimsJws(jwt).body.subject
+    private fun subjectOf(jwt: String): String {
+        return JwtIO.read(jwt, secret).subject
     }
 
 }

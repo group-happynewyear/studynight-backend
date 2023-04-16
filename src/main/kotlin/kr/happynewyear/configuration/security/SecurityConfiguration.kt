@@ -19,8 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
-    @Value("\${token.access.secret}") private val secret: String,
-    @Value("\${cors.allowed-origin}") private val allowedOrigin: String
+    @Value("\${security.cors.allowed-origin}") private val allowedOrigin: String,
+    @Value("\${security.token.access.secret}") private val secret: String
 ) {
 
     @Bean
@@ -30,10 +30,11 @@ class SecurityConfiguration(
             .formLogin().disable()
             .sessionManagement().disable()
             .csrf().disable()
-            .addFilterBefore(AuthenticationFilter(secret), UsernamePasswordAuthenticationFilter::class.java)
             .cors().configurationSource(CorsConfigurationSource(allowedOrigin))
 
-        httpSecurity.authorizeHttpRequests()
+        httpSecurity
+            .addFilterBefore(AuthenticationFilter(secret), UsernamePasswordAuthenticationFilter::class.java)
+            .authorizeHttpRequests()
             .requestMatchers(GET, "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
             .requestMatchers(GET, "/error").permitAll()
             .requestMatchers(GET, "/api/health-check").permitAll()

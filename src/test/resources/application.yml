@@ -1,34 +1,16 @@
 spring:
   application:
     name: "studynight"
-
   jpa:
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
     open-in-view: false
-
   profiles:
     active: test
-
-token:
-  access:
-    secret: secret
-    expiration-minutes: 30
-  refresh:
-    expiration-days: 14
-
-logging:
-  level:
-    kr.happynewyear: debug
 
 server:
   servlet:
     encoding:
       force: true
 
-cors:
-  allowed-origin: "http://localhost:3000"
+logging:
+  level:
+    kr.happynewyear: debug

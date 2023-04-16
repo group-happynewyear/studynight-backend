@@ -21,9 +21,9 @@ class TokenService(
     private val refreshTokenRepository: RefreshTokenRepository,
     private val refreshTokenChainRepository: RefreshTokenChainRepository,
     private val alertSender: AlertSender,
-    @Value("\${token.access.secret}") private val secret: String,
-    @Value("\${token.access.expiration-minutes}") private val expirationMinutes: Long,
-    @Value("\${token.refresh.expiration-days}") private val expirationDays: Long
+    @Value("\${security.token.access.secret}") private val secret: String,
+    @Value("\${security.token.access.expiration-minutes}") private val expirationMinutes: Long,
+    @Value("\${security.token.refresh.expiration-days}") private val expirationDays: Long
 ) {
 
     @Transactional

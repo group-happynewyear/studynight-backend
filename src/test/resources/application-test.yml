@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+security:
+  cors:
+    allowed-origin: "http://localhost:3000"
+  token:
+    access:
+      secret: secret
+      expiration-minutes: 30
+    refresh:
+      expiration-days: 14

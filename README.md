@@ -23,7 +23,7 @@
 ### FE
 
 > local: http://localhost:3000  
-> stage: 가변. BE `application.yml`의 `cors.allowed-origin` 변경 필요.  
+> stage: 가변. BE `application.yml`의 `security.cors.allowed-origin` 변경 필요.  
 > live : https://www.DOMAIN
 
 ### BE

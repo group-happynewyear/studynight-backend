@@ -2,7 +2,7 @@ package kr.happynewyear.library.utility
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.SignatureAlgorithm.HS256
 import java.util.*
 
 class JwtIO {
@@ -13,7 +13,7 @@ class JwtIO {
             claims.subject = sub
             claims.issuedAt = iat
             claims.expiration = exp
-            return Jwts.builder().signWith(SignatureAlgorithm.HS256, encode(secret)).setClaims(claims).compact()
+            return Jwts.builder().signWith(HS256, encode(secret)).setClaims(claims).compact()
         }
 
         fun read(jwt: String, secret: String): Claims {

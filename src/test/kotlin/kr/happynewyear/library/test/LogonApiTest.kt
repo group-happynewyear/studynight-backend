@@ -31,7 +31,7 @@ abstract class LogonApiTest {
     private lateinit var p: RequestPerformer
 
 
-    @Value("\${token.access.secret}")
+    @Value("\${security.token.access.secret}")
     private lateinit var secret: String
 
     private lateinit var accessToken: String

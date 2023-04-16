@@ -13,7 +13,7 @@ class AlertService(
     private val notificationService: NotificationService
 ) {
 
-    fun alert(applicationName: String, exceptionSummary: String, stacktrace: List<String>) {
+    fun send(applicationName: String, exceptionSummary: String, stacktrace: List<String>) {
         val head = "[$applicationName] $exceptionSummary"
         val fullStacktrace = stacktrace.stream().collect(joining("\n"))
         val coreStacktrace = stacktrace.stream()

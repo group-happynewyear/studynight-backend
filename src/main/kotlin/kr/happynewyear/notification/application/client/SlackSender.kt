@@ -1,4 +1,4 @@
-package kr.happynewyear.notification.slack
+package kr.happynewyear.notification.application.client
 
 interface SlackSender {
 

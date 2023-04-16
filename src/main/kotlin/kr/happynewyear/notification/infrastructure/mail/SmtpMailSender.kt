@@ -1,7 +1,8 @@
-package kr.happynewyear.notification.mail
+package kr.happynewyear.notification.infrastructure.mail
 
 import kr.happynewyear.library.constant.Profiles.Companion.LIVE
 import kr.happynewyear.library.constant.Profiles.Companion.STAGE
+import kr.happynewyear.notification.application.client.MailSender
 import org.springframework.context.annotation.Profile
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender

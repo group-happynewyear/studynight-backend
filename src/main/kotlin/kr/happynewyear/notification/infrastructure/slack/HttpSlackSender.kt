@@ -1,7 +1,8 @@
-package kr.happynewyear.notification.slack
+package kr.happynewyear.notification.infrastructure.slack
 
 import kr.happynewyear.library.constant.Profiles.Companion.LIVE
 import kr.happynewyear.library.constant.Profiles.Companion.STAGE
+import kr.happynewyear.notification.application.client.SlackSender
 import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders

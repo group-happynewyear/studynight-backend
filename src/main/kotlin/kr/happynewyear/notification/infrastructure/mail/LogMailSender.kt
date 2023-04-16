@@ -1,7 +1,8 @@
-package kr.happynewyear.notification.mail
+package kr.happynewyear.notification.infrastructure.mail
 
 import kr.happynewyear.library.constant.Profiles.Companion.LOCAL
 import kr.happynewyear.library.constant.Profiles.Companion.TEST
+import kr.happynewyear.notification.application.client.MailSender
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component

@@ -1,4 +1,4 @@
-package kr.happynewyear.notification.mail
+package kr.happynewyear.notification.application.client
 
 interface MailSender {
 

@@ -1,7 +1,7 @@
-package kr.happynewyear.notification
+package kr.happynewyear.notification.application.service
 
-import kr.happynewyear.notification.mail.MailSender
-import kr.happynewyear.notification.slack.SlackSender
+import kr.happynewyear.notification.application.client.MailSender
+import kr.happynewyear.notification.application.client.SlackSender
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

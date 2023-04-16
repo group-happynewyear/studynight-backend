@@ -14,3 +14,9 @@ security:
       expiration-minutes: 30
     refresh:
       expiration-days: 14
+
+notification:
+  alert:
+    default-channel:
+      type: MAIL
+      address: email@email.com

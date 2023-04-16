@@ -28,3 +28,9 @@ social-login:
       client-secret: "client-secret"
       scope: "openid email profile"
       redirect-uri: "http://localhost:8080/social-login/callback/provider/GOOGLE"
+
+notification:
+  alert:
+    default-channel:
+      type: MAIL
+      address: email@email.com

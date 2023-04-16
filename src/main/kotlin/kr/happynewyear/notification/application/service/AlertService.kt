@@ -1,5 +1,7 @@
 package kr.happynewyear.notification.application.service
 
+import kr.happynewyear.notification.constant.ChannelType.MAIL
+import kr.happynewyear.notification.constant.ChannelType.SLACK
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.stream.Collectors.joining
@@ -7,24 +9,24 @@ import java.util.stream.Collectors.joining
 @Service
 @Transactional(readOnly = true)
 class AlertService(
+    private val channelService: ChannelService,
     private val notificationService: NotificationService
 ) {
 
     fun alert(applicationName: String, exceptionSummary: String, stacktrace: List<String>) {
-        // get addr from channel service, if empty to default
+        val head = "[$applicationName] $exceptionSummary"
+        val fullStacktrace = stacktrace.stream().collect(joining("\n"))
+        val coreStacktrace = stacktrace.stream()
+            .filter { it.startsWith("kr.happynewyear") }.findFirst()
+            .orElseGet { stacktrace[0] }
 
-        // TODO iter mail
-        val title = "[$applicationName] $exceptionSummary"
-        val content = stacktrace.stream().collect(joining("\n"))
-        notificationService.mail("addr", title, content)
-
-        // TODO iter slack
-        val message = "[$applicationName] $exceptionSummary\n" +
-            stacktrace.stream().filter { it.startsWith("kr.happynewyear") }.findFirst().orElseGet { stacktrace[0] }
-        notificationService.slack("addr", message)
+        val alertChannels = channelService.alertChannels(applicationName)
+        alertChannels.forEach {
+            when (it.type) {
+                MAIL -> notificationService.mail(it.address, head, "${head}\n${fullStacktrace}")
+                SLACK -> notificationService.slack(it.address, "${head}\n${coreStacktrace}")
+            }
+        }
     }
 
-    // TODO set default in channel service
-    // @Value("\${alert.mail.address:}") private val mailAddress: String,
-    // @Value("\${alert.slack.address:}") private val slackAddress: String,
 }

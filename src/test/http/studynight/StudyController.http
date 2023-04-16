@@ -1,0 +1,30 @@
+GET {{studynight}}/api/studies
+Authorization: Bearer {{accessToken}}
+
+###
+POST {{studynight}}/api/studies
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "스터디나잇",
+  "description": "SFG",
+  "contactType": "MAIL",
+  "contactAddress": "email@email.com",
+  "condition": {
+    "schedule": "WEEKEND_AFTERNOON",
+    "region": "GANGNAM",
+    "experiences": [
+      "JUNIOR"
+    ],
+    "positions": [
+      "WEB"
+    ],
+    "intensity": "NORMAL",
+    "scale": "M"
+  }
+}
+
+###
+GET {{studynight}}/api/studies/{{studyId}}
+Authorization: Bearer {{accessToken}}

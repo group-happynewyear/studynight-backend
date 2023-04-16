@@ -1,0 +1,5 @@
+GET {{studynight}}/api/invitations/e8d76b74-5c1d-45e3-9f5a-494485eec01d
+
+###
+GET {{studynight}}/api/invitations/e8d76b74-5c1d-45e3-9f5a-494485eec01d/accept?
+    userId=6617a730-a115-4d1c-aa4e-4068026a1a1c

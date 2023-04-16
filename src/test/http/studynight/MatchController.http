@@ -1,0 +1,23 @@
+POST {{studynight}}/api/matches
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "studyId": "f1d76106-6d35-4710-8c27-906393cdef3d",
+  "condition": {
+    "schedule": "WEEKEND_AFTERNOON",
+    "region": "GANGNAM",
+    "experiences": [
+      "JUNIOR"
+    ],
+    "positions": [
+      "WEB"
+    ],
+    "intensity": "NORMAL",
+    "scale": "M"
+  }
+}
+
+###
+GET {{studynight}}/api/matches/{{matchId}}
+Authorization: Bearer {{accessToken}}

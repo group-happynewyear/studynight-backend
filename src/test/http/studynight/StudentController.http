@@ -1,0 +1,23 @@
+GET {{studynight}}/api/students/me/is_exists
+Authorization: Bearer {{accessToken}}
+
+###
+POST {{studynight}}/api/students
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "nickname": "Josh",
+  "condition": {
+    "schedules": [
+      "WEEKEND_AFTERNOON"
+    ],
+    "regions": [
+      "GANGNAM"
+    ],
+    "experience": "JUNIOR",
+    "position": "SERVER",
+    "intensity": "NORMAL",
+    "scale": "M"
+  }
+}

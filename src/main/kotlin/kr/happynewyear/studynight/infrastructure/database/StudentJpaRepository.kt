@@ -23,7 +23,7 @@ interface StudentJpaRepository : JpaRepository<Student, UUID> {
             "(c.key='INTENSITY' AND c.value=:intensity) OR " +
             "(c.key='SCALE' AND c.value=:scale) " +
             ") " +
-            "GROUP BY s.id " +
+            "GROUP BY s " +
             "HAVING COUNT(DISTINCT c.key)=6"
     )
     fun searchByConditions(

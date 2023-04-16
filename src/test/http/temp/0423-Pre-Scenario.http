@@ -1,0 +1,297 @@
+### 시나리오 요약
+### Josh, Ethan, Erin과 John을 만든다.
+### Josh가 스터디를 만들고, 매칭을 요청한다.
+### Ethan, Erin이 해당되어 초대장이 발송된다.
+### Erin은 수락하여 멤버가 된다.
+### Ethan은 아직 읽지 않아 멤버로 포함되지 않았다.
+
+### healthCheck
+GET {{studynight}}/api/health-check
+
+
+### create ethan - junior web
+
+###
+POST {{studynight}}/api/accounts
+Content-Type: application/json
+
+{
+  "email": "ethan@email.com",
+  "password": "password"
+}
+
+###
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "ethan@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+POST {{studynight}}/api/students
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "nickname": "Ethan",
+  "condition": {
+    "schedules": [
+      "WEEKEND_AFTERNOON"
+    ],
+    "regions": [
+      "GANGNAM"
+    ],
+    "experience": "JUNIOR",
+    "position": "WEB",
+    "intensity": "NORMAL",
+    "scale": "M"
+  }
+}
+
+### create erin - middle web
+
+###
+POST {{studynight}}/api/accounts
+Content-Type: application/json
+
+{
+  "email": "erin@email.com",
+  "password": "password"
+}
+
+###
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "erin@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+POST {{studynight}}/api/students
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "nickname": "Erin",
+  "condition": {
+    "schedules": [
+      "WEEKEND_AFTERNOON"
+    ],
+    "regions": [
+      "GANGNAM"
+    ],
+    "experience": "MIDDLE",
+    "position": "WEB",
+    "intensity": "NORMAL",
+    "scale": "M"
+  }
+}
+
+### create john - senior server
+
+###
+POST {{studynight}}/api/accounts
+Content-Type: application/json
+
+{
+  "email": "john@email.com",
+  "password": "password"
+}
+
+###
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "john@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+POST {{studynight}}/api/students
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "nickname": "John",
+  "condition": {
+    "schedules": [
+      "WEEKEND_AFTERNOON"
+    ],
+    "regions": [
+      "GANGNAM"
+    ],
+    "experience": "SENIOR",
+    "position": "SERVER",
+    "intensity": "NORMAL",
+    "scale": "M"
+  }
+}
+
+### create josh - junior server
+
+###
+POST {{studynight}}/api/accounts
+Content-Type: application/json
+
+{
+  "email": "josh@email.com",
+  "password": "password"
+}
+
+###
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "josh@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+POST {{studynight}}/api/students
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "nickname": "Josh",
+  "condition": {
+    "schedules": [
+      "WEEKEND_AFTERNOON"
+    ],
+    "regions": [
+      "GANGNAM"
+    ],
+    "experience": "JUNIOR",
+    "position": "SERVER",
+    "intensity": "NORMAL",
+    "scale": "M"
+  }
+}
+
+### create study --josh --web&server --junior&middle
+POST {{studynight}}/api/studies
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "스터디나잇",
+  "description": "SFG",
+  "contactType": "MAIL",
+  "contactAddress": "studynight@email.com",
+  "condition": {
+    "schedule": "WEEKEND_AFTERNOON",
+    "region": "GANGNAM",
+    "experiences": [
+      "JUNIOR",
+      "MIDDLE"
+    ],
+    "positions": [
+      "WEB",
+      "SERVER"
+    ],
+    "intensity": "NORMAL",
+    "scale": "M"
+  }
+}
+
+###
+GET {{studynight}}/api/studies/b30fb324-ff1e-4e07-a690-acaf382fef7a
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{studynight}}/api/studies
+Authorization: Bearer {{accessToken}}
+
+### create match --web --junior&middle
+POST {{studynight}}/api/matches
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "studyId": "b30fb324-ff1e-4e07-a690-acaf382fef7a",
+  "condition": {
+    "schedule": "WEEKEND_AFTERNOON",
+    "region": "GANGNAM",
+    "experiences": [
+      "JUNIOR",
+      "MIDDLE"
+    ],
+    "positions": [
+      "WEB"
+    ],
+    "intensity": "NORMAL",
+    "scale": "M"
+  }
+}
+
+###
+GET {{studynight}}/api/matches/930f78ca-40cb-4f45-b135-ff99333449a9
+Authorization: Bearer {{accessToken}}
+
+### get invitation --erin
+GET {{studynight}}/api/invitations/854362e4-e20c-4b60-a9d8-57eacb1a6854
+
+### accept invitation --erin
+GET {{studynight}}/api/invitations/854362e4-e20c-4b60-a9d8-57eacb1a6854/accept?
+    userId=9a93f224-d73c-42fe-a12b-b243de6b3aa8
+
+### login as erin
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "erin@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+GET {{studynight}}/api/studies
+Authorization: Bearer {{accessToken}}
+
+### login as ethan
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "ethan@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+GET {{studynight}}/api/studies
+Authorization: Bearer {{accessToken}}

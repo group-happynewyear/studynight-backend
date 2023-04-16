@@ -32,4 +32,9 @@ class InvitationController(
         return ResponseEntity.noContent().location(URI.create(location)).build()
     }
 
+    @GetMapping("/{invitationId}/accept")
+    fun accept(@PathVariable invitationId: UUID, @RequestParam userId: UUID): ResponseEntity<Void> {
+        return confirm(invitationId, true, Principal(userId))
+    }
+
 }

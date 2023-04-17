@@ -9,13 +9,19 @@ import java.util.*
 @Service
 @Transactional(readOnly = true)
 class UserService(
-    private val channelRepository: ChannelRepository
+    private val channelRepository: ChannelRepository,
+    private val notificationService: NotificationService
 ) {
 
     @Transactional
     fun createMailChannel(userId: UUID, email: String) {
         val channel = Channel.ofUserMail(userId, email)
         channelRepository.save(channel)
+    }
+
+    fun sendMail(userId: UUID, title: String, content: String) {
+        val channels = channelRepository.findMailByUser(userId.toString())
+        channels.forEach { notificationService.mail(it.address, title, content) }
     }
 
 }

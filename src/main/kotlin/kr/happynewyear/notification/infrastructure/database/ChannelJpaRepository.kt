@@ -8,6 +8,7 @@ import java.util.*
 
 interface ChannelJpaRepository : JpaRepository<Channel, UUID> {
 
+    fun findByOwnerTypeAndOwnerId(ownerType: OwnerType, ownerId: String): List<Channel>
     fun findByOwnerTypeAndOwnerIdAndType(ownerType: OwnerType, ownerId: String, type: ChannelType): List<Channel>
 
 }

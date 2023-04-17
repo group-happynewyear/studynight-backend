@@ -4,7 +4,11 @@ import jakarta.persistence.*
 import jakarta.persistence.EnumType.STRING
 import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.notification.constant.ChannelType
+import kr.happynewyear.notification.constant.ChannelType.MAIL
 import kr.happynewyear.notification.constant.OwnerType
+import kr.happynewyear.notification.constant.OwnerType.APPLICATION
+import kr.happynewyear.notification.constant.OwnerType.USER
+import java.util.*
 
 @Entity
 @Table(
@@ -16,11 +20,12 @@ class Channel(
 ) : Identifiable() {
 
     companion object {
-        fun create(
-            ownerType: OwnerType, ownerId: String,
-            type: ChannelType, address: String
-        ): Channel {
-            return Channel(ownerType, ownerId, type, address)
+        fun ofDefaultAlert(type: ChannelType, address: String): List<Channel> {
+            return listOf(Channel(APPLICATION, "ALERT", type, address))
+        }
+
+        fun ofUserMail(userId: UUID, email: String): Channel {
+            return Channel(USER, userId.toString(), MAIL, email)
         }
     }
 
@@ -43,7 +48,7 @@ class Channel(
         name = "type",
         nullable = false, updatable = false, unique = false
     )
-    private val type: ChannelType = type
+    val type: ChannelType = type
 
     @Column(
         name = "address",

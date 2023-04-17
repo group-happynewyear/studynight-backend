@@ -1,6 +1,7 @@
 package kr.happynewyear.notification.infrastructure.database
 
 import kr.happynewyear.notification.constant.ChannelType.MAIL
+import kr.happynewyear.notification.constant.OwnerType.APPLICATION
 import kr.happynewyear.notification.constant.OwnerType.USER
 import kr.happynewyear.notification.domain.model.Channel
 import kr.happynewyear.notification.domain.repository.ChannelRepository
@@ -13,6 +14,10 @@ class ChannelRepositoryAdapter(
 
     override fun save(channel: Channel) {
         channelJpaRepository.save(channel)
+    }
+
+    override fun findByApplication(applicationName: String): List<Channel> {
+        return channelJpaRepository.findByOwnerTypeAndOwnerId(APPLICATION, applicationName)
     }
 
     override fun findMailByUser(userId: String): List<Channel> {

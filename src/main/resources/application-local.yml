@@ -33,4 +33,4 @@ notification:
   alert:
     default-channel:
       type: MAIL
-      address: email@email.com
+      address: alert@email.com

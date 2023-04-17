@@ -18,5 +18,5 @@ security:
 notification:
   alert:
     default-channel:
-      type: MAIL
-      address: email@email.com
+      type: SLACK
+      address: https://hooks.slack.com/services/alert

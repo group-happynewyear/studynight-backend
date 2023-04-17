@@ -1,6 +1,6 @@
 package kr.happynewyear.api
 
-import kr.happynewyear.library.exception.AlertSender
+import kr.happynewyear.library.exception.ApplicationAlertSendRequestProducer
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
 import org.springframework.beans.factory.annotation.Value
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api")
 class DefaultController(
-    private val alertSender: AlertSender,
+    private val applicationAlertSendRequestProducer: ApplicationAlertSendRequestProducer,
     @Value("\${spring.application.name}") private val applicationName: String,
     @Value("\${spring.profiles.active}") private val profile: String
 ) {
@@ -30,7 +30,7 @@ class DefaultController(
 
     @PostMapping("/alert")
     fun alert(@Authenticated principal: Principal) {
-        alertSender.send(RuntimeException("Alert Test"))
+        applicationAlertSendRequestProducer.send(RuntimeException("Alert Test"))
     }
 
 }

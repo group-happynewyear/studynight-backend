@@ -6,13 +6,13 @@ import kr.happynewyear.api.studynight.fixture.matchParameterFixture
 import kr.happynewyear.api.studynight.fixture.matchSourceFixture
 import kr.happynewyear.api.studynight.fixture.studentCreateRequestFixture
 import kr.happynewyear.api.studynight.fixture.studyCreateRequestFixture
-import kr.happynewyear.library.notification.NotificationRequestFacade
 import kr.happynewyear.library.test.LogonApiTest
+import kr.happynewyear.library.test.MockitoHelper.anyObject
+import kr.happynewyear.studynight.application.producer.UserMailSendRequestProducer
 import kr.happynewyear.studynight.constant.condition.Position
 import kr.happynewyear.studynight.constant.condition.Position.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.BDDMockito.anyString
 import org.mockito.BDDMockito.then
 import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.HttpMethod.GET
@@ -23,7 +23,7 @@ import org.springframework.http.HttpStatus.OK
 class MatchControllerTest : LogonApiTest() {
 
     @SpyBean
-    lateinit var notificationRequestFacade: NotificationRequestFacade
+    lateinit var userMailSendRequestProducer: UserMailSendRequestProducer
 
 
     fun createStudent(position: Position): String {
@@ -59,7 +59,7 @@ class MatchControllerTest : LogonApiTest() {
 
         assertThat(location).startsWith("/api/matches/")
 
-        then(notificationRequestFacade).should().mail(anyString(), anyString(), anyString())
+        then(userMailSendRequestProducer).should().produce(anyObject())
     }
     // TODO not mine
 

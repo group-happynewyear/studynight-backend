@@ -5,7 +5,7 @@ import kr.happynewyear.api.authentication.dto.LoginRequest
 import kr.happynewyear.api.authentication.dto.RefreshRequest
 import kr.happynewyear.api.authentication.dto.TokenResponse
 import kr.happynewyear.authentication.application.service.TokenService
-import kr.happynewyear.library.exception.AlertSender
+import kr.happynewyear.library.exception.ApplicationAlertSendRequestProducer
 import kr.happynewyear.library.test.ApiTest
 import kr.happynewyear.library.test.MockitoHelper.anyObject
 import kr.happynewyear.library.utility.Randoms
@@ -24,7 +24,7 @@ class RefreshControllerTest : ApiTest() {
     lateinit var tokenService: TokenService
 
     @SpyBean
-    lateinit var alertSender: AlertSender
+    lateinit var applicationAlertSendRequestProducer: ApplicationAlertSendRequestProducer
 
 
     @Test
@@ -95,7 +95,7 @@ class RefreshControllerTest : ApiTest() {
         // valid after reuse
         run(POST, "/api/refresh", RefreshRequest(t2), UNAUTHORIZED)
 
-        then(alertSender).should().send(anyObject())
+        then(applicationAlertSendRequestProducer).should().send(anyObject())
     }
 
 }

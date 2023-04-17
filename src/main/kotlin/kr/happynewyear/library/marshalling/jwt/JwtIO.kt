@@ -1,4 +1,4 @@
-package kr.happynewyear.library.utility
+package kr.happynewyear.library.marshalling.jwt
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts

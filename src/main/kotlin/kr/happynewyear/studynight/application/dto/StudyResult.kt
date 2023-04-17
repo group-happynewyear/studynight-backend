@@ -1,6 +1,6 @@
 package kr.happynewyear.studynight.application.dto
 
-import kr.happynewyear.library.utility.JsonIO
+import kr.happynewyear.library.marshalling.json.JsonIO
 import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.domain.model.Study
 import kr.happynewyear.studynight.type.MatchParameter

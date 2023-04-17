@@ -9,7 +9,7 @@ import kr.happynewyear.authentication.domain.repository.RefreshTokenChainReposit
 import kr.happynewyear.authentication.domain.repository.RefreshTokenRepository
 import kr.happynewyear.library.exception.ApplicationAlertSendRequestProducer
 import kr.happynewyear.library.utility.Dates
-import kr.happynewyear.library.utility.JwtIO
+import kr.happynewyear.library.marshalling.jwt.JwtIO
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

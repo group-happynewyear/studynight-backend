@@ -1,4 +1,4 @@
-package kr.happynewyear.configuration.event
+package kr.happynewyear.library.event
 
 import jakarta.annotation.PostConstruct
 import kr.happynewyear.library.event.DomainEventPublisher

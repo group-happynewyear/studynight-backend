@@ -1,6 +1,6 @@
 package kr.happynewyear.library.message
 
-interface Producer {
+interface BrokerProducer {
 
     fun produce(message: Message)
 

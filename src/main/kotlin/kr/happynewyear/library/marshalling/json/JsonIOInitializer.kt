@@ -1,8 +1,7 @@
-package kr.happynewyear.configuration.io
+package kr.happynewyear.library.marshalling.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.annotation.PostConstruct
-import kr.happynewyear.library.utility.JsonIO
 import org.springframework.context.annotation.Configuration
 
 @Configuration

@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
 import jakarta.persistence.FetchType.LAZY
 import kr.happynewyear.library.entity.Identifiable
-import kr.happynewyear.library.utility.JsonIO
+import kr.happynewyear.library.marshalling.json.JsonIO
 import kr.happynewyear.studynight.domain.service.InvitationRegistrationService
 import kr.happynewyear.studynight.type.MatchParameter
 

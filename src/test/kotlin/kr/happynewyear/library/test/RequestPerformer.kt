@@ -1,6 +1,6 @@
 package kr.happynewyear.library.test
 
-import kr.happynewyear.library.utility.JsonIO
+import kr.happynewyear.library.marshalling.json.JsonIO
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestComponent

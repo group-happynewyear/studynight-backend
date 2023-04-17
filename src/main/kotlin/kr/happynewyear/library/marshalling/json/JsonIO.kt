@@ -1,4 +1,4 @@
-package kr.happynewyear.library.utility
+package kr.happynewyear.library.marshalling.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
 

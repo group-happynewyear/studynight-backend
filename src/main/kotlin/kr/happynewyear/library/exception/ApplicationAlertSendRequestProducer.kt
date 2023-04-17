@@ -1,6 +1,6 @@
 package kr.happynewyear.library.exception
 
-import kr.happynewyear.library.message.Producer
+import kr.happynewyear.library.message.BrokerProducer
 import kr.happynewyear.notification.message.ApplicationAlertSendRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Async
@@ -9,7 +9,7 @@ import java.util.*
 
 @Component
 class ApplicationAlertSendRequestProducer(
-    private val producer: Producer,
+    private val brokerProducer: BrokerProducer,
     @Value("\${spring.application.name}") private val applicationName: String,
 ) {
 
@@ -19,7 +19,7 @@ class ApplicationAlertSendRequestProducer(
         val exceptionMessage = e.message ?: ""
         val stacktrace = e.stackTrace.map { it.toString() }.toList()
         val message = ApplicationAlertSendRequest(applicationName, exceptionType, exceptionMessage, stacktrace)
-        producer.produce(message)
+        brokerProducer.produce(message)
     }
 
 }

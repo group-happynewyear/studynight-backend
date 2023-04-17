@@ -1,7 +1,7 @@
 package kr.happynewyear.library.test
 
 import kr.happynewyear.library.utility.Dates
-import kr.happynewyear.library.utility.JwtIO
+import kr.happynewyear.library.marshalling.jwt.JwtIO
 import kr.happynewyear.library.utility.Randoms
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

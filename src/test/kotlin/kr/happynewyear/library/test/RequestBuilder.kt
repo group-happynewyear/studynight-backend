@@ -1,6 +1,6 @@
 package kr.happynewyear.library.test
 
-import kr.happynewyear.library.utility.JsonIO
+import kr.happynewyear.library.marshalling.json.JsonIO
 import org.springframework.boot.test.context.TestComponent
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType

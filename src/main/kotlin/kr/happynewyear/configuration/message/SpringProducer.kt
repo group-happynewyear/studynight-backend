@@ -1,15 +1,15 @@
 package kr.happynewyear.configuration.message
 
 import kr.happynewyear.library.message.Message
-import kr.happynewyear.library.message.Producer
+import kr.happynewyear.library.message.BrokerProducer
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 
 @Component
-class ApplicationMessageProducer(
+class SpringProducer(
     private val applicationEventPublisher: ApplicationEventPublisher
-) : Producer {
+) : BrokerProducer {
 
     @Async
     override fun produce(message: Message) {

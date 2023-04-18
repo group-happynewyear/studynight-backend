@@ -7,9 +7,9 @@ import kr.happynewyear.authentication.domain.model.RefreshToken
 import kr.happynewyear.authentication.domain.model.User
 import kr.happynewyear.authentication.domain.repository.RefreshTokenChainRepository
 import kr.happynewyear.authentication.domain.repository.RefreshTokenRepository
-import kr.happynewyear.library.exception.ApplicationAlertSendRequestProducer
-import kr.happynewyear.library.utility.Dates
+import kr.happynewyear.library.exception.AlertSender
 import kr.happynewyear.library.marshalling.jwt.JwtIO
+import kr.happynewyear.library.utility.Dates
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,7 +20,7 @@ import java.util.*
 class TokenService(
     private val refreshTokenRepository: RefreshTokenRepository,
     private val refreshTokenChainRepository: RefreshTokenChainRepository,
-    private val applicationAlertSendRequestProducer: ApplicationAlertSendRequestProducer,
+    private val alertSender: AlertSender,
     @Value("\${security.token.access.secret}") private val secret: String,
     @Value("\${security.token.access.expiration-minutes}") private val expirationMinutes: Long,
     @Value("\${security.token.refresh.expiration-days}") private val expirationDays: Long
@@ -40,7 +40,7 @@ class TokenService(
         val refreshToken = refreshTokenRepository.findById(refreshTokenId) ?: throw RefreshTokenNotFoundException()
         if (refreshToken.used) {
             refreshTokenChainRepository.delete(refreshToken.refreshTokenChain)
-            applicationAlertSendRequestProducer.send(RefreshTokenReusedException())
+            alertSender.send(RefreshTokenReusedException())
         }
     }
 

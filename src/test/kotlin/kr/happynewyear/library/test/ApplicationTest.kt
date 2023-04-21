@@ -6,4 +6,4 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_T
 
 @SpringBootTest
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
-abstract class ConsumerTest
+abstract class ApplicationTest

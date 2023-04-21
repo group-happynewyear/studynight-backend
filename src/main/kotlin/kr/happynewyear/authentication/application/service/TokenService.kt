@@ -8,7 +8,7 @@ import kr.happynewyear.authentication.domain.model.User
 import kr.happynewyear.authentication.domain.repository.RefreshTokenChainRepository
 import kr.happynewyear.authentication.domain.repository.RefreshTokenRepository
 import kr.happynewyear.library.exception.AlertSender
-import kr.happynewyear.library.marshalling.jwt.JwtIO
+import kr.happynewyear.library.marshalling.jwt.JwtMarshallers
 import kr.happynewyear.library.utility.Dates
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -59,7 +59,7 @@ class TokenService(
         val sub = user.id.toString()
         val iat = Dates.now()
         val exp = Dates.plusMinutes(iat, expirationMinutes)
-        return JwtIO.write(sub, iat, exp, secret)
+        return JwtMarshallers.write(sub, iat, exp, secret)
     }
 
 }

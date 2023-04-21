@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
 import jakarta.persistence.EnumType.STRING
 import kr.happynewyear.library.entity.Identifiable
-import kr.happynewyear.library.marshalling.json.JsonIO
+import kr.happynewyear.library.marshalling.json.JsonMarshallers
 import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.constant.EngagementRole.MANAGER
 import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
@@ -27,7 +27,7 @@ class Study(
             contactType: ContactType, contactAddress: String,
             condition: MatchParameter
         ): Study {
-            val study = Study(title, description, contactType, contactAddress, JsonIO.write(condition))
+            val study = Study(title, description, contactType, contactAddress, JsonMarshallers.write(condition))
             EngagementRegistrationService.register(study, creator, MANAGER)
             return study
         }

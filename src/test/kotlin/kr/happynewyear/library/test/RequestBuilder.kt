@@ -1,6 +1,6 @@
 package kr.happynewyear.library.test
 
-import kr.happynewyear.library.marshalling.json.JsonIO
+import kr.happynewyear.library.marshalling.json.JsonMarshallers
 import org.springframework.boot.test.context.TestComponent
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
@@ -15,7 +15,7 @@ class RequestBuilder {
     }
 
     fun json(request: MockHttpServletRequestBuilder, requestBody: Any): MockHttpServletRequestBuilder {
-        return request.contentType(MediaType.APPLICATION_JSON).content(JsonIO.write(requestBody))
+        return request.contentType(MediaType.APPLICATION_JSON).content(JsonMarshallers.write(requestBody))
     }
 
     fun jwt(request: MockHttpServletRequestBuilder, jwt: String): MockHttpServletRequestBuilder {

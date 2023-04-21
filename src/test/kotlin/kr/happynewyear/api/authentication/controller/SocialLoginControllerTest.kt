@@ -4,9 +4,9 @@ import kr.happynewyear.api.authentication.dto.TokenResponse
 import kr.happynewyear.authentication.application.producer.UserMailChannelCreateRequestProducer
 import kr.happynewyear.authentication.constant.SocialAccountProvider
 import kr.happynewyear.authentication.infrastructure.google.*
+import kr.happynewyear.library.marshalling.jwt.JwtMarshallers
 import kr.happynewyear.library.test.ApiTest
 import kr.happynewyear.library.test.MockitoHelper.anyObject
-import kr.happynewyear.library.marshalling.jwt.JwtIO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.then
@@ -73,7 +73,7 @@ class SocialLoginControllerTest(
     }
 
     private fun subjectOf(jwt: String): String {
-        return JwtIO.read(jwt, secret).subject
+        return JwtMarshallers.read(jwt, secret).subject
     }
 
 }

@@ -1,4 +1,4 @@
-package kr.happynewyear.library.message
+package kr.happynewyear.library.messaging.producer.broker
 
 class BrokerProducerHolder {
     companion object {

@@ -1,4 +1,4 @@
-package kr.happynewyear.library.message
+package kr.happynewyear.library.messaging.producer.broker
 
 import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Component

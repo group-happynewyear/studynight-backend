@@ -5,7 +5,8 @@ import kr.happynewyear.authentication.application.exception.DuplicatedEmailExcep
 import kr.happynewyear.authentication.application.exception.InvalidPasswordException
 import kr.happynewyear.authentication.application.exception.RefreshTokenNotFoundException
 import kr.happynewyear.library.exception.AlertSender
-import kr.happynewyear.library.exception.ErrorResponse
+import kr.happynewyear.library.exception.http.ErrorResponse
+import kr.happynewyear.library.exception.http.ErrorResponseEntityFactories
 import kr.happynewyear.studynight.application.exception.DuplicatedStudentException
 import kr.happynewyear.studynight.application.exception.ResourceNotFoundException
 import org.springframework.http.HttpStatus.*
@@ -27,26 +28,26 @@ class HttpExceptionHandler(
     )
     fun onAuthentication(e: Exception): ResponseEntity<ErrorResponse> {
         val message = "잘못된 인증 요청입니다."
-        return ResponseEntity.status(UNAUTHORIZED).body(ErrorResponse(message))
+        return ErrorResponseEntityFactories.create(UNAUTHORIZED, message)
     }
 
     @ExceptionHandler
     fun on(e: DuplicatedEmailException): ResponseEntity<ErrorResponse> {
         val message = "이미 사용 중인 이메일입니다."
-        return ResponseEntity.status(BAD_REQUEST).body(ErrorResponse(message))
+        return ErrorResponseEntityFactories.create(BAD_REQUEST, message)
     }
 
 
     @ExceptionHandler
     fun on(e: ResourceNotFoundException): ResponseEntity<ErrorResponse> {
         val message = "요청하신 정보를 찾을 수 없습니다."
-        return ResponseEntity.status(BAD_REQUEST).body(ErrorResponse(message))
+        return ErrorResponseEntityFactories.create(BAD_REQUEST, message)
     }
 
     @ExceptionHandler
     fun on(e: DuplicatedStudentException): ResponseEntity<ErrorResponse> {
         val message = "이미 해당 계정의 학생이 등록되어 있습니다."
-        return ResponseEntity.status(BAD_REQUEST).body(ErrorResponse(message))
+        return ErrorResponseEntityFactories.create(BAD_REQUEST, message)
     }
 
 
@@ -56,16 +57,15 @@ class HttpExceptionHandler(
     )
     fun onBadRequestByFramework(e: Exception): ResponseEntity<ErrorResponse> {
         val message = "요청 형식을 확인해주세요."
-        return ResponseEntity.status(BAD_REQUEST).body(ErrorResponse(message))
+        return ErrorResponseEntityFactories.create(BAD_REQUEST, message)
     }
 
     @ExceptionHandler
     fun onNotExpected(e: Exception): ResponseEntity<ErrorResponse> {
-        e.printStackTrace()
         alertSender.send(e)
 
         val message = "예상하지 못한 오류가 발생하였습니다." // TODO bug report email
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(ErrorResponse(message))
+        return ErrorResponseEntityFactories.create(INTERNAL_SERVER_ERROR, message)
     }
 
 }

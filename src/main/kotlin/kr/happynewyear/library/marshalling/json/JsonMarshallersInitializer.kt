@@ -5,13 +5,13 @@ import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Component
 
 @Component
-class JsonIOInitializer(
+class JsonMarshallersInitializer(
     private val objectMapper: ObjectMapper
 ) {
 
     @PostConstruct
     fun initialize() {
-        JsonIO.objectMapper = objectMapper
+        JsonMarshallers.objectMapper = objectMapper
     }
 
 }

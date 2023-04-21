@@ -1,6 +1,6 @@
 package kr.happynewyear.library.test
 
-import kr.happynewyear.library.marshalling.json.JsonIO
+import kr.happynewyear.library.marshalling.json.JsonMarshallers
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestComponent
@@ -68,7 +68,7 @@ class RequestPerformer {
     ): T {
         return try {
             val responseBody = performAndReturn(request, status)
-            JsonIO.read(responseBody, responseType)
+            JsonMarshallers.read(responseBody, responseType)
         } catch (e: Exception) {
             throw RuntimeException(e)
         }

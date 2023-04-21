@@ -2,7 +2,7 @@ package kr.happynewyear.library.marshalling.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
 
-class JsonIO {
+class JsonMarshallers {
     companion object {
 
         lateinit var objectMapper: ObjectMapper

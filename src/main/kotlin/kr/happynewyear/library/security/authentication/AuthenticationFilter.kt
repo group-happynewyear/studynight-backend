@@ -5,7 +5,7 @@ import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import kr.happynewyear.library.marshalling.jwt.JwtIO
+import kr.happynewyear.library.marshalling.jwt.JwtMarshallers
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
 import java.util.*
@@ -30,7 +30,7 @@ class AuthenticationFilter(
     private fun authenticate(req: HttpServletRequest) {
         val jwt = req.getHeader("Authorization")?.replace("Bearer ", "") ?: return
 
-        val claims = JwtIO.read(jwt, secret)
+        val claims = JwtMarshallers.read(jwt, secret)
         val principal = Principal(UUID.fromString(claims.subject))
         val authorities = emptySet<String>()
         val authentication = AuthenticationToken(principal, authorities)

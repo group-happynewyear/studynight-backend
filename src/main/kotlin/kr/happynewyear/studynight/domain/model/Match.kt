@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
 import jakarta.persistence.FetchType.LAZY
 import kr.happynewyear.library.entity.Identifiable
-import kr.happynewyear.library.marshalling.json.JsonIO
+import kr.happynewyear.library.marshalling.json.JsonMarshallers
 import kr.happynewyear.studynight.domain.service.InvitationRegistrationService
 import kr.happynewyear.studynight.type.MatchParameter
 
@@ -23,7 +23,7 @@ class Match(
             condition: MatchParameter,
             students: Collection<Student>
         ): Match {
-            val match = Match(study, JsonIO.write(condition))
+            val match = Match(study, JsonMarshallers.write(condition))
             students.forEach { InvitationRegistrationService.register(match, it) }
             return match
         }

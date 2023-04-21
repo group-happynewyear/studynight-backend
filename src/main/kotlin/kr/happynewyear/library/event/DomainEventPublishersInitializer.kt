@@ -5,13 +5,13 @@ import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 
 @Component
-class DomainEventPublisherInitializer(
+class DomainEventPublishersInitializer(
     private val applicationEventPublisher: ApplicationEventPublisher
 ) {
 
     @PostConstruct
     fun initialize() {
-        DomainEventPublisher.applicationEventPublisher = applicationEventPublisher
+        DomainEventPublishers.applicationEventPublisher = applicationEventPublisher
     }
 
 }

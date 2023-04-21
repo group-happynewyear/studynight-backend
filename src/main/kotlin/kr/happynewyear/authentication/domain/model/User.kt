@@ -5,7 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import kr.happynewyear.authentication.domain.event.UserCreatedEvent
 import kr.happynewyear.library.entity.Identifiable
-import kr.happynewyear.library.event.DomainEventPublisher
+import kr.happynewyear.library.event.DomainEventPublishers
 
 @Entity
 @Table(
@@ -18,7 +18,7 @@ class User(
     companion object {
         fun create(email: String): User {
             val user = User(email)
-            DomainEventPublisher.publish(UserCreatedEvent(user))
+            DomainEventPublishers.publish(UserCreatedEvent(user))
             return user
         }
     }

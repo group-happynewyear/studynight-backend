@@ -2,7 +2,7 @@ package kr.happynewyear.library.event
 
 import org.springframework.context.ApplicationEventPublisher
 
-class DomainEventPublisher {
+class DomainEventPublishers {
     companion object {
 
         lateinit var applicationEventPublisher: ApplicationEventPublisher

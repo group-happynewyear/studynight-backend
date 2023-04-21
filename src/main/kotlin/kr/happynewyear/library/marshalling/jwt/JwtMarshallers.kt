@@ -5,7 +5,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm.HS256
 import java.util.*
 
-class JwtIO {
+class JwtMarshallers {
     companion object {
 
         fun write(sub: String, iat: Date, exp: Date, secret: String): String {

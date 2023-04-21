@@ -1,7 +1,7 @@
 package kr.happynewyear.library.test
 
+import kr.happynewyear.library.marshalling.jwt.JwtMarshallers
 import kr.happynewyear.library.utility.Dates
-import kr.happynewyear.library.marshalling.jwt.JwtIO
 import kr.happynewyear.library.utility.Randoms
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,7 +42,7 @@ abstract class LogonApiTest {
     }
 
     protected fun login(userId: UUID): UUID {
-        accessToken = JwtIO.write(userId.toString(), Dates.now(), Dates.ofAfterMinutes(1), secret)
+        accessToken = JwtMarshallers.write(userId.toString(), Dates.now(), Dates.ofAfterMinutes(1), secret)
         log.debug("Login with $userId.")
         return userId
     }

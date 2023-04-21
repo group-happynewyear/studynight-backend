@@ -1,5 +1,6 @@
 package kr.happynewyear.configuration.message
 
+import kr.happynewyear.library.exception.ExceptionHandlers
 import kr.happynewyear.library.message.BrokerProducer
 import kr.happynewyear.library.message.Message
 import org.springframework.context.ApplicationEventPublisher
@@ -13,7 +14,7 @@ class SpringProducer(
 
     @Async
     override fun produce(message: Message) {
-        applicationEventPublisher.publishEvent(message)
+        ExceptionHandlers.run({ applicationEventPublisher.publishEvent(message) }, {})
     }
 
 }

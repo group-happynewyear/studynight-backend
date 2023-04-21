@@ -33,8 +33,8 @@ class ApplicationService(
             .ifEmpty { Channel.ofDefaultAlert(defaultAlertChannelType, defaultAlertChannelAddress) }
         channels.forEach {
             when (it.type) {
-                MAIL -> notificationService.mail(it.address, head, "${head}\n${fullStacktrace}")
-                SLACK -> notificationService.slack(it.address, "${head}\n${coreStacktrace}")
+                MAIL -> notificationService.mail(it.address, head, "${head}\n${fullStacktrace}") {}
+                SLACK -> notificationService.slack(it.address, "${head}\n${coreStacktrace}") {}
             }
         }
     }

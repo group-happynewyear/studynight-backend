@@ -1,17 +1,16 @@
 package kr.happynewyear.library.event
 
 import jakarta.annotation.PostConstruct
-import kr.happynewyear.library.event.DomainEventPublisher
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Component
 
-@Configuration
+@Component
 class DomainEventPublisherInitializer(
     private val applicationEventPublisher: ApplicationEventPublisher
 ) {
 
     @PostConstruct
-    fun initDomainEventPublisher() {
+    fun initialize() {
         DomainEventPublisher.applicationEventPublisher = applicationEventPublisher
     }
 

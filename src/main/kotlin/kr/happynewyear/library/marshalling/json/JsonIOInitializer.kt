@@ -2,15 +2,15 @@ package kr.happynewyear.library.marshalling.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.annotation.PostConstruct
-import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Component
 
-@Configuration
+@Component
 class JsonIOInitializer(
     private val objectMapper: ObjectMapper
 ) {
 
     @PostConstruct
-    fun initJsonIO() {
+    fun initialize() {
         JsonIO.objectMapper = objectMapper
     }
 

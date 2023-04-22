@@ -76,7 +76,7 @@ class BffWebController(
     }
 
     @PostMapping("/student")
-    fun createStudent(@Authenticated principal: Principal, form: StudentCreateForm) {
+    fun createStudent(@Authenticated principal: Principal, @RequestBody form: StudentCreateForm) {
         val condition = form.condition.stream()
             .collect(toMap({ it.code }, { it.options.filter { o -> o.check }.map { o -> o.code } }))
         val request = StudentCreateRequest(
@@ -95,7 +95,7 @@ class BffWebController(
 
 
     @PostMapping("/study")
-    fun createStudy(@Authenticated principal: Principal, form: StudyCreateForm): String {
+    fun createStudy(@Authenticated principal: Principal, @RequestBody form: StudyCreateForm): String {
         val condition = form.condition.stream()
             .collect(toMap({ it.code }, { it.options.filter { o -> o.check }.map { o -> o.code } }))
         val request = StudyCreateRequest(
@@ -180,7 +180,7 @@ class BffWebController(
 
 
     @PostMapping("/booking")
-    fun booking(@Authenticated principal: Principal, form: BookingCreateForm): BookingCreateResponseView {
+    fun booking(@Authenticated principal: Principal, @RequestBody form: BookingCreateForm): BookingCreateResponseView {
         val condition = form.condition.stream()
             .collect(toMap({ it.code }, { it.options.filter { o -> o.check }.map { o -> o.code } }))
         val request = MatchCreateRequest(

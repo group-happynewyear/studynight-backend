@@ -1,0 +1,648 @@
+### 시나리오 요약
+### Josh, Ethan, Erin과 John을 만든다.
+### Josh가 스터디를 만들고, 매칭을 요청한다.
+### Ethan, Erin이 해당되어 초대장이 발송된다.
+### Erin은 수락하여 멤버가 된다.
+### Ethan은 아직 읽지 않아 멤버로 포함되지 않았다.
+
+### healthCheck
+GET {{studynight}}/api/health-check
+
+### enums
+GET {{studynight}}/bff-web/enum
+
+
+### create ethan - junior web
+
+###
+POST {{studynight}}/api/accounts
+Content-Type: application/json
+
+{
+  "email": "ethan@email.com",
+  "password": "password"
+}
+
+###
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "ethan@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+POST {{studynight}}/bff-web/student
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "nickName": "Ethan",
+  "condition": [
+    {
+      "code": "SCHEDULE",
+      "name": "일정",
+      "options": [
+        {
+          "code": "WEEKEND_AFTERNOON",
+          "name": "주말오후",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "REGION",
+      "name": "지역",
+      "options": [
+        {
+          "code": "GANGNAM",
+          "name": "강남",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "EXPERIENCE",
+      "name": "경력",
+      "options": [
+        {
+          "code": "JUNIOR",
+          "name": "주니어",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "POSITION",
+      "name": "직군",
+      "options": [
+        {
+          "code": "WEB",
+          "name": "웹",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "INTENSITY",
+      "name": "성향",
+      "options": [
+        {
+          "code": "NORMAL",
+          "name": "중간맛",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "SCALE",
+      "name": "규모",
+      "options": [
+        {
+          "code": "M",
+          "name": "4+",
+          "check": true
+        }
+      ]
+    }
+  ]
+}
+
+### create erin - middle web
+
+###
+POST {{studynight}}/api/accounts
+Content-Type: application/json
+
+{
+  "email": "erin@email.com",
+  "password": "password"
+}
+
+###
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "erin@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+POST {{studynight}}/bff-web/student
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "nickName": "Erin",
+  "condition": [
+    {
+      "code": "SCHEDULE",
+      "name": "일정",
+      "options": [
+        {
+          "code": "WEEKEND_AFTERNOON",
+          "name": "주말오후",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "REGION",
+      "name": "지역",
+      "options": [
+        {
+          "code": "GANGNAM",
+          "name": "강남",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "EXPERIENCE",
+      "name": "경력",
+      "options": [
+        {
+          "code": "MIDDLE",
+          "name": "중니어",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "POSITION",
+      "name": "직군",
+      "options": [
+        {
+          "code": "WEB",
+          "name": "웹",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "INTENSITY",
+      "name": "성향",
+      "options": [
+        {
+          "code": "NORMAL",
+          "name": "중간맛",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "SCALE",
+      "name": "규모",
+      "options": [
+        {
+          "code": "M",
+          "name": "4+",
+          "check": true
+        }
+      ]
+    }
+  ]
+}
+
+### create john - senior server
+
+###
+POST {{studynight}}/api/accounts
+Content-Type: application/json
+
+{
+  "email": "john@email.com",
+  "password": "password"
+}
+
+###
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "john@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+POST {{studynight}}/bff-web/student
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "nickName": "John",
+  "condition": [
+    {
+      "code": "SCHEDULE",
+      "name": "일정",
+      "options": [
+        {
+          "code": "WEEKEND_AFTERNOON",
+          "name": "주말오후",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "REGION",
+      "name": "지역",
+      "options": [
+        {
+          "code": "GANGNAM",
+          "name": "강남",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "EXPERIENCE",
+      "name": "경력",
+      "options": [
+        {
+          "code": "SENIOR",
+          "name": "시니어",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "POSITION",
+      "name": "직군",
+      "options": [
+        {
+          "code": "SERVER",
+          "name": "서버",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "INTENSITY",
+      "name": "성향",
+      "options": [
+        {
+          "code": "NORMAL",
+          "name": "중간맛",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "SCALE",
+      "name": "규모",
+      "options": [
+        {
+          "code": "M",
+          "name": "4+",
+          "check": true
+        }
+      ]
+    }
+  ]
+}
+
+### create josh - junior server
+
+###
+POST {{studynight}}/api/accounts
+Content-Type: application/json
+
+{
+  "email": "josh@email.com",
+  "password": "password"
+}
+
+###
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "josh@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+POST {{studynight}}/bff-web/student
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "nickName": "Josh",
+  "condition": [
+    {
+      "code": "SCHEDULE",
+      "name": "일정",
+      "options": [
+        {
+          "code": "WEEKEND_AFTERNOON",
+          "name": "주말오후",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "REGION",
+      "name": "지역",
+      "options": [
+        {
+          "code": "GANGNAM",
+          "name": "강남",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "EXPERIENCE",
+      "name": "경력",
+      "options": [
+        {
+          "code": "JUNIOR",
+          "name": "주니어",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "POSITION",
+      "name": "직군",
+      "options": [
+        {
+          "code": "SERVER",
+          "name": "서버",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "INTENSITY",
+      "name": "성향",
+      "options": [
+        {
+          "code": "NORMAL",
+          "name": "중간맛",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "SCALE",
+      "name": "규모",
+      "options": [
+        {
+          "code": "M",
+          "name": "4+",
+          "check": true
+        }
+      ]
+    }
+  ]
+}
+
+### create study --josh --web&server --junior&middle
+POST {{studynight}}/bff-web/study
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "스터디나잇",
+  "introduction": "SFG",
+  "contactURL": "https://google.com",
+  "condition": [
+    {
+      "code": "SCHEDULE",
+      "name": "일정",
+      "options": [
+        {
+          "code": "WEEKEND_AFTERNOON",
+          "name": "주말오후",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "REGION",
+      "name": "지역",
+      "options": [
+        {
+          "code": "GANGNAM",
+          "name": "강남",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "EXPERIENCE",
+      "name": "경력",
+      "options": [
+        {
+          "code": "JUNIOR",
+          "name": "주니어",
+          "check": true
+        },
+        {
+          "code": "MIDDLE",
+          "name": "중니어",
+          "check": true
+        },
+        {
+          "code": "SENIOR",
+          "name": "시니어",
+          "check": false
+        }
+      ]
+    },
+    {
+      "code": "POSITION",
+      "name": "직군",
+      "options": [
+        {
+          "code": "WEB",
+          "name": "웹",
+          "check": true
+        },
+        {
+          "code": "SERVER",
+          "name": "서버",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "INTENSITY",
+      "name": "성향",
+      "options": [
+        {
+          "code": "NORMAL",
+          "name": "중간맛",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "SCALE",
+      "name": "규모",
+      "options": [
+        {
+          "code": "M",
+          "name": "4+",
+          "check": true
+        }
+      ]
+    }
+  ]
+}
+
+###
+GET {{studynight}}/bff-web/study/5ceaba8b-5186-4a62-ab63-d84fa50c1ede
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{studynight}}/bff-web/study/list
+Authorization: Bearer {{accessToken}}
+
+### create match --web --junior&middle
+POST {{studynight}}/bff-web/booking
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "studyId": "5ceaba8b-5186-4a62-ab63-d84fa50c1ede",
+  "condition": [
+    {
+      "code": "SCHEDULE",
+      "name": "일정",
+      "options": [
+        {
+          "code": "WEEKEND_AFTERNOON",
+          "name": "주말오후",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "REGION",
+      "name": "지역",
+      "options": [
+        {
+          "code": "GANGNAM",
+          "name": "강남",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "EXPERIENCE",
+      "name": "경력",
+      "options": [
+        {
+          "code": "JUNIOR",
+          "name": "주니어",
+          "check": true
+        },
+        {
+          "code": "MIDDLE",
+          "name": "중니어",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "POSITION",
+      "name": "직군",
+      "options": [
+        {
+          "code": "WEB",
+          "name": "웹",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "INTENSITY",
+      "name": "성향",
+      "options": [
+        {
+          "code": "NORMAL",
+          "name": "중간맛",
+          "check": true
+        }
+      ]
+    },
+    {
+      "code": "SCALE",
+      "name": "규모",
+      "options": [
+        {
+          "code": "M",
+          "name": "4+",
+          "check": true
+        }
+      ]
+    }
+  ]
+}
+
+### get invitation --erin
+GET {{studynight}}/api/invitations/6ad8c65b-71cc-4ffa-a4c6-cbda8db04aec
+
+### accept invitation --erin
+GET {{studynight}}/api/invitations/6ad8c65b-71cc-4ffa-a4c6-cbda8db04aec/accept?
+    userId=d47e3aae-1dd6-49c1-a5f2-657defee2060
+
+### login as erin
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "erin@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+GET {{studynight}}/bff-web/study/list
+Authorization: Bearer {{accessToken}}
+
+### login as ethan
+POST {{studynight}}/api/login
+Content-Type: application/json
+
+{
+  "email": "ethan@email.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+###
+GET {{studynight}}/bff-web/study/list
+Authorization: Bearer {{accessToken}}

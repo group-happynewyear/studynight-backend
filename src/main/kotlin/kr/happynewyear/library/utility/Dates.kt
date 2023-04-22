@@ -1,5 +1,7 @@
 package kr.happynewyear.library.utility
 
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 
 class Dates {
@@ -15,6 +17,12 @@ class Dates {
 
         fun ofAfterMinutes(minutes: Long): Date {
             return plusMinutes(now(), minutes)
+        }
+
+        fun from(localDateTime: LocalDateTime): Date {
+            val zoneId = ZoneId.systemDefault()
+            val instant = localDateTime.atZone(zoneId).toInstant()
+            return Date.from(instant)
         }
 
     }

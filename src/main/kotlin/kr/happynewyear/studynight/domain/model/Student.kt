@@ -46,7 +46,7 @@ class Student(
         name = "nickname",
         nullable = false, updatable = true, unique = false
     )
-    private val nickname: String = nickname
+    val nickname: String = nickname
 
     @OneToMany(
         mappedBy = "student",

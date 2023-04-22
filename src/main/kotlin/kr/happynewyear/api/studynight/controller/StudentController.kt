@@ -3,6 +3,7 @@ package kr.happynewyear.api.studynight.controller
 import jakarta.validation.Valid
 import kr.happynewyear.api.studynight.dto.StudentCreateRequest
 import kr.happynewyear.api.studynight.dto.StudentExistResponse
+import kr.happynewyear.api.studynight.dto.StudentMyResponse
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
 import kr.happynewyear.studynight.application.service.StudentService
@@ -18,7 +19,7 @@ class StudentController(
     private val studentService: StudentService
 ) {
 
-    @GetMapping("/me/is_exists")
+    @GetMapping("/me/is_exist")
     fun isExist(@Authenticated principal: Principal): ResponseEntity<StudentExistResponse> {
         val isExist = studentService.isExist(principal.userId)
         val res = StudentExistResponse(isExist)
@@ -36,6 +37,13 @@ class StudentController(
         )
         val location = "/api/students/${student.id}"
         return ResponseEntity.created(URI.create(location)).build()
+    }
+
+    @GetMapping("/me")
+    fun me(@Authenticated principal: Principal): ResponseEntity<StudentMyResponse> {
+        val student = studentService.me(principal.userId)
+        val res = StudentMyResponse.from(student)
+        return ResponseEntity.ok(res)
     }
 
 }

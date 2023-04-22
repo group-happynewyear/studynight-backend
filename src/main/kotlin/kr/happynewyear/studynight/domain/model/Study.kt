@@ -6,9 +6,10 @@ import jakarta.persistence.EnumType.STRING
 import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.library.marshalling.json.JsonMarshallers
 import kr.happynewyear.studynight.constant.ContactType
-import kr.happynewyear.studynight.constant.EngagementRole.MANAGER
+import kr.happynewyear.studynight.constant.EngagementRole.*
 import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
 import kr.happynewyear.studynight.type.MatchParameter
+import java.time.LocalDateTime
 
 @Entity
 @Table(
@@ -17,7 +18,8 @@ import kr.happynewyear.studynight.type.MatchParameter
 class Study(
     title: String, description: String,
     contactType: ContactType, contactAddress: String,
-    condition: String
+    condition: String,
+    createdAt: LocalDateTime
 ) : Identifiable() {
 
     companion object {
@@ -27,7 +29,12 @@ class Study(
             contactType: ContactType, contactAddress: String,
             condition: MatchParameter
         ): Study {
-            val study = Study(title, description, contactType, contactAddress, JsonMarshallers.write(condition))
+            val study = Study(
+                title, description,
+                contactType, contactAddress,
+                JsonMarshallers.write(condition),
+                LocalDateTime.now()
+            )
             EngagementRegistrationService.register(study, creator, MANAGER)
             return study
         }
@@ -65,12 +72,21 @@ class Study(
     )
     val condition: String = condition
 
+    @Column(
+        name = "createdAt",
+        nullable = false, updatable = false, unique = false
+    )
+    val createdAt: LocalDateTime = createdAt
+
     @OneToMany(
         mappedBy = "study",
         cascade = [ALL], orphanRemoval = true
     )
     private val _engagements: MutableList<Engagement> = mutableListOf()
     val students: List<Student> get() = _engagements.map { it.student }
+    val managers: List<Student> get() = _engagements.filter { it.role == MANAGER }.map { it.student }
+    val members: List<Student> get() = _engagements.filter { it.role == MEMBER }.map { it.student }
+    val guests: List<Student> get() = _engagements.filter { it.role == GUEST }.map { it.student }
 
     @OneToMany(
         mappedBy = "study",

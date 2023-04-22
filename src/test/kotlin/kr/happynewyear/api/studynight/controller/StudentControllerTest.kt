@@ -23,7 +23,7 @@ class StudentControllerTest : LogonApiTest() {
         run(POST, "/api/students", studentCreateRequestFixture(), CREATED)
 
         val res = call(
-            GET, "/api/students/me/is_exists",
+            GET, "/api/students/me/is_exist",
             OK, StudentExistResponse::class.java
         )
 
@@ -33,7 +33,7 @@ class StudentControllerTest : LogonApiTest() {
     @Test
     fun isExist_false() {
         val res = call(
-            GET, "/api/students/me/is_exists",
+            GET, "/api/students/me/is_exist",
             OK, StudentExistResponse::class.java
         )
 

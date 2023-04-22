@@ -44,6 +44,6 @@ class Engagement(
         name = "role",
         nullable = false, updatable = true, unique = false
     )
-    private val role: EngagementRole = role
+    val role: EngagementRole = role
 
 }

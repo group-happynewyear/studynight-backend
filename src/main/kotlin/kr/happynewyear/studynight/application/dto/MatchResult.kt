@@ -18,7 +18,7 @@ data class MatchResult(
                 match.id,
                 JsonMarshallers.read(match.condition, MatchParameter::class.java),
                 Study(match.study.id),
-                match.invitations.map { Invitation(it.id, Invitation.Student(it.student.id)) }
+                match.invitations.map { Invitation(it.id, Invitation.Student(it.student.id, it.student.nickname)) }
             )
         }
     }
@@ -34,7 +34,8 @@ data class MatchResult(
     ) {
 
         data class Student(
-            val id: UUID
+            val id: UUID,
+            val nickname: String
         )
     }
 

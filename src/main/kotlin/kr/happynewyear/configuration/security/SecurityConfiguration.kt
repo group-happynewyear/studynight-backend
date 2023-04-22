@@ -35,14 +35,17 @@ class SecurityConfiguration(
         httpSecurity
             .addFilterBefore(AuthenticationFilter(secret), UsernamePasswordAuthenticationFilter::class.java)
             .authorizeHttpRequests()
+            // base
             .requestMatchers(GET, "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
             .requestMatchers(GET, "/error").permitAll()
             .requestMatchers(GET, "/api/health-check").permitAll()
             .requestMatchers(GET, "/api/hello").authenticated()
             .requestMatchers(POST, "/api/alert").authenticated()
+            // authentication
             .requestMatchers(POST, "/api/accounts", "/api/login", "/api/refresh").permitAll()
             .requestMatchers(GET, "/api/social-login/**").permitAll()
-            .requestMatchers(GET, "/api/students/me/is_exists").authenticated()
+            // studynight
+            .requestMatchers(GET, "/api/students/me", "/api/students/me/is_exist").authenticated()
             .requestMatchers(POST, "/api/students").authenticated()
             .requestMatchers(POST, "/api/studies").authenticated()
             .requestMatchers(GET, "/api/studies", "/api/studies/*").authenticated()
@@ -51,6 +54,16 @@ class SecurityConfiguration(
             .requestMatchers(GET, "/api/invitations/*").permitAll() // TODO authenticated
             .requestMatchers(PUT, "/api/invitations/*").authenticated()
             .requestMatchers(GET, "/api/invitations/*/accept").permitAll() // TODO remove
+            // bff-web
+            .requestMatchers(GET, "/bff-web/enum").permitAll()
+            .requestMatchers(GET, "/bff-web/student/me/is_exist").authenticated()
+            .requestMatchers(POST, "/bff-web/student").authenticated()
+            .requestMatchers(POST, "/bff-web/study").authenticated()
+            .requestMatchers(GET, "/bff-web/study/*").authenticated()
+            .requestMatchers(GET, "/bff-web/study/condition/*").authenticated()
+            .requestMatchers(GET, "/bff-web/study/list").authenticated()
+            .requestMatchers(POST, "/bff-web/booking").authenticated()
+            // -
             .anyRequest().denyAll()
             .and().exceptionHandling()
             .authenticationEntryPoint { _, response, _ -> response?.sendError(UNAUTHORIZED.value()) }

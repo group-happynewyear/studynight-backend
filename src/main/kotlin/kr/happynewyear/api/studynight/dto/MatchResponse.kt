@@ -16,7 +16,12 @@ data class MatchResponse(
                 match.id.toString(),
                 match.condition,
                 Study(match.study.id.toString()),
-                match.invitations.map { Invitation(it.id.toString(), Invitation.Student(it.student.id.toString())) }
+                match.invitations.map {
+                    Invitation(
+                        it.id.toString(),
+                        Invitation.Student(it.student.id.toString(), it.student.nickname)
+                    )
+                }
             )
         }
     }
@@ -32,7 +37,8 @@ data class MatchResponse(
     ) {
 
         data class Student(
-            val id: String
+            val id: String,
+            val nickname: String
         )
     }
 

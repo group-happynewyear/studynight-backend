@@ -1,4 +1,4 @@
-GET {{studynight}}/api/students/me/is_exists
+GET {{studynight}}/api/students/me/is_exist
 Authorization: Bearer {{accessToken}}
 
 ###

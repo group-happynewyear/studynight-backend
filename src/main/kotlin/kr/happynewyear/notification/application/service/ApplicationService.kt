@@ -26,7 +26,7 @@ class ApplicationService(
         val head = "[$applicationName] $exceptionType: $exceptionMessage"
         val fullStacktrace = stacktrace.stream().collect(Collectors.joining("\n"))
         val coreStacktrace = stacktrace.stream()
-            .filter { it.startsWith("kr.happynewyear") }.findFirst()
+            .filter { it.startsWith("kr.happynewyear") }.filter{ !it.startsWith("kr.happynewyear.library") }.findFirst()
             .orElseGet { stacktrace[0] }
 
         val channels = channelRepository.findByApplication(applicationName)

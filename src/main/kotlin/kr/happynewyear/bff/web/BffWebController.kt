@@ -198,7 +198,7 @@ class BffWebController(
         val matchId = createResponse.headers.location.toString().split("/").last()
         val getResponse = matchController.get(UUID.fromString(matchId)).body!!
         return BookingCreateResponseView(
-            getResponse.invitations.map { it.student.nickname }.first(),
+            getResponse.invitations.map { it.student.nickname }.firstOrNull(),
             getResponse.invitations.count()
         )
     }

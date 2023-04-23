@@ -47,12 +47,12 @@ class SocialLoginControllerTest(
 
     private fun callback_initial(provider: SocialAccountProvider) {
         val code = "authorization-code"
-        val res = call(
+        val location = redirect(
             GET, "/api/social-login/callback/providers/$provider?code=$code",
-            OK, TokenResponse::class.java
+            FOUND
         )
 
-        assertThat(res).isNotNull
+        assertThat(location).isNotNull
         then(userMailChannelCreateRequestProducer).should().produce(anyObject())
     }
 
@@ -64,8 +64,8 @@ class SocialLoginControllerTest(
 
     private fun callback_user(provider: SocialAccountProvider) {
         val req = "/api/social-login/callback/providers/$provider?code=code"
-        val jwt1 = call(GET, req, OK, TokenResponse::class.java).accessToken
-        val jwt2 = call(GET, req, OK, TokenResponse::class.java).accessToken
+        val jwt1 = redirect(GET, req, FOUND).split("?")[1].split("&")[0].split("=")[1]
+        val jwt2 = redirect(GET, req, FOUND).split("?")[1].split("&")[0].split("=")[1]
 
         assertThat(subjectOf(jwt1)).isEqualTo(subjectOf(jwt2))
         then(userMailChannelCreateRequestProducer).should().produce(anyObject())

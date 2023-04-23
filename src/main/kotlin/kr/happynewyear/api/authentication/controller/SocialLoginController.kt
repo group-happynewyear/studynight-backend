@@ -4,6 +4,7 @@ import kr.happynewyear.api.authentication.dto.TokenResponse
 import kr.happynewyear.authentication.application.service.SocialAccountService
 import kr.happynewyear.authentication.constant.SocialAccountProvider
 import org.apache.tomcat.websocket.Constants.FOUND
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -11,7 +12,8 @@ import java.net.URI
 @RestController
 @RequestMapping("/api/social-login")
 class SocialLoginController(
-    private val socialAccountService: SocialAccountService
+    private val socialAccountService: SocialAccountService,
+    @Value("\${security.cors.allowed-origin}") private val allowedOrigin: String,
 ) {
 
     @GetMapping("/page/providers/{provider}")
@@ -24,10 +26,11 @@ class SocialLoginController(
     fun callback(
         @PathVariable provider: SocialAccountProvider,
         @RequestParam code: String
-    ): ResponseEntity<TokenResponse> {
+    ): ResponseEntity<Void> {
         val token = socialAccountService.login(provider, code)
         val res = TokenResponse.from(token)
-        return ResponseEntity.ok(res)
+        val location = "$allowedOrigin/token?access_token=${res.accessToken}&refresh_token=${res.refreshToken}"
+        return ResponseEntity.status(FOUND).location(URI.create(location)).build()
     }
 
 }

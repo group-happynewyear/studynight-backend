@@ -158,7 +158,7 @@ class BffWebController(
             .collect(groupingBy { roleOf(principal, it) == MANAGER })
         val mapper: (StudyResponse) -> StudySummary = {
             StudySummary(
-                it.title,
+                it.id, it.title,
                 listOf(it.condition.schedule, it.condition.region).map { c -> dictionary[c.name]!! },
                 Dates.from(it.createdAt).time
             )

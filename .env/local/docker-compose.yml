@@ -12,14 +12,3 @@ services:
       POSTGRES_DB: studynight
       POSTGRES_USER: "username"
       POSTGRES_PASSWORD: "password"
-
-  studynight-backend:
-    container_name: studynight-backend
-    image: studynight-backend:latest
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    restart: always
-    environment:
-      PROFILE: local

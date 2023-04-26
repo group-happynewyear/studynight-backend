@@ -36,8 +36,8 @@ class SecurityConfiguration(
             .addFilterBefore(AuthenticationFilter(secret), UsernamePasswordAuthenticationFilter::class.java)
             .authorizeHttpRequests()
             // base
+            .requestMatchers(GET, "/error", "/favicon.ico").permitAll()
             .requestMatchers(GET, "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-            .requestMatchers(GET, "/error").permitAll()
             .requestMatchers(GET, "/api/health-check").permitAll()
             .requestMatchers(GET, "/api/hello").authenticated()
             .requestMatchers(POST, "/api/alert").authenticated()

@@ -1,20 +1,14 @@
 package kr.happynewyear.library.messaging.producer
 
-import kr.happynewyear.library.exception.RunnerWrappers
-import kr.happynewyear.notification.message.ExceptionNotifier
-import org.springframework.scheduling.annotation.Async
+import kr.happynewyear.library.messaging.Message
 import org.springframework.stereotype.Component
+import java.util.function.Consumer
 
 @Component
-class ProduceProcessor(
-    private val exceptionNotifier: ExceptionNotifier
-) {
+class ProduceProcessor {
 
-    @Async
-    fun produce(produceAction: Runnable) {
-        RunnerWrappers.run(produceAction) {
-            exceptionNotifier.send(it)
-        }
+    fun <T : Message> produce(message: T, produceAction: Consumer<T>) {
+        produceAction.accept(message)
     }
 
 }

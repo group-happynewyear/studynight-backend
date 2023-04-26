@@ -14,10 +14,10 @@ class ApplicationAlertSendRequestConsumer(
 
     @EventListener
     fun consume(message: ApplicationAlertSendRequest) {
-        consumeProcessor.consume {
+        consumeProcessor.consume(message) {
             applicationService.alert(
-                message.applicationName,
-                message.exceptionType, message.exceptionMessage, message.stacktrace
+                it.applicationName,
+                it.exceptionType, it.exceptionMessage, it.stacktrace
             )
         }
     }

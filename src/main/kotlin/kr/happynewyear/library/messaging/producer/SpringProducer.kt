@@ -11,7 +11,9 @@ class SpringProducer(
 ) {
 
     fun produce(message: Message) {
-        produceProcessor.produce { applicationEventPublisher.publishEvent(message) }
+        produceProcessor.produce(message) {
+            applicationEventPublisher.publishEvent(it)
+        }
     }
 
 }

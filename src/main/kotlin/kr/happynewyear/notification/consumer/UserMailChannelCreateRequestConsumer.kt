@@ -14,8 +14,8 @@ class UserMailChannelCreateRequestConsumer(
 
     @EventListener
     fun consume(message: UserMailChannelCreateRequest) {
-        consumeProcessor.consume {
-            userService.createMailChannel(message.userId, message.email)
+        consumeProcessor.consume(message) {
+            userService.createMailChannel(it.userId, it.email)
         }
     }
 

@@ -1,9 +1,9 @@
 package kr.happynewyear.notification.application.service
 
-import kr.happynewyear.library.exception.AlertSender
 import kr.happynewyear.notification.application.exception.UserChannelNotFoundException
 import kr.happynewyear.notification.domain.model.Channel
 import kr.happynewyear.notification.domain.repository.ChannelRepository
+import kr.happynewyear.notification.message.ExceptionNotifier
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -13,7 +13,7 @@ import java.util.*
 class UserService(
     private val channelRepository: ChannelRepository,
     private val notificationService: NotificationService,
-    private val alertSender: AlertSender
+    private val exceptionNotifier: ExceptionNotifier
 ) {
 
     @Transactional
@@ -25,7 +25,7 @@ class UserService(
     fun sendMail(userId: UUID, title: String, content: String) {
         val channels = channelRepository.findMailByUser(userId.toString())
         if (channels.isEmpty()) throw UserChannelNotFoundException()
-        channels.forEach { notificationService.mail(it.address, title, content) { e -> alertSender.send(e) } }
+        channels.forEach { notificationService.mail(it.address, title, content) { e -> exceptionNotifier.send(e) } }
     }
 
 }

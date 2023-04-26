@@ -1,8 +1,8 @@
 package kr.happynewyear.studynight.application.service
 
 import kr.happynewyear.notification.message.UserMailSendRequest
+import kr.happynewyear.notification.message.UserMailSendRequestProducer
 import kr.happynewyear.studynight.application.dto.MatchResult
-import kr.happynewyear.studynight.application.producer.UserMailSendRequestProducer
 import kr.happynewyear.studynight.domain.model.Invitation
 import kr.happynewyear.studynight.domain.model.Match
 import kr.happynewyear.studynight.domain.repository.MatchRepository

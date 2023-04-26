@@ -1,8 +1,8 @@
 package kr.happynewyear.authentication.application.handler
 
-import kr.happynewyear.authentication.application.producer.UserMailChannelCreateRequestProducer
 import kr.happynewyear.authentication.domain.event.UserCreatedEvent
 import kr.happynewyear.notification.message.UserMailChannelCreateRequest
+import kr.happynewyear.notification.message.UserMailChannelCreateRequestProducer
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 

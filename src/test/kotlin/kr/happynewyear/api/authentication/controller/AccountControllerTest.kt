@@ -1,10 +1,10 @@
 package kr.happynewyear.api.authentication.controller
 
 import kr.happynewyear.api.authentication.dto.AccountCreateRequest
-import kr.happynewyear.authentication.application.producer.UserMailChannelCreateRequestProducer
 import kr.happynewyear.authentication.infrastructure.database.AccountJpaRepository
 import kr.happynewyear.library.test.ApiTest
 import kr.happynewyear.library.test.MockitoHelper.anyObject
+import kr.happynewyear.notification.message.UserMailChannelCreateRequestProducer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.then

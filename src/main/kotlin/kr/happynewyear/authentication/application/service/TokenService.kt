@@ -7,9 +7,9 @@ import kr.happynewyear.authentication.domain.model.RefreshToken
 import kr.happynewyear.authentication.domain.model.User
 import kr.happynewyear.authentication.domain.repository.RefreshTokenChainRepository
 import kr.happynewyear.authentication.domain.repository.RefreshTokenRepository
+import kr.happynewyear.library.exception.ExceptionNotifier
 import kr.happynewyear.library.marshalling.jwt.JwtMarshallers
 import kr.happynewyear.library.utility.Dates
-import kr.happynewyear.notification.message.ExceptionNotifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

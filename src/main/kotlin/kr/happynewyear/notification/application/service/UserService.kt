@@ -1,9 +1,9 @@
 package kr.happynewyear.notification.application.service
 
+import kr.happynewyear.library.exception.ExceptionNotifier
 import kr.happynewyear.notification.application.exception.UserChannelNotFoundException
 import kr.happynewyear.notification.domain.model.Channel
 import kr.happynewyear.notification.domain.repository.ChannelRepository
-import kr.happynewyear.notification.message.ExceptionNotifier
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*

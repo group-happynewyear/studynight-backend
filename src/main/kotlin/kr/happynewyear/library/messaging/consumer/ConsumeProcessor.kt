@@ -1,10 +1,10 @@
 package kr.happynewyear.library.messaging.consumer
 
+import kr.happynewyear.library.exception.ExceptionNotifier
 import kr.happynewyear.library.exception.RunnerWrappers
 import kr.happynewyear.library.messaging.BrokerType
 import kr.happynewyear.library.messaging.Message
 import kr.happynewyear.library.messaging.consumer.deadletter.DeadletterHandler
-import kr.happynewyear.notification.message.ExceptionNotifier
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 import java.util.function.Consumer

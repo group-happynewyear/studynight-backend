@@ -4,9 +4,9 @@ import kr.happynewyear.authentication.application.exception.AccountNotFoundExcep
 import kr.happynewyear.authentication.application.exception.DuplicatedEmailException
 import kr.happynewyear.authentication.application.exception.InvalidPasswordException
 import kr.happynewyear.authentication.application.exception.RefreshTokenNotFoundException
+import kr.happynewyear.library.exception.ExceptionNotifier
 import kr.happynewyear.library.exception.http.ErrorResponse
 import kr.happynewyear.library.exception.http.ErrorResponseEntityFactories
-import kr.happynewyear.notification.message.ExceptionNotifier
 import kr.happynewyear.studynight.application.exception.DuplicatedStudentException
 import kr.happynewyear.studynight.application.exception.ResourceNotFoundException
 import org.springframework.http.HttpStatus.*

@@ -9,13 +9,14 @@ import org.springframework.stereotype.Component
 @Component
 class DeadletterHandler(
     private val deadletterStore: DeadletterStore,
-    private val brokerProducers: List<BrokerProducer>
+    private val brokerProducers: List<BrokerProducer>,
+    private val deadletterNotifier: DeadletterNotifier
 ) {
 
     fun create(message: Message, exception: Exception, brokerType: BrokerType) {
         val deadletter = Deadletter.from(message, exception, brokerType)
         val deadletterId = deadletterStore.add(deadletter)
-        // TODO notify
+        deadletterNotifier.send(deadletterId, message)
     }
 
     fun requeue(deadletterId: String) {

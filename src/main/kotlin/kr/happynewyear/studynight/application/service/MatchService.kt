@@ -45,7 +45,7 @@ class MatchService(
     private fun send(invitation: Invitation) {
         val userId = invitation.student.userId
         val title = "${invitation.match.study.title}에서 당신에게 관심을 보입니다."
-        val api = "http://localhost:8080" // TODO
+        val api = "http://localhost:8080" // TODO curr
         val content = "" +
             "초대장  : $api/api/invitations/${invitation.id}\n" +
             "대화수락 : $api/api/invitations/${invitation.id}/accept?userId=$userId"

@@ -34,8 +34,25 @@ class ApplicationService(
             .ifEmpty { Channel.ofDefaultAlert(defaultAlertChannelType, defaultAlertChannelAddress) }
         channels.forEach {
             when (it.type) {
-                MAIL -> notificationService.mail(it.address, head, "${head}\n${fullStacktrace}") {}
+                MAIL -> notificationService.mail(it.address, head, fullStacktrace) {}
                 SLACK -> notificationService.slack(it.address, "${head}\n${coreStacktrace}") {}
+            }
+        }
+    }
+
+    fun deadletter(
+        applicationName: String, messageType: String,
+        messageContent: String, requeueLink: String
+    ) {
+        val head = "[$applicationName] Deadletter: $messageType"
+        val body = "${messageContent}\n${requeueLink}"
+
+        val channels = channelRepository.findByApplication(applicationName)
+            .ifEmpty { Channel.ofDefaultAlert(defaultAlertChannelType, defaultAlertChannelAddress) }
+        channels.forEach {
+            when (it.type) {
+                MAIL -> notificationService.mail(it.address, head, body) {}
+                SLACK -> notificationService.slack(it.address, "${head}\n${body}") {}
             }
         }
     }

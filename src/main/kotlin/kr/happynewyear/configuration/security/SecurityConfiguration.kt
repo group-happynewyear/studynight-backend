@@ -43,6 +43,7 @@ class SecurityConfiguration(
             .requestMatchers(POST, "/api/alert").authenticated()
             // admin
             .requestMatchers(POST, "/admin/deadletters/requeue").permitAll() // TODO hasRole
+            .requestMatchers(GET, "/admin/deadletters/requeue-token").permitAll()
 
             // authentication
             .requestMatchers(POST, "/api/accounts", "/api/login", "/api/refresh").permitAll()

@@ -14,4 +14,10 @@ class DeadletterController(
         deadletterHandler.requeue(id)
     }
 
+    @GetMapping("/requeue-token")
+    fun requeue(@RequestParam id: String, @RequestParam token: String) {
+        // TODO validate token
+        requeue(id)
+    }
+
 }

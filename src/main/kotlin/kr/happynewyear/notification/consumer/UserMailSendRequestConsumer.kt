@@ -15,7 +15,7 @@ class UserMailSendRequestConsumer(
 
     @EventListener
     fun consume(message: UserMailSendRequest) {
-        consumeProcessor.consume(SPRING, message, {
+        consumeProcessor.consume("sendMail", SPRING, message, {
             userService.sendMail(it.userId, it.title, it.content)
         })
     }

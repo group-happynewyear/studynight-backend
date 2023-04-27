@@ -6,4 +6,4 @@ import java.util.*
 data class UserMailChannelCreateRequest(
     val userId: UUID,
     val email: String
-) : Message
+) : Message()

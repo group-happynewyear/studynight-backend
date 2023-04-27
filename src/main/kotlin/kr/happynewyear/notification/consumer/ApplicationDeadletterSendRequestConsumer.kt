@@ -15,7 +15,7 @@ class ApplicationDeadletterSendRequestConsumer(
 
     @EventListener
     fun consume(message: ApplicationDeadletterSendRequest) {
-        consumeProcessor.consume(SPRING, message, {
+        consumeProcessor.consume("deadletter", SPRING, message, {
             applicationService.deadletter(
                 it.applicationName, it.messageType,
                 it.messageContent, it.requeueLink

@@ -7,4 +7,4 @@ data class ApplicationDeadletterSendRequest(
     val messageType: String,
     val messageContent: String,
     val requeueLink: String
-) : Message
+) : Message()

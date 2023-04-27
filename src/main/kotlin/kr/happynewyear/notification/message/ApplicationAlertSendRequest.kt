@@ -7,7 +7,7 @@ data class ApplicationAlertSendRequest(
     val exceptionType: String,
     val exceptionMessage: String,
     val stacktrace: List<String>
-) : Message {
+) : Message() {
     companion object {
         fun of(applicationName: String, e: Exception): ApplicationAlertSendRequest {
             val exceptionType = e.javaClass.simpleName

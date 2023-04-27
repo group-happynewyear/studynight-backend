@@ -12,30 +12,27 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "deadletters")
 class DeadletterEntity(
-    messageContent: String, exceptionSummary: String,
+    messageContent: String,
     messageClass: String, brokerType: String,
-    timestamp: LocalDateTime
 ) {
 
     companion object {
         fun from(deadletter: Deadletter): DeadletterEntity {
             return DeadletterEntity(
-                deadletter.messageContent, deadletter.exceptionSummary,
+                deadletter.messageContent,
                 deadletter.messageClass, deadletter.brokerType.name,
-                deadletter.timestamp
             )
         }
     }
 
     fun toDeadletter(): Deadletter {
-        return Deadletter(messageContent, exceptionSummary, messageClass, BrokerType.valueOf(brokerType), timestamp)
+        return Deadletter(messageContent, messageClass, BrokerType.valueOf(brokerType))
     }
 
     @Id val id: String = Randoms.uuidString()
     @Column(columnDefinition = "TEXT") val messageContent: String = messageContent
-    val exceptionSummary: String = exceptionSummary
     val messageClass: String = messageClass
     val brokerType: String = brokerType
-    val timestamp: LocalDateTime = timestamp
+    val timestamp: LocalDateTime = LocalDateTime.now()
 
 }

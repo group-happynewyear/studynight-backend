@@ -13,9 +13,9 @@ class DeadletterHandler(
     private val deadletterNotifier: DeadletterNotifier
 ) {
 
-    fun create(message: Message, exception: Exception, brokerType: BrokerType) {
-        val deadletter = Deadletter.from(message, exception, brokerType)
-        val deadletterId = deadletterStore.add(deadletter)
+    fun create(message: Message, brokerType: BrokerType) {
+        val deadletter = Deadletter.from(message, brokerType)
+        val deadletterId = deadletterStore.put(deadletter)
         deadletterNotifier.send(deadletterId, message)
     }
 

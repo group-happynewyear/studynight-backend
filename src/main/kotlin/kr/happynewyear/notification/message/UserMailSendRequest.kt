@@ -7,4 +7,4 @@ data class UserMailSendRequest(
     val userId: UUID,
     val title: String,
     val content: String
-) : Message
+) : Message()

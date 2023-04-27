@@ -1,3 +1,7 @@
 package kr.happynewyear.library.messaging
 
-interface Message
+import kr.happynewyear.library.utility.Randoms
+
+abstract class Message {
+    val id = Randoms.uuidString()
+}

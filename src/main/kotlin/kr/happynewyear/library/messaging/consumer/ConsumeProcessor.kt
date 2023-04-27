@@ -5,27 +5,32 @@ import kr.happynewyear.library.exception.RunnerWrappers
 import kr.happynewyear.library.messaging.BrokerType
 import kr.happynewyear.library.messaging.Message
 import kr.happynewyear.library.messaging.consumer.deadletter.DeadletterHandler
+import kr.happynewyear.library.messaging.consumer.log.ConsumptionLogHandler
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 import java.util.function.Consumer
 
 @Component
 class ConsumeProcessor(
+    private val consumptionLogHandler: ConsumptionLogHandler,
     private val exceptionNotifier: ExceptionNotifier,
     private val deadletterHandler: DeadletterHandler
 ) {
 
     @Async
     fun <T : Message> consume(
-        brokerType: BrokerType,
+        consumerGroup: String, brokerType: BrokerType,
         message: T, consumeAction: Consumer<T>,
         alert: Boolean = true, deadletter: Boolean = true, consumptionLog: Boolean = true
     ) {
         RunnerWrappers.run(
-            { consumeAction.accept(message) },
+            {
+                if (consumptionLog) consumptionLogHandler.handle(consumerGroup, message, consumeAction)
+                else consumeAction.accept(message)
+            },
             {
                 if (alert) exceptionNotifier.send(it)
-                if (deadletter) deadletterHandler.create(message, it, brokerType)
+                if (deadletter) deadletterHandler.create(message, brokerType)
             }
         )
     }

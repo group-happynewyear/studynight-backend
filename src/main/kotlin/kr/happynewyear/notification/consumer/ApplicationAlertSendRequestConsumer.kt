@@ -15,7 +15,7 @@ class ApplicationAlertSendRequestConsumer(
 
     @EventListener
     fun consume(message: ApplicationAlertSendRequest) {
-        consumeProcessor.consume(SPRING, message, {
+        consumeProcessor.consume("alert", SPRING, message, {
             applicationService.alert(
                 it.applicationName,
                 it.exceptionType, it.exceptionMessage, it.stacktrace

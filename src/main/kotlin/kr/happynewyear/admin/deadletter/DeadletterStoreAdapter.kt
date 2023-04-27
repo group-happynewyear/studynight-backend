@@ -10,7 +10,7 @@ class DeadletterStoreAdapter(
     private val deadletterJpaRepository: DeadletterJpaRepository
 ) : DeadletterStore {
 
-    override fun add(deadletter: Deadletter): String {
+    override fun put(deadletter: Deadletter): String {
         val deadletterEntity = DeadletterEntity.from(deadletter)
         deadletterJpaRepository.save(deadletterEntity)
         return deadletterEntity.id

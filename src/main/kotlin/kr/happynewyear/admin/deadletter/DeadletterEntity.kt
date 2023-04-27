@@ -1,5 +1,6 @@
 package kr.happynewyear.admin.deadletter
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -30,9 +31,8 @@ class DeadletterEntity(
         return Deadletter(messageContent, exceptionSummary, messageClass, BrokerType.valueOf(brokerType), timestamp)
     }
 
-    @Id
-    val id: String = Randoms.uuidString()
-    val messageContent: String = messageContent
+    @Id val id: String = Randoms.uuidString()
+    @Column(columnDefinition = "TEXT") val messageContent: String = messageContent
     val exceptionSummary: String = exceptionSummary
     val messageClass: String = messageClass
     val brokerType: String = brokerType

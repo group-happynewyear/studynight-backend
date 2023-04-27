@@ -16,12 +16,16 @@ class ConsumeProcessor(
 ) {
 
     @Async
-    fun <T : Message> consume(brokerType: BrokerType, message: T, consumeAction: Consumer<T>) {
+    fun <T : Message> consume(
+        brokerType: BrokerType,
+        message: T, consumeAction: Consumer<T>,
+        alert: Boolean = true, deadletter: Boolean = true, consumptionLog: Boolean = true
+    ) {
         RunnerWrappers.run(
             { consumeAction.accept(message) },
             {
-                exceptionNotifier.send(it)
-                deadletterHandler.create(message, it, brokerType)
+                if (alert) exceptionNotifier.send(it)
+                if (deadletter) deadletterHandler.create(message, it, brokerType)
             }
         )
     }

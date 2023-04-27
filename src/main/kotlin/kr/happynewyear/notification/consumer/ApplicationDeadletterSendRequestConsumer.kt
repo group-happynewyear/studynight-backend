@@ -15,13 +15,12 @@ class ApplicationDeadletterSendRequestConsumer(
 
     @EventListener
     fun consume(message: ApplicationDeadletterSendRequest) {
-        // TODO recursive
-        consumeProcessor.consume(SPRING, message) {
+        consumeProcessor.consume(SPRING, message, {
             applicationService.deadletter(
                 it.applicationName, it.messageType,
                 it.messageContent, it.requeueLink
             )
-        }
+        }, deadletter = false)
     }
 
 }

@@ -1,5 +1,6 @@
 package kr.happynewyear.notification.consumer
 
+import kr.happynewyear.library.messaging.BrokerType.SPRING
 import kr.happynewyear.library.messaging.consumer.ConsumeProcessor
 import kr.happynewyear.notification.application.service.UserService
 import kr.happynewyear.notification.message.UserMailChannelCreateRequest
@@ -14,7 +15,7 @@ class UserMailChannelCreateRequestConsumer(
 
     @EventListener
     fun consume(message: UserMailChannelCreateRequest) {
-        consumeProcessor.consume(message) {
+        consumeProcessor.consume(SPRING, message) {
             userService.createMailChannel(it.userId, it.email)
         }
     }

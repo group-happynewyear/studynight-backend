@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component
 
 @Component
 class UserMailSendRequestProducer(
-    private val springProducer: SpringProducer
+    private val brokerProducer: SpringProducer
 ) {
 
     fun produce(message: UserMailSendRequest) {
-        springProducer.produce(message)
+        brokerProducer.produce(message)
     }
 
 }

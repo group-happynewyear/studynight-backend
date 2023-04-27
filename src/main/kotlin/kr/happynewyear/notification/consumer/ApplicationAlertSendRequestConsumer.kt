@@ -1,5 +1,6 @@
 package kr.happynewyear.notification.consumer
 
+import kr.happynewyear.library.messaging.BrokerType.SPRING
 import kr.happynewyear.library.messaging.consumer.ConsumeProcessor
 import kr.happynewyear.notification.application.service.ApplicationService
 import kr.happynewyear.notification.message.ApplicationAlertSendRequest
@@ -14,7 +15,7 @@ class ApplicationAlertSendRequestConsumer(
 
     @EventListener
     fun consume(message: ApplicationAlertSendRequest) {
-        consumeProcessor.consume(message) {
+        consumeProcessor.consume(SPRING, message) {
             applicationService.alert(
                 it.applicationName,
                 it.exceptionType, it.exceptionMessage, it.stacktrace

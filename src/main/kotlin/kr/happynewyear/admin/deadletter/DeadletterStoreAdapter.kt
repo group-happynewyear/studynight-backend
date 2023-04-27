@@ -10,14 +10,15 @@ class DeadletterStoreAdapter(
     private val deadletterJpaRepository: DeadletterJpaRepository
 ) : DeadletterStore {
 
-    override fun save(deadletter: Deadletter): String {
+    override fun add(deadletter: Deadletter): String {
         val deadletterEntity = DeadletterEntity.from(deadletter)
         deadletterJpaRepository.save(deadletterEntity)
         return deadletterEntity.id
     }
 
-    override fun findById(deadletterId: String): Deadletter? {
+    override fun pop(deadletterId: String): Deadletter? {
         val deadletterEntity = deadletterJpaRepository.findByIdOrNull(deadletterId)
+        deadletterJpaRepository.deleteById(deadletterId)
         return deadletterEntity?.toDeadletter()
     }
 

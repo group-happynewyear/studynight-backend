@@ -1,17 +1,17 @@
 package kr.happynewyear.admin.deadletter
 
-import kr.happynewyear.library.messaging.consumer.deadletter.DeadletterService
+import kr.happynewyear.library.messaging.consumer.deadletter.DeadletterHandler
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/admin/deadletters")
 class DeadletterController(
-    private val deadletterService: DeadletterService
+    private val deadletterHandler: DeadletterHandler
 ) {
 
     @PostMapping("/requeue")
     fun requeue(@RequestParam id: String) {
-        deadletterService.requeue(id)
+        deadletterHandler.requeue(id)
     }
 
 }

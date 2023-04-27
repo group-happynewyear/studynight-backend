@@ -3,7 +3,7 @@ package kr.happynewyear.library.messaging.consumer
 import kr.happynewyear.library.exception.RunnerWrappers
 import kr.happynewyear.library.messaging.BrokerType
 import kr.happynewyear.library.messaging.Message
-import kr.happynewyear.library.messaging.consumer.deadletter.DeadletterService
+import kr.happynewyear.library.messaging.consumer.deadletter.DeadletterHandler
 import kr.happynewyear.notification.message.ExceptionNotifier
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
@@ -12,7 +12,7 @@ import java.util.function.Consumer
 @Component
 class ConsumeProcessor(
     private val exceptionNotifier: ExceptionNotifier,
-    private val deadletterService: DeadletterService
+    private val deadletterHandler: DeadletterHandler
 ) {
 
     @Async
@@ -21,7 +21,7 @@ class ConsumeProcessor(
             { consumeAction.accept(message) },
             {
                 exceptionNotifier.send(it)
-                deadletterService.create(message, it, brokerType)
+                deadletterHandler.create(message, it, brokerType)
             }
         )
     }

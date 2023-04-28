@@ -4,7 +4,7 @@
 
 개발자 스터디 매칭 서비스
 
-- [API](#API)
+- [DOC](#DOC)
 - [DNS](#DNS)
 - [RUN](#RUN)
 - [CI](#CI)
@@ -12,9 +12,13 @@
 
 ---
 
-## API
+## DOC
 
-[SWAGGER](http://localhost:8080/swagger-ui.html) (운영 전까지는 로컬에서 `stage` 프로파일로 실행 후 접근해주세요.)
+- [API](http://localhost:8080/swagger-ui.html)
+- [TEST](http://localhost:8080/reports/tests/test/index.html)
+- [COVERAGE](http://localhost:8080/reports/jacoco/test/html/index.html)
+
+운영 전까지는 로컬에서 `stage` 프로파일로 실행 후 접근해주세요.
 
 ---
 

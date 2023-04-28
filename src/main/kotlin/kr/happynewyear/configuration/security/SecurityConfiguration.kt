@@ -38,6 +38,7 @@ class SecurityConfiguration(
             // base
             .requestMatchers(GET, "/error", "/favicon.ico").permitAll()
             .requestMatchers(GET, "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+            .requestMatchers(GET, "/reports/tests/test/**", "/reports/jacoco/test/html/**").permitAll()
             .requestMatchers(GET, "/api/health-check").permitAll()
             .requestMatchers(GET, "/api/hello").authenticated()
             .requestMatchers(POST, "/api/alert").authenticated()

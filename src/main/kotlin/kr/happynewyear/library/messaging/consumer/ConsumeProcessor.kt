@@ -21,7 +21,7 @@ class ConsumeProcessor(
     fun <T : Message> consume(
         consumerGroup: String, brokerType: BrokerType,
         message: T, consumeAction: Consumer<T>,
-        alert: Boolean = true, deadletter: Boolean = true, consumptionLog: Boolean = true
+        alert: Boolean, deadletter: Boolean, consumptionLog: Boolean
     ) {
         RunnerWrappers.run(
             {

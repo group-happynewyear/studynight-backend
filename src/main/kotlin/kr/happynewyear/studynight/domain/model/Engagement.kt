@@ -1,6 +1,7 @@
 package kr.happynewyear.studynight.domain.model
 
 import jakarta.persistence.*
+import jakarta.persistence.EnumType.STRING
 import jakarta.persistence.FetchType.LAZY
 import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.studynight.constant.EngagementRole
@@ -40,6 +41,7 @@ class Engagement(
     )
     val student: Student = student
 
+    @Enumerated(STRING)
     @Column(
         name = "role",
         nullable = false, updatable = true, unique = false

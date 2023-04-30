@@ -7,16 +7,13 @@ import org.springframework.stereotype.Component
 
 @Component
 class SpringProducer(
-    private val produceProcessor: ProduceProcessor,
     private val applicationEventPublisher: ApplicationEventPublisher
 ) : BrokerProducer {
 
     override val brokerType = SPRING
 
     override fun produce(message: Message) {
-        produceProcessor.produce(message) {
-            applicationEventPublisher.publishEvent(it)
-        }
+        applicationEventPublisher.publishEvent(message)
     }
 
 }

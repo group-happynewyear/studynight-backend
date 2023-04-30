@@ -1,19 +1,12 @@
 package kr.happynewyear.library.messaging.producer
 
-import kr.happynewyear.library.messaging.BrokerType.SPRING
+import kr.happynewyear.library.bean.ApplicationEventPublisherHolder
 import kr.happynewyear.library.messaging.Message
-import org.springframework.context.ApplicationEventPublisher
-import org.springframework.stereotype.Component
 
-@Component
-class SpringProducer(
-    private val applicationEventPublisher: ApplicationEventPublisher
-) : BrokerProducer {
+interface SpringProducer<T : Message> : Producer<T> {
 
-    override val brokerType = SPRING
-
-    override fun produce(message: Message) {
-        applicationEventPublisher.publishEvent(message)
+    override fun produce(message: T) {
+        ApplicationEventPublisherHolder.get().publishEvent(message)
     }
 
 }

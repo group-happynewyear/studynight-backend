@@ -4,15 +4,15 @@ import kr.happynewyear.library.marshalling.json.JsonMarshallers
 import kr.happynewyear.library.messaging.BrokerType
 import kr.happynewyear.library.messaging.BrokerType.SPRING
 import kr.happynewyear.library.messaging.Message
-import kr.happynewyear.library.messaging.producer.BrokerProducer
-import kr.happynewyear.library.messaging.producer.SpringProducer
+import kr.happynewyear.library.messaging.producer.Producer
+import kr.happynewyear.library.messaging.producer.SpringRequeueProducer
 import org.springframework.stereotype.Component
 
 @Component
 class DeadletterHandler(
     private val deadletterStore: DeadletterStore,
     private val deadletterNotifier: DeadletterNotifier,
-    private val springProducer: SpringProducer
+    private val springRequeueProducer: SpringRequeueProducer
 ) {
 
     fun create(message: Message, brokerType: BrokerType) {
@@ -29,9 +29,9 @@ class DeadletterHandler(
         producer.produce(message)
     }
 
-    private fun selectProducer(deadletter: Deadletter): BrokerProducer {
+    private fun selectProducer(deadletter: Deadletter): Producer<Message> {
         when (deadletter.brokerType) {
-            SPRING -> return springProducer
+            SPRING -> return springRequeueProducer
             // TODO kafka
         }
     }

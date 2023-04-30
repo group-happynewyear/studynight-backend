@@ -5,12 +5,4 @@ import kr.happynewyear.notification.message.ApplicationDeadletterSendRequest
 import org.springframework.stereotype.Component
 
 @Component
-class ApplicationDeadletterSendRequestProducer(
-    private val brokerProducer: SpringProducer
-) {
-
-    fun produce(message: ApplicationDeadletterSendRequest) {
-        brokerProducer.produce(message)
-    }
-
-}
+class ApplicationDeadletterSendRequestProducer : SpringProducer<ApplicationDeadletterSendRequest>

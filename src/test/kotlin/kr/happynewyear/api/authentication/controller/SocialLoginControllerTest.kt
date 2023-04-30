@@ -1,16 +1,15 @@
 package kr.happynewyear.api.authentication.controller
 
+import com.ninjasquad.springmockk.SpykBean
+import io.mockk.verify
 import kr.happynewyear.authentication.constant.SocialAccountProvider
 import kr.happynewyear.authentication.infrastructure.google.*
 import kr.happynewyear.library.marshalling.jwt.JwtMarshallers
 import kr.happynewyear.library.test.ApiTest
-import kr.happynewyear.library.test.MockitoHelper.anyObject
 import kr.happynewyear.notification.message.UserMailChannelCreateRequestProducer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.BDDMockito.then
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpStatus.FOUND
 import java.util.*
@@ -19,7 +18,7 @@ class SocialLoginControllerTest(
     @Value("\${security.token.access.secret}") private val secret: String,
 ) : ApiTest() {
 
-    @SpyBean
+    @SpykBean
     lateinit var userMailChannelCreateRequestProducer: UserMailChannelCreateRequestProducer
 
 
@@ -51,7 +50,7 @@ class SocialLoginControllerTest(
         )
 
         assertThat(location).isNotNull
-        then(userMailChannelCreateRequestProducer).should().produce(anyObject())
+        verify { userMailChannelCreateRequestProducer.produce(any()) }
     }
 
 
@@ -66,8 +65,7 @@ class SocialLoginControllerTest(
         val jwt2 = redirect(GET, req, FOUND).split("?")[1].split("&")[0].split("=")[1]
 
         assertThat(subjectOf(jwt1)).isEqualTo(subjectOf(jwt2))
-        then(userMailChannelCreateRequestProducer).should().produce(anyObject())
-        then(userMailChannelCreateRequestProducer).shouldHaveNoMoreInteractions()
+        verify(exactly = 1) { userMailChannelCreateRequestProducer.produce(any()) }
     }
 
     private fun subjectOf(jwt: String): String {

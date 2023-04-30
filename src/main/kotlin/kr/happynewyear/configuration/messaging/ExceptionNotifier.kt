@@ -1,8 +1,8 @@
 package kr.happynewyear.configuration.messaging
 
+import kr.happynewyear.application.producer.ApplicationAlertSendRequestProducer
 import kr.happynewyear.library.exception.ExceptionNotifier
 import kr.happynewyear.notification.message.ApplicationAlertSendRequest
-import kr.happynewyear.notification.message.ApplicationAlertSendRequestProducer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 

@@ -5,7 +5,7 @@ import io.mockk.verify
 import kr.happynewyear.api.authentication.dto.AccountCreateRequest
 import kr.happynewyear.authentication.infrastructure.database.AccountJpaRepository
 import kr.happynewyear.library.test.ApiTest
-import kr.happynewyear.notification.message.UserMailChannelCreateRequestProducer
+import kr.happynewyear.authentication.application.producer.UserMailChannelCreateRequestProducer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

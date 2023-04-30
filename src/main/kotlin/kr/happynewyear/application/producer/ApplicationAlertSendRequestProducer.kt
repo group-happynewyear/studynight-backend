@@ -1,14 +1,15 @@
-package kr.happynewyear.notification.message
+package kr.happynewyear.application.producer
 
 import kr.happynewyear.library.messaging.producer.SpringProducer
+import kr.happynewyear.notification.message.ApplicationAlertSendRequest
 import org.springframework.stereotype.Component
 
 @Component
-class UserMailSendRequestProducer(
+class ApplicationAlertSendRequestProducer(
     private val brokerProducer: SpringProducer
 ) {
 
-    fun produce(message: UserMailSendRequest) {
+    fun produce(message: ApplicationAlertSendRequest) {
         brokerProducer.produce(message)
     }
 

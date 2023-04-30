@@ -9,7 +9,7 @@ import kr.happynewyear.api.studynight.fixture.matchSourceFixture
 import kr.happynewyear.api.studynight.fixture.studentCreateRequestFixture
 import kr.happynewyear.api.studynight.fixture.studyCreateRequestFixture
 import kr.happynewyear.library.test.LogonApiTest
-import kr.happynewyear.notification.message.UserMailSendRequestProducer
+import kr.happynewyear.studynight.application.producer.UserMailSendRequestProducer
 import kr.happynewyear.studynight.constant.condition.Position
 import kr.happynewyear.studynight.constant.condition.Position.*
 import org.assertj.core.api.Assertions.assertThat

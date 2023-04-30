@@ -1,6 +1,7 @@
-package kr.happynewyear.notification.message
+package kr.happynewyear.application.producer
 
 import kr.happynewyear.library.messaging.producer.SpringProducer
+import kr.happynewyear.notification.message.ApplicationDeadletterSendRequest
 import org.springframework.stereotype.Component
 
 @Component

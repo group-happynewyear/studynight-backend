@@ -1,10 +1,10 @@
 package kr.happynewyear.configuration.messaging
 
+import kr.happynewyear.application.producer.ApplicationDeadletterSendRequestProducer
 import kr.happynewyear.library.marshalling.json.JsonMarshallers
 import kr.happynewyear.library.messaging.Message
 import kr.happynewyear.library.messaging.consumer.deadletter.DeadletterNotifier
 import kr.happynewyear.notification.message.ApplicationDeadletterSendRequest
-import kr.happynewyear.notification.message.ApplicationDeadletterSendRequestProducer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 

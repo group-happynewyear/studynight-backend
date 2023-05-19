@@ -36,6 +36,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven(url = "https://jitpack.io")
 }
 
 extra["springCloudVersion"] = "2022.0.1"
@@ -54,6 +55,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
+    implementation("com.github.josh910830:portable-mq:1.1.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

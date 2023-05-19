@@ -1,4 +1,4 @@
-package kr.happynewyear.configuration.messaging
+package kr.happynewyear.configuration.exception
 
 import kr.happynewyear.application.producer.ApplicationAlertSendRequestProducer
 import kr.happynewyear.library.exception.ExceptionNotifier

@@ -1,19 +1,19 @@
 package kr.happynewyear.notification.consumer
 
-import kr.happynewyear.library.messaging.BrokerType.SPRING
-import kr.happynewyear.library.messaging.consumer.Consume
+import com.github.josh910830.portablemq.core.consumer.Consume
+import com.github.josh910830.portablemq.core.consumer.Consumer
+import com.github.josh910830.portablemq.spring.consumer.SpringListener
+import kr.happynewyear.library.constant.Topics.Companion.USER_MAIL_SEND_REQUEST
 import kr.happynewyear.notification.application.service.UserService
 import kr.happynewyear.notification.message.UserMailSendRequest
-import org.springframework.context.event.EventListener
-import org.springframework.stereotype.Component
 
-@Component
+@Consumer
 class UserMailSendRequestConsumer(
     private val userService: UserService
 ) {
 
-    @EventListener
-    @Consume("sendMail", SPRING)
+    @Consume
+    @SpringListener(USER_MAIL_SEND_REQUEST)
     fun consume(message: UserMailSendRequest) {
         userService.sendMail(message.userId, message.title, message.content)
     }

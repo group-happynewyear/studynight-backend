@@ -1,10 +1,10 @@
 package kr.happynewyear.notification.message
 
-import kr.happynewyear.library.messaging.Message
+import com.github.josh910830.portablemq.core.message.IdentifiableMessage
 
 data class ApplicationDeadletterSendRequest(
     val applicationName: String,
-    val messageType: String,
+    val topic: String,
     val messageContent: String,
-    val requeueLink: String
-) : Message()
+    val redriveLink: String
+) : IdentifiableMessage()

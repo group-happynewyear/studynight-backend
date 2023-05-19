@@ -1,2 +1,0 @@
-POST {{studynight}}/admin/deadletters/requeue?
-    id=f9becf20-b0e1-4a7a-a980-56e9fbfdcd23

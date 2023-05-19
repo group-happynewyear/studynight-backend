@@ -1,25 +1,3 @@
--- service
-
-create table deadletters
-(
-    id              varchar(255) not null,
-    broker_type     varchar(255) not null,
-    message_class   varchar(255) not null,
-    message_content TEXT         not null,
-    timestamp       timestamp(6),
-    primary key (id)
-);
-
-create table consumption_logs
-(
-    id             varchar(255) not null,
-    consumer_group varchar(255),
-    message_id     varchar(255),
-    timestamp      timestamp(6),
-    primary key (id)
-);
-
-
 -- authentication
 
 create table users

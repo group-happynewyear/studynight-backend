@@ -1,23 +1,23 @@
 package kr.happynewyear.notification.consumer
 
-import kr.happynewyear.library.messaging.BrokerType.SPRING
-import kr.happynewyear.library.messaging.consumer.Consume
+import com.github.josh910830.portablemq.core.consumer.Consume
+import com.github.josh910830.portablemq.core.consumer.Consumer
+import com.github.josh910830.portablemq.spring.consumer.SpringListener
+import kr.happynewyear.library.constant.Topics.Companion.APPLICATION_DEADLETTER_SEND_REQUEST
 import kr.happynewyear.notification.application.service.ApplicationService
 import kr.happynewyear.notification.message.ApplicationDeadletterSendRequest
-import org.springframework.context.event.EventListener
-import org.springframework.stereotype.Component
 
-@Component
+@Consumer
 class ApplicationDeadletterSendRequestConsumer(
     private val applicationService: ApplicationService
 ) {
 
-    @EventListener
-    @Consume("deadletter", SPRING, deadletter = false)
+    @Consume(useDeadletter = false)
+    @SpringListener(APPLICATION_DEADLETTER_SEND_REQUEST)
     fun consume(message: ApplicationDeadletterSendRequest) {
         applicationService.deadletter(
-            message.applicationName, message.messageType,
-            message.messageContent, message.requeueLink
+            message.applicationName, message.topic,
+            message.messageContent, message.redriveLink
         )
     }
 

@@ -1,8 +1,9 @@
 package kr.happynewyear.studynight.application.producer
 
-import kr.happynewyear.library.messaging.producer.SpringProducer
+import com.github.josh910830.portablemq.core.producer.Producer
+import com.github.josh910830.portablemq.spring.producer.SpringProducer
+import kr.happynewyear.library.constant.Topics.Companion.USER_MAIL_SEND_REQUEST
 import kr.happynewyear.notification.message.UserMailSendRequest
-import org.springframework.stereotype.Component
 
-@Component
+@Producer(USER_MAIL_SEND_REQUEST)
 class UserMailSendRequestProducer : SpringProducer<UserMailSendRequest>

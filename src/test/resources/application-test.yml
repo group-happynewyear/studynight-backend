@@ -4,6 +4,9 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  kafka:
+    consumer:
+      group-id: test
 
 security:
   cors:
@@ -20,3 +23,7 @@ notification:
     default-channel:
       type: SLACK
       address: https://hooks.slack.com/services/alert
+
+deadletter:
+  server-address: "http://localhost:8080"
+  redrive-token: "token"

@@ -42,10 +42,9 @@ class SecurityConfiguration(
             .requestMatchers(GET, "/api/health-check").permitAll()
             .requestMatchers(GET, "/api/hello").authenticated()
             .requestMatchers(POST, "/api/alert").authenticated()
-            // admin
-            .requestMatchers(POST, "/admin/deadletters/requeue").permitAll() // TODO hasRole
-            .requestMatchers(GET, "/admin/deadletters/requeue-token").permitAll()
-
+            // portable-mq
+            .requestMatchers("/portable-mq/**").authenticated()
+            .requestMatchers(GET, "/portable-mq/deadletter/redrive-token").authenticated()
             // authentication
             .requestMatchers(POST, "/api/accounts", "/api/login", "/api/refresh").permitAll()
             .requestMatchers(GET, "/api/social-login/**").permitAll()

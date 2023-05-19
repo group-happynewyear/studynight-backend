@@ -41,11 +41,11 @@ class ApplicationService(
     }
 
     fun deadletter(
-        applicationName: String, messageType: String,
-        messageContent: String, requeueLink: String
+        applicationName: String, topic: String,
+        messageContent: String, redriveLink: String
     ) {
-        val head = "[$applicationName] Deadletter: $messageType"
-        val body = "${messageContent}\n${requeueLink}"
+        val head = "[$applicationName] Deadletter: $topic"
+        val body = "${messageContent}\n${redriveLink}"
 
         val channels = channelRepository.findByApplication(applicationName)
             .ifEmpty { Channel.ofDefaultAlert(defaultAlertChannelType, defaultAlertChannelAddress) }

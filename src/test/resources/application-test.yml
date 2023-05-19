@@ -18,6 +18,9 @@ security:
     refresh:
       expiration-days: 14
 
+studynight:
+  server-address: http://localhost:8080
+
 notification:
   alert:
     default-channel:

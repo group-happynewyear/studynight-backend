@@ -32,6 +32,9 @@ social-login:
       scope: "openid email profile"
       redirect-uri: "http://localhost:8080/social-login/callback/provider/GOOGLE"
 
+studynight:
+  server-address: http://localhost:8080
+
 notification:
   alert:
     default-channel:

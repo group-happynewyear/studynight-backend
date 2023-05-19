@@ -9,6 +9,7 @@ import kr.happynewyear.studynight.domain.repository.MatchRepository
 import kr.happynewyear.studynight.domain.repository.StudentRepository
 import kr.happynewyear.studynight.domain.repository.StudyRepository
 import kr.happynewyear.studynight.type.MatchParameter
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -19,7 +20,8 @@ class MatchService(
     private val studyRepository: StudyRepository,
     private val studentRepository: StudentRepository,
     private val matchRepository: MatchRepository,
-    private val userMailSendRequestProducer: UserMailSendRequestProducer
+    private val userMailSendRequestProducer: UserMailSendRequestProducer,
+    @Value("\${studynight.server-address}") private val serverAddress: String,
 ) {
 
     @Transactional
@@ -45,10 +47,9 @@ class MatchService(
     private fun send(invitation: Invitation) {
         val userId = invitation.student.userId
         val title = "${invitation.match.study.title}에서 당신에게 관심을 보입니다."
-        val api = "http://localhost:8080" // TODO curr
         val content = "" +
-            "초대장  : $api/api/invitations/${invitation.id}\n" +
-            "대화수락 : $api/api/invitations/${invitation.id}/accept?userId=$userId"
+            "초대장  : $serverAddress/api/invitations/${invitation.id}\n" +
+            "대화수락 : $serverAddress/api/invitations/${invitation.id}/accept?userId=$userId"
         val message = UserMailSendRequest(userId, title, content)
         userMailSendRequestProducer.produce(message)
     }

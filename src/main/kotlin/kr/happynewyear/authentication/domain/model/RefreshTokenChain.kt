@@ -41,4 +41,12 @@ class RefreshTokenChain(
         _refreshTokens.add(refreshToken)
     }
 
+    fun remove(refreshToken: RefreshToken) {
+        _refreshTokens.remove(refreshToken)
+    }
+
+    fun isEmpty(): Boolean {
+        return _refreshTokens.isEmpty()
+    }
+
 }

@@ -39,7 +39,7 @@ class TokenService(
     fun validate(refreshTokenId: UUID) {
         val refreshToken = refreshTokenRepository.findById(refreshTokenId) ?: throw RefreshTokenNotFoundException()
         if (refreshToken.used) {
-            refreshTokenChainRepository.delete(refreshToken.refreshTokenChain)
+            delete(refreshTokenId)
             exceptionNotifier.send(RefreshTokenReusedException())
         }
     }
@@ -52,6 +52,14 @@ class TokenService(
         val newRefreshToken = oldRefreshToken.reproduce(expirationDays)
         val accessToken = writeJwt(newRefreshToken.user)
         return TokenResult.of(accessToken, newRefreshToken)
+    }
+
+
+    @Transactional
+    fun delete(refreshTokenId: UUID) {
+        val refreshToken = refreshTokenRepository.findById(refreshTokenId) ?: return
+        val refreshTokenChain = refreshToken.deprecate()
+        if (refreshTokenChain.isEmpty()) refreshTokenChainRepository.delete(refreshTokenChain)
     }
 
 

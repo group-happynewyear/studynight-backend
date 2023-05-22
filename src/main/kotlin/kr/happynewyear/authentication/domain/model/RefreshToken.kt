@@ -63,4 +63,9 @@ class RefreshToken(
         return now().isAfter(expiredAt)
     }
 
+    fun deprecate(): RefreshTokenChain {
+        refreshTokenChain.remove(this)
+        return refreshTokenChain
+    }
+
 }

@@ -1,11 +1,12 @@
 package kr.happynewyear.api.authentication.controller
 
+import com.github.josh910830.portablemq.core.producer.PortableProducer
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.verify
 import kr.happynewyear.api.authentication.dto.AccountCreateRequest
 import kr.happynewyear.authentication.infrastructure.database.AccountJpaRepository
 import kr.happynewyear.library.test.ApiTest
-import kr.happynewyear.authentication.application.producer.UserMailChannelCreateRequestProducer
+import kr.happynewyear.notification.message.ChannelCreateRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,7 +22,7 @@ class AccountControllerTest : ApiTest() {
     lateinit var accountJpaRepository: AccountJpaRepository
 
     @SpykBean
-    lateinit var userMailChannelCreateRequestProducer: UserMailChannelCreateRequestProducer
+    lateinit var channelCreateRequestProducer: PortableProducer<ChannelCreateRequest>
 
 
     @Test
@@ -38,7 +39,7 @@ class AccountControllerTest : ApiTest() {
         val accountId = UUID.fromString(location.replace("/api/accounts/", ""))
         val account = accountJpaRepository.findByIdOrNull(accountId)
         assertThat(account!!.password).isNotEqualTo(password)
-        verify { userMailChannelCreateRequestProducer.produce(any()) }
+        verify { channelCreateRequestProducer.produce(any()) }
     }
 
     @Test

@@ -1,5 +1,6 @@
 package kr.happynewyear.api.studynight.controller
 
+import com.github.josh910830.portablemq.core.producer.PortableProducer
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.verify
 import kr.happynewyear.api.studynight.dto.MatchCreateRequest
@@ -9,7 +10,7 @@ import kr.happynewyear.api.studynight.fixture.matchSourceFixture
 import kr.happynewyear.api.studynight.fixture.studentCreateRequestFixture
 import kr.happynewyear.api.studynight.fixture.studyCreateRequestFixture
 import kr.happynewyear.library.test.LogonApiTest
-import kr.happynewyear.studynight.application.producer.UserMailSendRequestProducer
+import kr.happynewyear.notification.message.UserNotificationRequest
 import kr.happynewyear.studynight.constant.condition.Position
 import kr.happynewyear.studynight.constant.condition.Position.*
 import org.assertj.core.api.Assertions.assertThat
@@ -22,7 +23,7 @@ import org.springframework.http.HttpStatus.OK
 class MatchControllerTest : LogonApiTest() {
 
     @SpykBean
-    lateinit var userMailSendRequestProducer: UserMailSendRequestProducer
+    lateinit var userNotificationRequestProducer: PortableProducer<UserNotificationRequest>
 
 
     fun createStudent(position: Position): String {
@@ -58,7 +59,7 @@ class MatchControllerTest : LogonApiTest() {
 
         assertThat(location).startsWith("/api/matches/")
 
-        verify { userMailSendRequestProducer.produce(any()) }
+        verify { userNotificationRequestProducer.produce(any()) }
     }
     // TODO not mine
 

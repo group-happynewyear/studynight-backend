@@ -1,14 +1,14 @@
 package kr.happynewyear.authentication.application.service
 
+import com.github.josh910830.portablemq.core.producer.PortableProducer
 import kr.happynewyear.authentication.application.dto.AccountResult
 import kr.happynewyear.authentication.application.dto.TokenResult
 import kr.happynewyear.authentication.application.exception.AccountNotFoundException
 import kr.happynewyear.authentication.application.exception.DuplicatedEmailException
 import kr.happynewyear.authentication.application.exception.InvalidPasswordException
-import kr.happynewyear.authentication.application.producer.UserMailChannelCreateRequestProducer
 import kr.happynewyear.authentication.domain.model.Account
 import kr.happynewyear.authentication.domain.repository.AccountRepository
-import kr.happynewyear.notification.message.UserMailChannelCreateRequest
+import kr.happynewyear.notification.message.ChannelCreateRequest
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,7 +19,7 @@ class AccountService(
     private val accountRepository: AccountRepository,
     private val passwordEncoder: PasswordEncoder,
     private val tokenService: TokenService,
-    private val userMailChannelCreateRequestProducer: UserMailChannelCreateRequestProducer
+    private val channelCreateRequestProducer: PortableProducer<ChannelCreateRequest>
 ) {
 
     @Transactional
@@ -30,7 +30,10 @@ class AccountService(
         val account = Account.create(email, encodedPassword)
         accountRepository.save(account)
 
-        with(account.user) { userMailChannelCreateRequestProducer.produce(UserMailChannelCreateRequest(id, email)) }
+        with(account.user) {
+            val message = ChannelCreateRequest.ofUserMail(id, email)
+            channelCreateRequestProducer.produce(message)
+        }
 
         return AccountResult.from(account)
     }

@@ -1,8 +1,8 @@
 package kr.happynewyear.studynight.application.service
 
-import kr.happynewyear.notification.message.UserMailSendRequest
+import com.github.josh910830.portablemq.core.producer.PortableProducer
+import kr.happynewyear.notification.message.UserNotificationRequest
 import kr.happynewyear.studynight.application.dto.MatchResult
-import kr.happynewyear.studynight.application.producer.UserMailSendRequestProducer
 import kr.happynewyear.studynight.domain.model.Invitation
 import kr.happynewyear.studynight.domain.model.Match
 import kr.happynewyear.studynight.domain.repository.MatchRepository
@@ -20,7 +20,7 @@ class MatchService(
     private val studyRepository: StudyRepository,
     private val studentRepository: StudentRepository,
     private val matchRepository: MatchRepository,
-    private val userMailSendRequestProducer: UserMailSendRequestProducer,
+    private val userNotificationRequestProducer: PortableProducer<UserNotificationRequest>,
     @Value("\${studynight.server-address}") private val serverAddress: String,
 ) {
 
@@ -44,14 +44,14 @@ class MatchService(
         return result
     }
 
-    private fun send(invitation: Invitation) {
-        val userId = invitation.student.userId
-        val title = "${invitation.match.study.title}에서 당신에게 관심을 보입니다."
+    private fun send(invitation: Invitation) = with(invitation) {
+        val userId = student.userId
+        val title = "[스터디나잇] ${match.study.title}에서 당신에게 관심을 보입니다."
         val content = "" +
-            "초대장  : $serverAddress/api/invitations/${invitation.id}\n" +
-            "대화수락 : $serverAddress/api/invitations/${invitation.id}/accept?userId=$userId"
-        val message = UserMailSendRequest(userId, title, content)
-        userMailSendRequestProducer.produce(message)
+            "초대장  : $serverAddress/api/invitations/$id\n" +
+            "대화수락 : $serverAddress/api/invitations/$id/accept?userId=$userId"
+        val message = UserNotificationRequest.of(userId, title, content)
+        userNotificationRequestProducer.produce(message)
     }
 
 

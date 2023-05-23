@@ -1,5 +1,5 @@
 package kr.happynewyear.notification.constant
 
-enum class ChannelType {
+enum class AddressType {
     MAIL, SLACK
 }

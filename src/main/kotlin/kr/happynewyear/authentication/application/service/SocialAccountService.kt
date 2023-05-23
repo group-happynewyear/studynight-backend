@@ -1,13 +1,13 @@
 package kr.happynewyear.authentication.application.service
 
+import com.github.josh910830.portablemq.core.producer.PortableProducer
 import kr.happynewyear.authentication.application.client.ExternalAccount
 import kr.happynewyear.authentication.application.client.ExternalAccountClient
 import kr.happynewyear.authentication.application.dto.TokenResult
-import kr.happynewyear.authentication.application.producer.UserMailChannelCreateRequestProducer
 import kr.happynewyear.authentication.constant.SocialAccountProvider
 import kr.happynewyear.authentication.domain.model.SocialAccount
 import kr.happynewyear.authentication.domain.repository.SocialAccountRepository
-import kr.happynewyear.notification.message.UserMailChannelCreateRequest
+import kr.happynewyear.notification.message.ChannelCreateRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.stream.Collectors.toMap
@@ -17,7 +17,7 @@ import java.util.stream.Collectors.toMap
 class SocialAccountService(
     private val socialAccountRepository: SocialAccountRepository,
     private val tokenService: TokenService,
-    private val userMailChannelCreateRequestProducer: UserMailChannelCreateRequestProducer,
+    private val channelCreateRequestProducer: PortableProducer<ChannelCreateRequest>,
     externalAccountClients: List<ExternalAccountClient>
 ) {
 
@@ -54,7 +54,10 @@ class SocialAccountService(
         val socialAccount = SocialAccount.create(externalAccount.provider, externalAccount.id, externalAccount.email)
         socialAccountRepository.save(socialAccount)
 
-        with(socialAccount.user) { userMailChannelCreateRequestProducer.produce(UserMailChannelCreateRequest(id, email)) }
+        with(socialAccount.user) {
+            val message = ChannelCreateRequest.ofUserMail(id, email)
+            channelCreateRequestProducer.produce(message)
+        }
     }
 
 }

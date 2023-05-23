@@ -1,12 +1,13 @@
 package kr.happynewyear.api.authentication.controller
 
+import com.github.josh910830.portablemq.core.producer.PortableProducer
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.verify
 import kr.happynewyear.authentication.constant.SocialAccountProvider
 import kr.happynewyear.authentication.infrastructure.google.*
 import kr.happynewyear.library.marshalling.jwt.JwtMarshallers
 import kr.happynewyear.library.test.ApiTest
-import kr.happynewyear.authentication.application.producer.UserMailChannelCreateRequestProducer
+import kr.happynewyear.notification.message.ChannelCreateRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Value
@@ -19,7 +20,7 @@ class SocialLoginControllerTest(
 ) : ApiTest() {
 
     @SpykBean
-    lateinit var userMailChannelCreateRequestProducer: UserMailChannelCreateRequestProducer
+    lateinit var channelCreateRequestProducer: PortableProducer<ChannelCreateRequest>
 
 
     @Test
@@ -50,7 +51,7 @@ class SocialLoginControllerTest(
         )
 
         assertThat(location).isNotNull
-        verify { userMailChannelCreateRequestProducer.produce(any()) }
+        verify { channelCreateRequestProducer.produce(any()) }
     }
 
 
@@ -65,7 +66,7 @@ class SocialLoginControllerTest(
         val jwt2 = redirect(GET, req, FOUND).split("?")[1].split("&")[0].split("=")[1]
 
         assertThat(subjectOf(jwt1)).isEqualTo(subjectOf(jwt2))
-        verify(exactly = 1) { userMailChannelCreateRequestProducer.produce(any()) }
+        verify(exactly = 1) { channelCreateRequestProducer.produce(any()) }
     }
 
     private fun subjectOf(jwt: String): String {

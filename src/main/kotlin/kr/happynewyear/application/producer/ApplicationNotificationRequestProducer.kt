@@ -1,0 +1,9 @@
+package kr.happynewyear.application.producer
+
+import com.github.josh910830.portablemq.core.producer.Producer
+import com.github.josh910830.portablemq.spring.producer.SpringProducer
+import kr.happynewyear.library.constant.Topics.Notification.Companion.APPLICATION_NOTIFICATION_REQUEST
+import kr.happynewyear.notification.message.ApplicationNotificationRequest
+
+@Producer(APPLICATION_NOTIFICATION_REQUEST)
+class ApplicationNotificationRequestProducer : SpringProducer<ApplicationNotificationRequest>

@@ -22,10 +22,9 @@ studynight:
   server-address: http://localhost:8080
 
 notification:
-  alert:
-    default-channel:
-      type: SLACK
-      address: https://hooks.slack.com/services/alert
+  default-application-address:
+    type: SLACK
+    value: https://hooks.slack.com/services/alert
 
 deadletter:
   server-address: "http://localhost:8080"

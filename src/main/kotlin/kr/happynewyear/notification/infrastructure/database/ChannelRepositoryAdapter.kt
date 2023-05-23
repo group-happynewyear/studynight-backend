@@ -1,11 +1,10 @@
 package kr.happynewyear.notification.infrastructure.database
 
-import kr.happynewyear.notification.constant.ChannelType.MAIL
-import kr.happynewyear.notification.constant.OwnerType.APPLICATION
-import kr.happynewyear.notification.constant.OwnerType.USER
 import kr.happynewyear.notification.domain.model.Channel
+import kr.happynewyear.notification.domain.model.ChannelOwner
 import kr.happynewyear.notification.domain.repository.ChannelRepository
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 class ChannelRepositoryAdapter(
@@ -16,12 +15,15 @@ class ChannelRepositoryAdapter(
         channelJpaRepository.save(channel)
     }
 
+
     override fun findByApplication(applicationName: String): List<Channel> {
-        return channelJpaRepository.findByOwnerTypeAndOwnerId(APPLICATION, applicationName)
+        val owner = ChannelOwner.ofApplication(applicationName)
+        return channelJpaRepository.findByOwner(owner)
     }
 
-    override fun findMailByUser(userId: String): List<Channel> {
-        return channelJpaRepository.findByOwnerTypeAndOwnerIdAndType(USER, userId, MAIL)
+    override fun findByUser(userId: UUID): List<Channel> {
+        val owner = ChannelOwner.ofUser(userId)
+        return channelJpaRepository.findByOwner(owner)
     }
 
 }

@@ -36,10 +36,9 @@ studynight:
   server-address: http://localhost:8080
 
 notification:
-  alert:
-    default-channel:
-      type: MAIL
-      address: alert@email.com
+  default-application-address:
+    type: MAIL
+    value: alert@email.com
 
 deadletter:
   server-address: "http://localhost:8080"

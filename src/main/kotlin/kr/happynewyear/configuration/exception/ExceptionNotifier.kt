@@ -1,20 +1,20 @@
 package kr.happynewyear.configuration.exception
 
-import kr.happynewyear.application.producer.ApplicationAlertSendRequestProducer
+import com.github.josh910830.portablemq.core.producer.PortableProducer
 import kr.happynewyear.library.exception.ExceptionNotifier
-import kr.happynewyear.notification.message.ApplicationAlertSendRequest
+import kr.happynewyear.notification.message.ApplicationNotificationRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 @Component
 class ExceptionNotifier(
-    private val applicationAlertSendRequestProducer: ApplicationAlertSendRequestProducer,
-    @Value("\${spring.application.name}") private val applicationName: String
+    private val producer: PortableProducer<ApplicationNotificationRequest>,
+    @Value("\${spring.application.name}") private val appName: String
 ) : ExceptionNotifier {
 
     override fun send(e: Exception) {
-        val message = ApplicationAlertSendRequest.of(applicationName, e)
-        applicationAlertSendRequestProducer.produce(message)
+        val msg = ApplicationNotificationRequest.of(appName, e)
+        producer.produce(msg)
     }
 
 }

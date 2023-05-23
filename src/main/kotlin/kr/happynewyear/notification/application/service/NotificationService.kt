@@ -1,12 +1,12 @@
 package kr.happynewyear.notification.application.service
 
-import kr.happynewyear.library.exception.RunnerWrappers
 import kr.happynewyear.notification.application.client.MailSender
 import kr.happynewyear.notification.application.client.SlackSender
-import org.springframework.scheduling.annotation.Async
+import kr.happynewyear.notification.application.dto.Notification
+import kr.happynewyear.notification.constant.AddressType.MAIL
+import kr.happynewyear.notification.constant.AddressType.SLACK
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.function.Consumer
 
 @Service
 @Transactional(readOnly = true)
@@ -15,20 +15,11 @@ class NotificationService(
     private val slackSender: SlackSender
 ) {
 
-    @Async
-    fun mail(
-        address: String, title: String, content: String,
-        onFail: Consumer<Exception>
-    ) {
-        RunnerWrappers.run({ mailSender.send(address, title, content) }, onFail)
-    }
-
-    @Async
-    fun slack(
-        address: String, message: String,
-        onFail: Consumer<Exception>
-    ) {
-        RunnerWrappers.run({ slackSender.send(address, message) }, onFail)
+    fun notify(notification: Notification) = with(notification) {
+        when (address.type) {
+            MAIL -> mailSender.send(address.value, title, content)
+            SLACK -> slackSender.send(address.value, message)
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package kr.happynewyear.api.authentication.controller
 
+import com.github.josh910830.portablemq.core.producer.PortableProducer
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.verify
 import kr.happynewyear.api.authentication.dto.AccountCreateRequest
@@ -9,7 +10,7 @@ import kr.happynewyear.api.authentication.dto.TokenResponse
 import kr.happynewyear.authentication.application.service.TokenService
 import kr.happynewyear.library.test.ApiTest
 import kr.happynewyear.library.utility.Randoms
-import kr.happynewyear.application.producer.ApplicationAlertSendRequestProducer
+import kr.happynewyear.notification.message.ApplicationNotificationRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +24,7 @@ class RefreshControllerTest : ApiTest() {
     lateinit var tokenService: TokenService
 
     @SpykBean
-    lateinit var applicationAlertSendRequestProducer: ApplicationAlertSendRequestProducer
+    lateinit var applicationNotificationRequestProducer: PortableProducer<ApplicationNotificationRequest>
 
 
     @Test
@@ -94,7 +95,7 @@ class RefreshControllerTest : ApiTest() {
         // valid after reuse
         run(POST, "/api/refresh", RefreshRequest(t2), UNAUTHORIZED)
 
-        verify { applicationAlertSendRequestProducer.produce(any()) }
+        verify { applicationNotificationRequestProducer.produce(any()) }
     }
 
 }

@@ -7,5 +7,6 @@ interface RefreshTokenRepository {
 
     fun save(refreshToken: RefreshToken)
     fun findById(refreshTokenId: UUID): RefreshToken?
+    fun findExpired(): List<RefreshToken>
 
 }

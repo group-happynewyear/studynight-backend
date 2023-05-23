@@ -4,6 +4,7 @@ import kr.happynewyear.authentication.domain.model.RefreshToken
 import kr.happynewyear.authentication.domain.repository.RefreshTokenRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime.now
 import java.util.*
 
 @Repository
@@ -17,6 +18,10 @@ class RefreshTokenRepositoryAdapter(
 
     override fun findById(refreshTokenId: UUID): RefreshToken? {
         return refreshTokenJpaRepository.findByIdOrNull(refreshTokenId)
+    }
+
+    override fun findExpired(): List<RefreshToken> {
+        return refreshTokenJpaRepository.findByExpiredAtBefore(now())
     }
 
 }

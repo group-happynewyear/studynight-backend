@@ -5,8 +5,10 @@ import kr.happynewyear.authentication.application.dto.TokenResult
 import kr.happynewyear.authentication.application.exception.AccountNotFoundException
 import kr.happynewyear.authentication.application.exception.DuplicatedEmailException
 import kr.happynewyear.authentication.application.exception.InvalidPasswordException
+import kr.happynewyear.authentication.application.producer.UserMailChannelCreateRequestProducer
 import kr.happynewyear.authentication.domain.model.Account
 import kr.happynewyear.authentication.domain.repository.AccountRepository
+import kr.happynewyear.notification.message.UserMailChannelCreateRequest
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 class AccountService(
     private val accountRepository: AccountRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val tokenService: TokenService
+    private val tokenService: TokenService,
+    private val userMailChannelCreateRequestProducer: UserMailChannelCreateRequestProducer
 ) {
 
     @Transactional
@@ -26,6 +29,9 @@ class AccountService(
         val encodedPassword = passwordEncoder.encode(password)
         val account = Account.create(email, encodedPassword)
         accountRepository.save(account)
+
+        with(account.user) { userMailChannelCreateRequestProducer.produce(UserMailChannelCreateRequest(id, email)) }
+
         return AccountResult.from(account)
     }
 

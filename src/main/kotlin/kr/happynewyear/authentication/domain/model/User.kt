@@ -3,9 +3,7 @@ package kr.happynewyear.authentication.domain.model
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
-import kr.happynewyear.authentication.domain.event.UserCreatedEvent
 import kr.happynewyear.library.entity.Identifiable
-import kr.happynewyear.library.event.DomainEventPublishers
 
 @Entity
 @Table(
@@ -17,9 +15,7 @@ class User(
 
     companion object {
         fun create(email: String): User {
-            val user = User(email)
-            DomainEventPublishers.publish(UserCreatedEvent(user))
-            return user
+            return User(email)
         }
     }
 

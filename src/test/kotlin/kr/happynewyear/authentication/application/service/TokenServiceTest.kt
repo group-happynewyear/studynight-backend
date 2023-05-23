@@ -6,7 +6,6 @@ import kr.happynewyear.authentication.infrastructure.database.RefreshTokenJpaRep
 import kr.happynewyear.authentication.infrastructure.database.UserJpaRepository
 import kr.happynewyear.library.test.ApplicationTest
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
@@ -18,16 +17,10 @@ class TokenServiceTest(
     @Autowired val refreshTokenChainJpaRepository: RefreshTokenChainJpaRepository
 ) : ApplicationTest() {
 
-    lateinit var user: User
-
-    @BeforeEach
-    fun setup() {
-        user = userJpaRepository.save(User.create("email@email.com"))
-    }
-
 
     @Test
     fun delete_withChain() {
+        val user = userJpaRepository.save(User.create("email@email.com"))
         val token = tokenService.issue(user)
         val chain = refreshTokenJpaRepository.findByIdOrNull(token.refreshTokenId)!!.refreshTokenChain
 
@@ -39,6 +32,7 @@ class TokenServiceTest(
 
     @Test
     fun delete_withoutChain() {
+        val user = userJpaRepository.save(User.create("email@email.com"))
         val token = tokenService.issue(user)
         val chain = refreshTokenJpaRepository.findByIdOrNull(token.refreshTokenId)!!.refreshTokenChain
         tokenService.refresh(token.refreshTokenId)

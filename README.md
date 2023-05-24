@@ -4,77 +4,35 @@
 
 개발자 스터디 매칭 서비스
 
-- [DOC](#DOC)
-- [DNS](#DNS)
-- [RUN](#RUN)
-- [CI](#CI)
-- [DIAGRAM](#DIAGRAM)
+> [local](#local) / [stage](#stage)
+
+[//]: # (![diagram]&#40;./.docs/diagram.jpg&#41;)
 
 ---
 
-## DOC
+## local
 
-- [API](http://localhost:8080/swagger-ui.html)
-- [TEST](http://localhost:8080/reports/tests/test/index.html)
-- [COVERAGE](http://localhost:8080/reports/jacoco/test/html/index.html)
+백엔드 개발 환경입니다. 데이터가 유지되지 않으며, 외부연동 기능이 동작하지 않습니다.
 
-운영 전까지는 로컬에서 `stage` 프로파일로 실행 후 접근해주세요.
+> BE - http://localhost:8080,
+[API](http://localhost:8080/swagger-ui.html) /
+[TEST](http://localhost:8080/reports/tests/test/index.html) /
+[COVERAGE](http://localhost:8080/reports/jacoco/test/html/index.html)
 
----
-
-## DNS
-
-### FE
-
-> local: http://localhost:3000  
-> stage: 가변. BE `application.yml`의 `security.cors.allowed-origin` 변경 필요.  
-> live : https://www.DOMAIN
-
-### BE
-
-> local: http://localhost:8080   
-> stage: 가변.  
-> live : https://api.DOMAIN
+`.env/local/docker-compose.yml`로 인프라 구성 후 `Java`로 실행합니다.
 
 ---
 
-## RUN
+## stage
 
-`.env/$profile/`
+통합 테스트 환경입니다. 데이터는 `.env/stage/mount`에 저장되며 디렉토리 삭제 시 초기화됩니다.
 
-> 환경변수 `$HAPPYNEWYEAR_HOME`에 프로젝트의 상위 디렉토리가 설정되어 있어야 합니다.  
+> FE - n/a   
+> BE - n/a
+
+`.env/stage/script`의 `pull.sh`로 도커 이미지를, `conf.sh`로 프로퍼티를 가져옵니다.  
+`.env/stage/docker-compose.yml`로 전체를 실행합니다.
+
+> 파일의 위치로 이동 후 실행해야 합니다.  
+> 프로퍼티 저장소 접근 권한이 필요합니다.  
 > 환경변수 `$GITHUB_USERNAME`과 `$GITHUB_TOKEN`가 설정되어 있어야 합니다. [발급](https://github.com/settings/tokens)
-
-### local
-
-백엔드 개발 중 간단한 테스트를 위한 프로파일입니다.   
-데이터가 유지되지 않으며, 외부연동 기능이 작동하지 않습니다. (소셜로그인은 회원가입/로그인으로, 메일/슬랙은 로그로 대체)
-
-`buid.sh`로 본 저장소의 코드를 빌드하여 `docker-compose`로 실행합니다.  
-`application-local.yml`에 데이터베이스가 `host.docker.internal`로 지정되어 있습니다.
-
-### stage
-
-통합테스트를 위한 프로파일이며, 서버 유동성과 데이터 독립성을 위해 도커 컴포즈에 데이터베이스를 포함합니다.  
-데이터는 `.env/stage/mount`에 저장되며 디렉토리 삭제 시 초기화됩니다. 외부연동 기능은 모두 동작합니다.
-
-`pull.sh`로 깃헙 저장소 이미지(`.github/workflows/ci.yml`)를 가져와 `docker-compose`로 실행합니다.  
-`application-stage.yml`을 `$HAPPYNEWYEAR_HOME/properties/studynight-backend/`에 넣어주세요.  
-(설정서버 독립 후 수동작업 제거할 예정입니다.)
-
-### live
-
-...
-
----
-
-## CI
-
-`main`에 `push`될 때 `GitHub Actions`를 통해 테스트와 빌드가 이루어집니다.  
-도커 이미지가 `GitHub Container Registry`에 등록되며, CI 결과는 슬랙으로 전달됩니다.
-
----
-
-## DIAGRAM
-
-![diagram](./.docs/diagram.jpg)

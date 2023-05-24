@@ -7,7 +7,6 @@ services:
     image: postgres:15.1
     ports:
       - "5432:5432"
-    restart: always
     environment:
       POSTGRES_DB: studynight
       POSTGRES_USER: "username"
@@ -22,8 +21,7 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
-    restart: always
     environment:
       PROFILE: stage
     volumes:
-      - ${HAPPYNEWYEAR_HOME}/properties/studynight-backend:/properties
+      - ./studynight-properties/studynight-backend:/properties

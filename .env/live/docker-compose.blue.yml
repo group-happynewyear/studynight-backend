@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+
+  studynight-backend:
+    container_name: studynight-backend-blue
+    image: ghcr.io/group-happynewyear/studynight-backend:${TAG}
+    ports:
+      - "8080:8080"
+    environment:
+      PROFILE: live
+    volumes:
+      - ./studynight-properties/studynight-backend:/properties

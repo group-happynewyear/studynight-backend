@@ -39,6 +39,7 @@ out/
 ### Docker ###
 .env/stage/mount/
 .env/stage/studynight-properties/
+.env/live/studynight-properties/
 
 ### Diagrams ###
 docs/.$**

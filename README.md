@@ -6,7 +6,7 @@
 
 > [local](#local) / [stage](#stage)
 
-[//]: # (![diagram]&#40;./.docs/diagram.jpg&#41;)
+[//]: # (![diagram]&#40;./docs/diagram.jpg&#41;)
 
 ---
 
@@ -30,8 +30,7 @@
 > FE - n/a   
 > BE - n/a
 
-`.env/stage/script`의 `pull.sh`로 도커 이미지를, `conf.sh`로 프로퍼티를 가져옵니다.  
-`.env/stage/docker-compose.yml`로 전체를 실행합니다.
+`.env/stage/run.sh`로 도커 이미지 `pull`, 프로퍼티 저장소 `clone`, 도커 컴포즈 `up`을 수행합니다.
 
 > 파일의 위치로 이동 후 실행해야 합니다.  
 > 프로퍼티 저장소 접근 권한이 필요합니다.  

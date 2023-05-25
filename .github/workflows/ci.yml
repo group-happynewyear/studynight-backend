@@ -48,12 +48,32 @@ jobs:
           --tag "$IMG":latest \
           --push
 
+          echo "IMG=$IMG:$TAG" >> $GITHUB_ENV
+
       - name: Send Result to Slack
         uses: 8398a7/action-slack@v3
         with:
-          status: ${{ job.status }}
-          author_name: "[GitHub Actions] PUSH on MAIN"
-          fields: repo,commit,workflow,took
+          status: custom
+          fields: workflow,took,eventName,repo,ref,commit,author
+          custom_payload: |
+            {
+              attachments: [{
+                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+                text: `GitHub Actions - ${process.env.AS_WORKFLOW} in ${process.env.AS_TOOK}`,
+                fields: [{
+                  title: 'event',
+                  value: `${process.env.AS_EVENT_NAME} on ${process.env.AS_REPO}@${process.env.AS_REF}`
+                },
+                {
+                  title: 'commit',
+                  value: `${process.env.AS_COMMIT} by ${process.env.AS_AUTHOR}`
+                },
+                {
+                  title: 'image',
+                  value: '${{ env.IMG }}'
+                }]
+              }]
+            }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()

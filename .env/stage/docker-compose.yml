@@ -30,4 +30,5 @@ services:
     environment:
       PROFILE: stage
     volumes:
-      - ./studynight-properties/studynight-backend:/properties
+      - ./studynight-properties:/studynight-properties
+      - ./logs:/logs

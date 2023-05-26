@@ -10,4 +10,5 @@ services:
     environment:
       PROFILE: live
     volumes:
-      - ./studynight-properties/studynight-backend:/properties
+      - ./studynight-properties:/studynight-properties
+      - ./logs:/logs

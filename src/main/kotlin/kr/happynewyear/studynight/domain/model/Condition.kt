@@ -40,12 +40,12 @@ class Condition(
         name = "k",
         nullable = false, updatable = false, unique = false
     )
-    private val key: ConditionKey = key
+    val key: ConditionKey = key
 
     @Column(
         name = "v",
         nullable = false, updatable = false, unique = false
     )
-    private val value: String = value
+    val value: String = value
 
 }

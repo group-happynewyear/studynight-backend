@@ -4,6 +4,7 @@ import jakarta.validation.Valid
 import kr.happynewyear.api.studynight.dto.StudentCreateRequest
 import kr.happynewyear.api.studynight.dto.StudentExistResponse
 import kr.happynewyear.api.studynight.dto.StudentMyResponse
+import kr.happynewyear.api.studynight.dto.StudentUpdateRequest
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
 import kr.happynewyear.studynight.application.service.StudentService
@@ -44,6 +45,18 @@ class StudentController(
         val student = studentService.me(principal.userId)
         val res = StudentMyResponse.from(student)
         return ResponseEntity.ok(res)
+    }
+
+    @PutMapping("/me")
+    fun update(
+        @Authenticated principal: Principal,
+        @Valid @RequestBody req: StudentUpdateRequest
+    ): ResponseEntity<Void> {
+        studentService.update(
+            principal.userId, req.nickname,
+            req.condition
+        )
+        return ResponseEntity.noContent().build()
     }
 
 }

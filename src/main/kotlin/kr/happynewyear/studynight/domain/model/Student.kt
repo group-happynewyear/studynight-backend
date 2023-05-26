@@ -8,10 +8,13 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.studynight.constant.EngagementRole.GUEST
+import kr.happynewyear.studynight.constant.condition.*
 import kr.happynewyear.studynight.constant.condition.ConditionKey.*
 import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
 import kr.happynewyear.studynight.type.MatchSource
 import java.util.*
+import java.util.function.Function.identity
+import java.util.stream.Collectors.toMap
 
 @Entity
 @Table(
@@ -25,14 +28,14 @@ class Student(
     companion object {
         fun create(userId: UUID, nickname: String, condition: MatchSource): Student {
             val student = Student(userId, nickname)
-            condition.schedules.forEach { student.add(Condition.create(student, SCHEDULE, it.name)) }
-            condition.regions.forEach { student.add(Condition.create(student, REGION, it.name)) }
-            student.add(Condition.create(student, EXPERIENCE, condition.experience.name))
-            student.add(Condition.create(student, POSITION, condition.position.name))
-            student.add(Condition.create(student, INTENSITY, condition.intensity.name))
-            student.add(Condition.create(student, SCALE, condition.scale.name))
+            student.register(condition)
             return student
         }
+    }
+
+    fun update(nickname: String, condition: MatchSource) {
+        this.nickname = nickname
+        update(condition)
     }
 
 
@@ -46,13 +49,15 @@ class Student(
         name = "nickname",
         nullable = false, updatable = true, unique = false
     )
-    val nickname: String = nickname
+    var nickname: String = nickname
+        protected set
 
     @OneToMany(
         mappedBy = "student",
         cascade = [ALL], orphanRemoval = true
     )
     private val _conditions: MutableList<Condition> = mutableListOf()
+    val condition: MatchSource get() = compact()
 
     @OneToMany(
         mappedBy = "student",
@@ -69,13 +74,35 @@ class Student(
     private val _invitations: MutableList<Invitation> = mutableListOf()
 
 
-    private fun add(condition: Condition) {
-        _conditions.add(condition)
+    private fun register(condition: MatchSource) {
+        condition.flatten(this).forEach { _conditions.add(it) }
     }
+
+    private fun update(condition: MatchSource) {
+        val old = _conditions.toList()
+        val new = condition.flatten(this)
+
+        val del = old.toMutableList()
+        val ins = mutableListOf<Condition>()
+
+        val hashFunc: (c: Condition) -> String = { "${it.key}-${it.value}" }
+        val oldTable = old.stream().collect(toMap(hashFunc, identity()))
+        new.forEach {
+            val hash = hashFunc.invoke(it)
+            val nCon = oldTable[hash]
+            if (nCon != null) del.remove(nCon)
+            else ins.add(it)
+        }
+
+        _conditions.removeAll(del)
+        _conditions.addAll(ins)
+    }
+
 
     fun add(engagement: Engagement) {
         _engagements.add(engagement)
     }
+
 
     fun add(invitation: Invitation) {
         _invitations.add(invitation)
@@ -83,6 +110,40 @@ class Student(
 
     fun accept(invitation: Invitation) {
         EngagementRegistrationService.register(invitation.match.study, this, GUEST)
+    }
+
+
+    private fun MatchSource.flatten(s: Student): List<Condition> {
+        val l = mutableListOf<Condition>()
+        l.addAll(schedules.map { Condition.create(s, SCHEDULE, it.name) })
+        l.addAll(regions.map { Condition.create(s, REGION, it.name) })
+        l.add(Condition.create(s, EXPERIENCE, experience.name))
+        l.add(Condition.create(s, POSITION, position.name))
+        l.add(Condition.create(s, INTENSITY, intensity.name))
+        l.add(Condition.create(s, SCALE, scale.name))
+        return l
+    }
+
+    private fun compact(): MatchSource {
+        val schedules = mutableSetOf<Schedule>()
+        val regions = mutableSetOf<Region>()
+        lateinit var experience: Experience
+        lateinit var position: Position
+        lateinit var intensity: Intensity
+        lateinit var scale: Scale
+        _conditions.forEach {
+            with(it) {
+                when (key) {
+                    SCHEDULE -> schedules.add(Schedule.valueOf(value))
+                    REGION -> regions.add(Region.valueOf(value))
+                    EXPERIENCE -> experience = Experience.valueOf(value)
+                    POSITION -> position = Position.valueOf(value)
+                    INTENSITY -> intensity = Intensity.valueOf(value)
+                    SCALE -> scale = Scale.valueOf(value)
+                }
+            }
+        }
+        return MatchSource(schedules, regions, experience, position, intensity, scale)
     }
 
 }

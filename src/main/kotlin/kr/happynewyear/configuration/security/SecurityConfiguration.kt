@@ -51,6 +51,7 @@ class SecurityConfiguration(
             // studynight
             .requestMatchers(GET, "/api/students/me", "/api/students/me/is_exist").authenticated()
             .requestMatchers(POST, "/api/students").authenticated()
+            .requestMatchers(PUT, "/api/students/me").authenticated()
             .requestMatchers(POST, "/api/studies").authenticated()
             .requestMatchers(GET, "/api/studies", "/api/studies/*").authenticated()
             .requestMatchers(POST, "/api/matches").authenticated()

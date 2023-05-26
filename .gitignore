@@ -43,3 +43,6 @@ out/
 
 ### Diagrams ###
 docs/.$**
+
+### Log ###
+**/logs/

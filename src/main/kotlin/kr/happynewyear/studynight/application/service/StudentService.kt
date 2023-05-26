@@ -38,4 +38,14 @@ class StudentService(
         return StudentResult.from(student)
     }
 
+    @Transactional
+    fun update(
+        userId: UUID,
+        nickname: String,
+        condition: MatchSource
+    ) {
+        val student = studentRepository.findByUserId(userId) ?: throw ResourceNotFoundException()
+        student.update(nickname, condition)
+    }
+
 }

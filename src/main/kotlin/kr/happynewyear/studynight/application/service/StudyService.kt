@@ -2,8 +2,11 @@ package kr.happynewyear.studynight.application.service
 
 import kr.happynewyear.studynight.application.dto.StudyResult
 import kr.happynewyear.studynight.application.exception.ResourceNotFoundException
+import kr.happynewyear.studynight.application.exception.StudentNotFoundException
+import kr.happynewyear.studynight.application.exception.StudyNotFoundException
 import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.domain.model.Study
+import kr.happynewyear.studynight.domain.model.StudyContact
 import kr.happynewyear.studynight.domain.repository.StudentRepository
 import kr.happynewyear.studynight.domain.repository.StudyRepository
 import kr.happynewyear.studynight.type.MatchParameter
@@ -21,20 +24,20 @@ class StudyService(
     @Transactional
     fun create(
         userId: UUID,
-        title: String, description: String,
-        contactType: ContactType, contactAddress: String,
+        title: String, description: String, contactType: ContactType, contactAddress: String,
         condition: MatchParameter
     ): StudyResult {
-        val student = studentRepository.findByUserId(userId)!! // TODO handle
+        val student = studentRepository.findByUserId(userId) ?: throw StudentNotFoundException()
+        val contact = StudyContact(contactType, contactAddress)
         val study = Study.create(
             student,
-            title, description,
-            contactType, contactAddress, // TODO refactor
+            title, description, contact,
             condition
         )
         studyRepository.save(study)
         return StudyResult.from(study)
     }
+
 
     fun list(userId: UUID): List<StudyResult> {
         val student = studentRepository.findByUserId(userId)!!
@@ -44,6 +47,18 @@ class StudyService(
     fun get(studyId: UUID): StudyResult {
         val study = studyRepository.findById(studyId) ?: throw ResourceNotFoundException()
         return StudyResult.from(study)
+    }
+
+
+    @Transactional
+    fun update(
+        studyId: UUID, userId: UUID,
+        title: String, description: String, contactType: ContactType, contactAddress: String,
+        condition: MatchParameter
+    ) {
+        val study = studyRepository.findById(studyId) ?: throw StudyNotFoundException()
+        val contact = StudyContact(contactType, contactAddress)
+        study.update(title, description, contact, condition)
     }
 
 }

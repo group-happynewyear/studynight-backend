@@ -25,13 +25,13 @@ class StudyController(
     ): ResponseEntity<Void> {
         val study = studyService.create(
             principal.userId,
-            req.title, req.description,
-            req.contactType, req.contactAddress,
+            req.title, req.description, req.contactType, req.contactAddress,
             req.condition
         )
         val location = "/api/studies/${study.id}"
         return ResponseEntity.created(URI.create(location)).build()
     }
+
 
     @GetMapping
     fun list(@Authenticated principal: Principal): ResponseEntity<StudyListResponse> {
@@ -45,6 +45,21 @@ class StudyController(
         val study = studyService.get(studyId)
         val res = StudyResponse.from(study)
         return ResponseEntity.ok(res)
+    }
+
+
+    @PutMapping("/{studyId}")
+    fun update(
+        @PathVariable studyId: UUID,
+        @Authenticated principal: Principal,
+        @Valid @RequestBody req: StudyCreateRequest
+    ): ResponseEntity<Void> {
+        studyService.update(
+            studyId, principal.userId,
+            req.title, req.description, req.contactType, req.contactAddress,
+            req.condition
+        )
+        return ResponseEntity.noContent().build()
     }
 
 }

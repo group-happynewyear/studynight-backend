@@ -12,7 +12,6 @@ data class StudyResult(
 
     val title: String,
     val description: String,
-
     val contactType: ContactType,
     val contactAddress: String,
 
@@ -26,16 +25,13 @@ data class StudyResult(
 ) {
 
     companion object {
-        fun from(study: Study): StudyResult {
+        fun from(study: Study): StudyResult = with(study) {
             return StudyResult(
-                study.id,
-                study.title, study.description,
-                study.contactType, study.contactAddress,
-                JsonMarshallers.read(study.condition, MatchParameter::class.java),
-                study.managers.map { Student(it.id) },
-                study.members.map { Student(it.id) },
-                study.guests.map { Student(it.id) },
-                study.createdAt
+                id,
+                title, description, contact.type, contact.address,
+                JsonMarshallers.read(condition, MatchParameter::class.java),
+                managers.map { Student(it.id) }, members.map { Student(it.id) }, guests.map { Student(it.id) },
+                createdAt
             )
         }
     }

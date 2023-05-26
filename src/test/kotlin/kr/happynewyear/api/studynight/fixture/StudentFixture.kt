@@ -14,6 +14,7 @@ fun studentCreateRequestFixture(matchSource: MatchSource): StudentCreateRequest 
     return StudentCreateRequest(nickname, matchSource)
 }
 
+
 fun studentUpdateRequestFixture(matchSource: MatchSource): StudentUpdateRequest {
     val nickname = Randoms.string()
     return StudentUpdateRequest(nickname, matchSource)

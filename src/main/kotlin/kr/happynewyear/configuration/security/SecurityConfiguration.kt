@@ -49,11 +49,12 @@ class SecurityConfiguration(
             .requestMatchers(POST, "/api/accounts", "/api/login", "/api/refresh").permitAll()
             .requestMatchers(GET, "/api/social-login/**").permitAll()
             // studynight
-            .requestMatchers(GET, "/api/students/me", "/api/students/me/is_exist").authenticated()
             .requestMatchers(POST, "/api/students").authenticated()
+            .requestMatchers(GET, "/api/students/me", "/api/students/me/is_exist").authenticated()
             .requestMatchers(PUT, "/api/students/me").authenticated()
             .requestMatchers(POST, "/api/studies").authenticated()
             .requestMatchers(GET, "/api/studies", "/api/studies/*").authenticated()
+            .requestMatchers(PUT, "/api/studies/*").authenticated()
             .requestMatchers(POST, "/api/matches").authenticated()
             .requestMatchers(GET, "/api/matches/*").authenticated()
             .requestMatchers(GET, "/api/invitations/*").permitAll() // TODO authenticated

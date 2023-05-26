@@ -9,6 +9,8 @@ import kr.happynewyear.library.exception.http.ErrorResponse
 import kr.happynewyear.library.exception.http.ErrorResponseEntityFactories
 import kr.happynewyear.studynight.application.exception.DuplicatedStudentException
 import kr.happynewyear.studynight.application.exception.ResourceNotFoundException
+import kr.happynewyear.studynight.application.exception.StudentNotFoundException
+import kr.happynewyear.studynight.application.exception.StudyNotFoundException
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -47,6 +49,18 @@ class HttpExceptionHandler(
     @ExceptionHandler
     fun on(e: DuplicatedStudentException): ResponseEntity<ErrorResponse> {
         val message = "이미 해당 계정의 학생이 등록되어 있습니다."
+        return ErrorResponseEntityFactories.create(BAD_REQUEST, message)
+    }
+
+    @ExceptionHandler
+    fun on(e: StudentNotFoundException): ResponseEntity<ErrorResponse> {
+        val message = "학생이 등록되어 있지 않습니다."
+        return ErrorResponseEntityFactories.create(BAD_REQUEST, message)
+    }
+
+    @ExceptionHandler
+    fun on(e: StudyNotFoundException): ResponseEntity<ErrorResponse> {
+        val message = "스터디가 등록되어 있지 않습니다."
         return ErrorResponseEntityFactories.create(BAD_REQUEST, message)
     }
 

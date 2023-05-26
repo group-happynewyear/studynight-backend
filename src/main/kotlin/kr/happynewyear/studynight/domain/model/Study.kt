@@ -2,42 +2,45 @@ package kr.happynewyear.studynight.domain.model
 
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
-import jakarta.persistence.EnumType.STRING
 import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.library.marshalling.json.JsonMarshallers
-import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.constant.EngagementRole.*
 import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
 import kr.happynewyear.studynight.type.MatchParameter
 import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 
 @Entity
 @Table(
     name = "studies"
 )
 class Study(
-    title: String, description: String,
-    contactType: ContactType, contactAddress: String,
-    condition: String,
-    createdAt: LocalDateTime
+    title: String, description: String, contact: StudyContact, condition: String
 ) : Identifiable() {
 
     companion object {
         fun create(
             creator: Student,
-            title: String, description: String,
-            contactType: ContactType, contactAddress: String,
+            title: String, description: String, contact: StudyContact,
             condition: MatchParameter
         ): Study {
             val study = Study(
-                title, description,
-                contactType, contactAddress,
-                JsonMarshallers.write(condition),
-                LocalDateTime.now()
+                title, description, contact,
+                JsonMarshallers.write(condition)
             )
             EngagementRegistrationService.register(study, creator, MANAGER)
             return study
         }
+    }
+
+    fun update(
+        title: String, description: String, contact: StudyContact,
+        condition: MatchParameter
+    ) {
+        this.title = title
+        this.description = description
+        this.contact = contact
+        this.condition = JsonMarshallers.write(condition)
     }
 
 
@@ -45,38 +48,32 @@ class Study(
         name = "title",
         nullable = false, updatable = true, unique = false
     )
-    val title: String = title
+    var title: String = title
+        protected set
 
     @Column(
         name = "description",
         nullable = false, updatable = true, unique = false
     )
-    val description: String = description
+    var description: String = description
+        protected set
 
-    @Enumerated(STRING)
-    @Column(
-        name = "contact_type",
-        nullable = false, updatable = true, unique = false
-    )
-    val contactType: ContactType = contactType
-
-    @Column(
-        name = "contact_address",
-        nullable = false, updatable = true, unique = false
-    )
-    val contactAddress: String = contactAddress
+    @Embedded
+    var contact: StudyContact = contact
+        protected set
 
     @Column(
         name = "condition",
         nullable = false, updatable = true, unique = false
     )
-    val condition: String = condition
+    var condition: String = condition
+        protected set
 
     @Column(
         name = "createdAt",
         nullable = false, updatable = false, unique = false
     )
-    val createdAt: LocalDateTime = createdAt
+    val createdAt: LocalDateTime = now()
 
     @OneToMany(
         mappedBy = "study",

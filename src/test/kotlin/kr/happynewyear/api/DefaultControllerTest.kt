@@ -47,8 +47,10 @@ class DefaultControllerTest(
         val location = redirect(POST, "/api/accounts", AccountCreateRequest(email, password), CREATED)
         val token = call(POST, "/api/login", LoginRequest(email, password), OK, TokenResponse::class.java)
 
+        login(token.accessToken)
+
         val response = call(
-            GET, "/api/hello", token.accessToken,
+            GET, "/api/hello",
             OK
         )
 
@@ -69,8 +71,9 @@ class DefaultControllerTest(
     fun hello_malformedJwt() {
         val accessToken = "malformed_jwt"
 
+        login(accessToken)
         run(
-            GET, "/api/hello", accessToken,
+            GET, "/api/hello",
             UNAUTHORIZED
         )
     }
@@ -84,8 +87,9 @@ class DefaultControllerTest(
         ReflectionTestUtils.setField(tokenService, "expirationMinutes", 0)
         val token = call(POST, "/api/login", LoginRequest(email, password), OK, TokenResponse::class.java)
 
+        login(token.accessToken)
         run(
-            GET, "/api/hello", token.accessToken,
+            GET, "/api/hello",
             UNAUTHORIZED
         )
     }

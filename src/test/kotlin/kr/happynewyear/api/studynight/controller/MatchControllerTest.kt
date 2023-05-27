@@ -9,7 +9,7 @@ import kr.happynewyear.api.studynight.fixture.matchParameterFixture
 import kr.happynewyear.api.studynight.fixture.matchSourceFixture
 import kr.happynewyear.api.studynight.fixture.studentCreateRequestFixture
 import kr.happynewyear.api.studynight.fixture.studyCreateRequestFixture
-import kr.happynewyear.library.test.LogonApiTest
+import kr.happynewyear.library.test.ApiTest
 import kr.happynewyear.notification.message.UserNotificationRequest
 import kr.happynewyear.studynight.constant.condition.Position
 import kr.happynewyear.studynight.constant.condition.Position.*
@@ -20,7 +20,7 @@ import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.OK
 
-class MatchControllerTest : LogonApiTest() {
+class MatchControllerTest : ApiTest() {
 
     @SpykBean
     lateinit var userNotificationRequestProducer: PortableProducer<UserNotificationRequest>

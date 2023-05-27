@@ -5,7 +5,7 @@ import kr.happynewyear.api.studynight.dto.StudentMyResponse
 import kr.happynewyear.api.studynight.fixture.matchSourceFixture
 import kr.happynewyear.api.studynight.fixture.studentCreateRequestFixture
 import kr.happynewyear.api.studynight.fixture.studentUpdateRequestFixture
-import kr.happynewyear.library.test.LogonApiTest
+import kr.happynewyear.library.test.ApiTest
 import kr.happynewyear.studynight.constant.condition.Position.CLOUD
 import kr.happynewyear.studynight.constant.condition.Position.SERVER
 import org.assertj.core.api.Assertions.assertThat
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.HttpMethod.*
 import org.springframework.http.HttpStatus.*
 
-class StudentControllerTest : LogonApiTest() {
+class StudentControllerTest : ApiTest() {
 
     @BeforeEach
     fun setup() {

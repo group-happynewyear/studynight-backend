@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus.*
 class LoginControllerTest : ApiTest() {
 
     @Test
-    fun login() {
+    fun login_success() {
         val email = "email@email.com"
         val password = "password"
 

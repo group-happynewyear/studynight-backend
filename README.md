@@ -6,7 +6,7 @@
 
 > [local](#local) / [stage](#stage)
 
-[//]: # (![diagram]&#40;./docs/diagram.jpg&#41;)
+![diagram](./docs/architecture.jpg)
 
 ---
 

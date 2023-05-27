@@ -7,10 +7,8 @@ import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import kr.happynewyear.library.entity.Identifiable
-import kr.happynewyear.studynight.constant.EngagementRole.GUEST
 import kr.happynewyear.studynight.constant.condition.*
 import kr.happynewyear.studynight.constant.condition.ConditionKey.*
-import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
 import kr.happynewyear.studynight.type.MatchSource
 import java.util.*
 import java.util.function.Function.identity
@@ -103,13 +101,8 @@ class Student(
         _engagements.add(engagement)
     }
 
-
     fun add(invitation: Invitation) {
         _invitations.add(invitation)
-    }
-
-    fun accept(invitation: Invitation) {
-        EngagementRegistrationService.register(invitation.match.study, this, GUEST)
     }
 
 

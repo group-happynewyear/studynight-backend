@@ -47,8 +47,8 @@ class MatchService(
     private fun send(invitation: Invitation) = with(invitation) {
         val userId = student.userId
         val title = "[스터디나잇] ${match.study.title}에서 당신에게 관심을 보입니다."
+        // TODO mail as invitation
         val content = "" +
-            "초대장  : $serverAddress/api/invitations/$id\n" +
             "대화수락 : $serverAddress/api/invitations/$id/accept?userId=$userId"
         val message = UserNotificationRequest.of(userId, title, content)
         userNotificationRequestProducer.produce(message)

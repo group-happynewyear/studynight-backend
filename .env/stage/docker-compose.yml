@@ -21,7 +21,7 @@ services:
 
   studynight-backend:
     container_name: studynight-backend
-    image: ghcr.io/group-happynewyear/studynight-backend:latest
+    image: ghcr.io/group-happynewyear/studynight-backend:${TAG}
     ports:
       - "8080:8080"
     depends_on:

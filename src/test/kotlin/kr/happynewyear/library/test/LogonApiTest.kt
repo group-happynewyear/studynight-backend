@@ -15,6 +15,7 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD
 import java.util.*
 
+// TODO integrate ApiTest
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
@@ -34,7 +35,7 @@ abstract class LogonApiTest {
     @Value("\${security.token.access.secret}")
     private lateinit var secret: String
 
-    private lateinit var accessToken: String
+    private var accessToken: String? = null
 
 
     protected fun login(): UUID {
@@ -45,6 +46,10 @@ abstract class LogonApiTest {
         accessToken = JwtMarshallers.write(userId.toString(), Dates.now(), Dates.ofAfterMinutes(1), secret)
         log.debug("Login with $userId.")
         return userId
+    }
+
+    protected fun logout() {
+        accessToken = null
     }
 
 

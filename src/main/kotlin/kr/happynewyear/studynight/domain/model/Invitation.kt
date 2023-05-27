@@ -6,6 +6,8 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import kr.happynewyear.library.entity.Identifiable
+import kr.happynewyear.studynight.constant.EngagementRole.GUEST
+import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
 
 @Entity
 @Table(
@@ -40,5 +42,11 @@ class Invitation(
         nullable = false, updatable = false, unique = false
     )
     val student: Student = student
+
+
+    fun confirm(accept: Boolean) {
+        if (accept) EngagementRegistrationService.register(match.study, student, GUEST)
+        // TODO else block
+    }
 
 }

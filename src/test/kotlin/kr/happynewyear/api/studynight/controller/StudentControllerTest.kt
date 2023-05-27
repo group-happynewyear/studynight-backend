@@ -79,6 +79,5 @@ class StudentControllerTest : LogonApiTest() {
         val res = call(GET, "/api/students/me", OK, StudentMyResponse::class.java)
         assertThat(res.condition).isEqualTo(updateReq.condition)
     }
-    // TODO not mine
 
 }

@@ -18,7 +18,8 @@ class RequestBuilder {
         return request.contentType(MediaType.APPLICATION_JSON).content(JsonMarshallers.write(requestBody))
     }
 
-    fun jwt(request: MockHttpServletRequestBuilder, jwt: String): MockHttpServletRequestBuilder {
+    fun jwt(request: MockHttpServletRequestBuilder, jwt: String?): MockHttpServletRequestBuilder {
+        if (jwt == null) return request
         return request.header("Authorization", "Bearer $jwt")
     }
 

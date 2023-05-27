@@ -18,7 +18,7 @@ import java.util.*
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
-@Import(RequestBuilder::class, RequestPerformer::class)
+@Import(RequestBuilder::class, RequestPerformer::class, PortableMqTestConfiguration::class)
 abstract class LogonApiTest {
 
     private val log = LoggerFactory.getLogger(javaClass)

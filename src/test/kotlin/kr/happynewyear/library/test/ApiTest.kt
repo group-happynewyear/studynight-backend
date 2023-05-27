@@ -12,7 +12,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_T
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
-@Import(RequestBuilder::class, RequestPerformer::class)
+@Import(RequestBuilder::class, RequestPerformer::class, PortableMqTestConfiguration::class)
 abstract class ApiTest {
 
     @Autowired

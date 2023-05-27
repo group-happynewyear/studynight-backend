@@ -56,7 +56,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
-    implementation("com.github.josh910830:portable-mq:1.1.2")
+    implementation("com.github.josh910830:portable-mq:1.1.3")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

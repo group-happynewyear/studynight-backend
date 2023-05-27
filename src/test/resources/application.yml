@@ -14,3 +14,4 @@ server:
 logging:
   level:
     kr.happynewyear: debug
+    com.github.josh910830.portablemq: debug

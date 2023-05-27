@@ -8,6 +8,7 @@ import kr.happynewyear.library.exception.ExceptionNotifier
 import kr.happynewyear.library.exception.http.ErrorResponse
 import kr.happynewyear.library.exception.http.ErrorResponseEntityFactories
 import kr.happynewyear.studynight.application.exception.*
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class HttpExceptionHandler(
     private val exceptionNotifier: ExceptionNotifier
 ) {
+    private val log = LoggerFactory.getLogger(javaClass)
+
 
     @ExceptionHandler(
         AccountNotFoundException::class,
@@ -79,6 +82,7 @@ class HttpExceptionHandler(
 
     @ExceptionHandler
     fun onNotExpected(e: Exception): ResponseEntity<ErrorResponse> {
+        log.error("Unexpected", e)
         exceptionNotifier.send(e)
 
         val message = "예상하지 못한 오류가 발생하였습니다." // TODO bug report email

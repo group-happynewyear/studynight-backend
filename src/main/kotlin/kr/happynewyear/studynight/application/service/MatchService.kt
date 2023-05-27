@@ -3,6 +3,7 @@ package kr.happynewyear.studynight.application.service
 import com.github.josh910830.portablemq.core.producer.PortableProducer
 import kr.happynewyear.notification.message.UserNotificationRequest
 import kr.happynewyear.studynight.application.dto.MatchResult
+import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.domain.model.Invitation
 import kr.happynewyear.studynight.domain.model.Match
 import kr.happynewyear.studynight.domain.repository.MatchRepository
@@ -12,6 +13,8 @@ import kr.happynewyear.studynight.type.MatchParameter
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.thymeleaf.TemplateEngine
+import org.thymeleaf.context.Context
 import java.util.*
 
 @Service
@@ -20,8 +23,10 @@ class MatchService(
     private val studyRepository: StudyRepository,
     private val studentRepository: StudentRepository,
     private val matchRepository: MatchRepository,
+    private val templateEngine: TemplateEngine,
     private val userNotificationRequestProducer: PortableProducer<UserNotificationRequest>,
-    @Value("\${studynight.server-address}") private val serverAddress: String,
+    @Value("\${studynight.study-page-root}") private val studyPageRoot: String,
+    @Value("\${studynight.server-address}") private val serverAddress: String
 ) {
 
     @Transactional
@@ -45,12 +50,18 @@ class MatchService(
     }
 
     private fun send(invitation: Invitation) = with(invitation) {
-        val userId = student.userId
+        assert(match.study.contact.type == ContactType.KAKAOTALK_OPENCHAT) // TODO discuss
+
         val title = "[스터디나잇] ${match.study.title}에서 당신에게 관심을 보입니다."
-        // TODO mail as invitation
-        val content = "" +
-            "대화수락 : $serverAddress/api/invitations/$id/accept?userId=$userId"
-        val message = UserNotificationRequest.of(userId, title, content)
+
+        val ctx = Context()
+        ctx.setVariable("studyPage", "$studyPageRoot/${match.study.id}")
+        ctx.setVariable("chatRoom", match.study.contact.address)
+        ctx.setVariable("accept", "$serverAddress/api/invitations/$id/accept")
+        ctx.setVariable("reject", "$serverAddress/api/invitations/$id/reject")
+        val content = templateEngine.process("mail/invitation", ctx)
+
+        val message = UserNotificationRequest.of(student.userId, title, content)
         userNotificationRequestProducer.produce(message)
     }
 

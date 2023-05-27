@@ -1,5 +1,6 @@
 package kr.happynewyear.studynight.application.service
 
+import kr.happynewyear.studynight.application.dto.InvitationResult
 import kr.happynewyear.studynight.application.exception.InvitationNotFoundException
 import kr.happynewyear.studynight.domain.repository.InvitationRepository
 import org.springframework.stereotype.Service
@@ -13,9 +14,10 @@ class InvitationService(
 ) {
 
     @Transactional
-    fun confirm(invitationId: UUID, accept: Boolean) {
+    fun confirm(invitationId: UUID, accept: Boolean): InvitationResult {
         val invitation = invitationRepository.findById(invitationId) ?: throw InvitationNotFoundException()
         invitation.confirm(accept)
+        return InvitationResult.from(invitation)
     }
 
 }

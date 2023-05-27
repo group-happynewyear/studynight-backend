@@ -34,7 +34,6 @@ class RefreshTokenChain(
         cascade = [ALL], orphanRemoval = true
     )
     private val _refreshTokens: MutableList<RefreshToken> = mutableListOf()
-    private val refreshTokens: List<RefreshToken> get() = _refreshTokens.toList() // TODO batch delete
 
 
     fun add(refreshToken: RefreshToken) {

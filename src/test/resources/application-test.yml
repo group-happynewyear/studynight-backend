@@ -1,5 +1,7 @@
 spring:
   jpa:
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
         show_sql: true

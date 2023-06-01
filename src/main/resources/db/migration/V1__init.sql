@@ -1,3 +1,5 @@
+-- TODO
+
 -- authentication
 
 create table users
@@ -15,7 +17,6 @@ create table accounts
     user_id  uuid         not null,
     primary key (id)
 );
-alter table accounts add constraint FK_accounts_users foreign key (user_id) references users;
 alter table accounts add constraint UK_accounts_user_id unique (user_id);
 alter table accounts add constraint UK_accounts_email unique (email);
 
@@ -27,7 +28,6 @@ create table social_accounts
     user_id     uuid         not null,
     primary key (id)
 );
-alter table social_accounts add constraint FK_social_accounts_users foreign key (user_id) references users;
 alter table social_accounts add constraint UK_social_accounts_user_id unique (user_id);
 alter table social_accounts add constraint UK_social_accounts_provider_external_id unique (provider, external_id);
 
@@ -37,7 +37,6 @@ create table refresh_token_chains
     user_id uuid not null,
     primary key (id)
 );
-alter table refresh_token_chains add constraint FK_refresh_token_chains_users foreign key (user_id) references users;
 
 create table refresh_tokens
 (
@@ -47,7 +46,6 @@ create table refresh_tokens
     refresh_token_chain_id uuid         not null,
     primary key (id)
 );
-alter table refresh_tokens add constraint FK_refresh_tokens_refresh_token_chains foreign key (refresh_token_chain_id) references refresh_token_chains;
 
 
 -- studynight
@@ -69,7 +67,17 @@ create table conditions
     student_id uuid         not null,
     primary key (id)
 );
-alter table conditions add constraint FK_conditions_students foreign key (student_id) references students;
+
+create table transactions
+(
+    id         uuid         not null,
+    type       varchar(255) not null,
+    point      integer      not null,
+    expired_at timestamp(6) not null,
+    timestamp  timestamp(6) not null,
+    student_id uuid         not null,
+    primary key (id)
+);
 
 create table studies
 (
@@ -91,8 +99,6 @@ create table engagements
     study_id   uuid         not null,
     primary key (id)
 );
-alter table engagements add constraint FK_engagements_students foreign key (student_id) references students;
-alter table engagements add constraint FK_engagements_studies foreign key (study_id) references studies;
 
 create table matches
 (
@@ -101,7 +107,6 @@ create table matches
     study_id  uuid         not null,
     primary key (id)
 );
-alter table matches add constraint FK_matches_studies foreign key (study_id) references studies;
 
 create table invitations
 (
@@ -110,8 +115,6 @@ create table invitations
     student_id uuid not null,
     primary key (id)
 );
-alter table invitations add constraint FK_invitations_matches foreign key (match_id) references matches;
-alter table invitations add constraint FK_invitations_students foreign key (student_id) references students;
 
 -- notification
 create table channels

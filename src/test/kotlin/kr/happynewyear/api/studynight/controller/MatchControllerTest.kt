@@ -5,6 +5,7 @@ import com.ninjasquad.springmockk.SpykBean
 import io.mockk.verify
 import kr.happynewyear.api.studynight.dto.MatchCreateRequest
 import kr.happynewyear.api.studynight.dto.MatchResponse
+import kr.happynewyear.api.studynight.dto.StudentMyResponse
 import kr.happynewyear.api.studynight.fixture.matchParameterFixture
 import kr.happynewyear.api.studynight.fixture.matchSourceFixture
 import kr.happynewyear.api.studynight.fixture.studentCreateRequestFixture
@@ -50,6 +51,7 @@ class MatchControllerTest : ApiTest() {
         login()
         createStudent(SERVER)
         val studyId = createStudy(setOf(WEB, SERVER))
+        val meBefore = call(GET, "/api/students/me", OK, StudentMyResponse::class.java)
 
         val req = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB)))
         val location = redirect(
@@ -58,6 +60,10 @@ class MatchControllerTest : ApiTest() {
         )
 
         assertThat(location).startsWith("/api/matches/")
+
+        val meAfter = call(GET, "/api/students/me", OK, StudentMyResponse::class.java)
+        assertThat(meAfter.point.available).isLessThan(meBefore.point.available)
+        assertThat(meAfter.point.histories.size).isGreaterThan(meBefore.point.histories.size)
 
         verify { userNotificationRequestProducer.produce(any()) }
     }

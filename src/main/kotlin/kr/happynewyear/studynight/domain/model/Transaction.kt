@@ -45,19 +45,19 @@ class Transaction(
         name = "type",
         nullable = false, updatable = false, unique = false
     )
-    private val type: TransactionType = type
+    val type: TransactionType = type
 
     @Column(
         name = "point",
         nullable = false, updatable = false, unique = false
     )
-    private val point: Int = point
+    val point: Int = point
 
     @Column(
         name = "expired_at",
         nullable = false, updatable = false, unique = false
     )
-    private val expiredAt: LocalDateTime = expiredAt
+    val expiredAt: LocalDateTime = expiredAt
 
 
     @Column(
@@ -75,6 +75,7 @@ class Transaction(
     }
 
 
+    // TODO batch
     fun splitIfExp(now: LocalDateTime): List<Transaction> {
         val expired = expiredAt.isBefore(now)
         return if (expired) listOf(this, expired()) else listOf(this)

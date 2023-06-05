@@ -70,6 +70,12 @@ class HttpExceptionHandler(
         return ErrorResponseEntityFactories.create(BAD_REQUEST, message)
     }
 
+    @ExceptionHandler
+    fun on(e: InsufficientPointException): ResponseEntity<ErrorResponse> {
+        val message = "포인트가 부족합니다."
+        return ErrorResponseEntityFactories.create(BAD_REQUEST, message)
+    }
+
 
     @ExceptionHandler(
         HttpMessageNotReadableException::class,

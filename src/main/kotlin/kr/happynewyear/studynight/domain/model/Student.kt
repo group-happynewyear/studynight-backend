@@ -10,7 +10,6 @@ import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.studynight.constant.condition.*
 import kr.happynewyear.studynight.constant.condition.ConditionKey.*
 import kr.happynewyear.studynight.type.MatchSource
-import java.time.LocalDateTime.now
 import java.util.*
 import java.util.function.Function.identity
 import java.util.stream.Collectors.toMap
@@ -63,6 +62,7 @@ class Student(
         cascade = [ALL], orphanRemoval = true
     )
     private val _transactions: MutableList<Transaction> = mutableListOf()
+    val transactions get() = _transactions.toList()
 
     @OneToMany(
         mappedBy = "student",
@@ -147,7 +147,7 @@ class Student(
     }
 
 
-    fun charge(point: Int, expDays: Long? = null) {
+    fun charge(point: Int, expDays: Int? = null) {
         val tx = Transaction.ofCharge(this, point, expDays)
         _transactions.add(tx)
     }
@@ -155,15 +155,6 @@ class Student(
     fun pay(point: Int) {
         val tx = Transaction.ofPay(this, point)
         _transactions.add(tx)
-    }
-
-    fun transactions(): List<Transaction> {
-        val now = now()
-        return _transactions.map { it.splitIfExp(now) }.flatten().sortedBy { it.timestamp }.toList()
-    }
-
-    fun point(): Int {
-        return transactions().map { it.toDiff() }.reduce { a, b -> a + b }
     }
 
 }

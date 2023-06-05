@@ -194,7 +194,7 @@ class BffWebController(
                 condition[SCALE.name]!!.map { Scale.valueOf(it) }.first(),
             )
         )
-        val createResponse = matchController.create(request)
+        val createResponse = matchController.create(principal, request)
         val matchId = createResponse.headers.location.toString().split("/").last()
         val getResponse = matchController.get(UUID.fromString(matchId)).body!!
         return BookingCreateResponseView(

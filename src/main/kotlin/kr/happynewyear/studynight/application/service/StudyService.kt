@@ -18,7 +18,8 @@ import java.util.*
 @Transactional(readOnly = true)
 class StudyService(
     private val studyRepository: StudyRepository,
-    private val studentRepository: StudentRepository
+    private val studentRepository: StudentRepository,
+    private val transactionService: TransactionService
 ) {
 
     @Transactional
@@ -35,6 +36,7 @@ class StudyService(
             condition
         )
         studyRepository.save(study)
+        transactionService.chargeForCreateStudy(student);
         return StudyResult.from(study)
     }
 

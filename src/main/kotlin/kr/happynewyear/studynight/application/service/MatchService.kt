@@ -3,6 +3,8 @@ package kr.happynewyear.studynight.application.service
 import com.github.josh910830.portablemq.core.producer.PortableProducer
 import kr.happynewyear.notification.message.UserNotificationRequest
 import kr.happynewyear.studynight.application.dto.MatchResult
+import kr.happynewyear.studynight.application.exception.StudentNotFoundException
+import kr.happynewyear.studynight.application.exception.StudyNotFoundException
 import kr.happynewyear.studynight.constant.ContactType
 import kr.happynewyear.studynight.domain.model.Invitation
 import kr.happynewyear.studynight.domain.model.Match
@@ -23,6 +25,7 @@ class MatchService(
     private val studyRepository: StudyRepository,
     private val studentRepository: StudentRepository,
     private val matchRepository: MatchRepository,
+    private val transactionService: TransactionService,
     private val templateEngine: TemplateEngine,
     private val userNotificationRequestProducer: PortableProducer<UserNotificationRequest>,
     @Value("\${studynight.study-page-root}") private val studyPageRoot: String,
@@ -31,14 +34,18 @@ class MatchService(
 
     @Transactional
     fun create(
+        userId: UUID,
         studyId: UUID,
         condition: MatchParameter
     ): MatchResult {
-        val study = studyRepository.findById(studyId)!!
+        val student = studentRepository.findByUserId(userId) ?: throw StudentNotFoundException()
+        val study = studyRepository.findById(studyId) ?: throw StudyNotFoundException()
 
         val matched = studentRepository.searchByCondition(condition)
         val engaged = study.students.toSet()
         val targets = matched.filter { !engaged.contains(it) }
+
+        transactionService.payForMatch(student, targets.size)
 
         val match = Match.create(study, condition, targets)
         matchRepository.save(match)

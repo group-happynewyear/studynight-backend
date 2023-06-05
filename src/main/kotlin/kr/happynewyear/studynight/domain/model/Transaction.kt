@@ -19,8 +19,8 @@ class Transaction(
 ) : Identifiable() {
 
     companion object {
-        fun ofCharge(student: Student, point: Int, expDays: Long?): Transaction {
-            val expiredAt = expDays?.let { now().plusDays(expDays) } ?: MAX
+        fun ofCharge(student: Student, point: Int, expDays: Int?): Transaction {
+            val expiredAt = expDays?.let { now().plusDays(expDays.toLong()) } ?: MAX
             return Transaction(student, CHARGE, point, expiredAt)
         }
 

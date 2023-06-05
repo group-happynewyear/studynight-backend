@@ -21,7 +21,6 @@ create table transactions
     id         uuid         not null,
     type       varchar(255) not null,
     point      integer      not null,
-    expired_at timestamp(6) not null,
     timestamp  timestamp(6) not null,
     student_id uuid         not null,
     primary key (id)

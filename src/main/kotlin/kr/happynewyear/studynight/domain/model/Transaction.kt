@@ -6,7 +6,6 @@ import jakarta.persistence.FetchType.LAZY
 import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.studynight.domain.model.TransactionType.*
 import java.time.LocalDateTime
-import java.time.LocalDateTime.MAX
 import java.time.LocalDateTime.now
 
 @Entity
@@ -15,17 +14,16 @@ import java.time.LocalDateTime.now
 )
 class Transaction(
     student: Student,
-    type: TransactionType, point: Int, expiredAt: LocalDateTime
+    type: TransactionType, point: Int
 ) : Identifiable() {
 
     companion object {
-        fun ofCharge(student: Student, point: Int, expDays: Int?): Transaction {
-            val expiredAt = expDays?.let { now().plusDays(expDays.toLong()) } ?: MAX
-            return Transaction(student, CHARGE, point, expiredAt)
+        fun ofCharge(student: Student, point: Int): Transaction {
+            return Transaction(student, CHARGE, point)
         }
 
         fun ofPay(student: Student, point: Int): Transaction {
-            return Transaction(student, PAY, point, MAX)
+            return Transaction(student, PAY, point)
         }
     }
 
@@ -53,12 +51,6 @@ class Transaction(
     )
     val point: Int = point
 
-    @Column(
-        name = "expired_at",
-        nullable = false, updatable = false, unique = false
-    )
-    val expiredAt: LocalDateTime = expiredAt
-
 
     @Column(
         name = "timestamp",
@@ -70,19 +62,8 @@ class Transaction(
     fun toDiff(): Int {
         return when (type) {
             CHARGE -> point
-            PAY, EXPIRE -> -point
+            PAY -> -point
         }
-    }
-
-
-    // TODO batch
-    fun splitIfExp(now: LocalDateTime): List<Transaction> {
-        val expired = expiredAt.isBefore(now)
-        return if (expired) listOf(this, expired()) else listOf(this)
-    }
-
-    private fun expired(): Transaction {
-        return Transaction(student, EXPIRE, point, MAX)
     }
 
 }

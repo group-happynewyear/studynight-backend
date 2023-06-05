@@ -7,6 +7,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import kr.happynewyear.library.entity.Identifiable
+import kr.happynewyear.studynight.application.exception.InsufficientPointException
 import kr.happynewyear.studynight.constant.condition.*
 import kr.happynewyear.studynight.constant.condition.ConditionKey.*
 import kr.happynewyear.studynight.type.MatchSource
@@ -63,6 +64,7 @@ class Student(
     )
     private val _transactions: MutableList<Transaction> = mutableListOf()
     val transactions get() = _transactions.toList()
+    val point get() = transactions.map { it.toDiff() }.fold(0) { a, b -> a + b }
 
     @OneToMany(
         mappedBy = "student",
@@ -147,12 +149,13 @@ class Student(
     }
 
 
-    fun charge(point: Int, expDays: Int? = null) {
-        val tx = Transaction.ofCharge(this, point, expDays)
+    fun charge(point: Int) {
+        val tx = Transaction.ofCharge(this, point)
         _transactions.add(tx)
     }
 
     fun pay(point: Int) {
+        if (point > this.point) throw InsufficientPointException()
         val tx = Transaction.ofPay(this, point)
         _transactions.add(tx)
     }

@@ -62,8 +62,8 @@ class MatchControllerTest : ApiTest() {
         assertThat(location).startsWith("/api/matches/")
 
         val meAfter = call(GET, "/api/students/me", OK, StudentMyResponse::class.java)
-        assertThat(meAfter.point.available).isLessThan(meBefore.point.available)
-        assertThat(meAfter.point.histories.size).isGreaterThan(meBefore.point.histories.size)
+        assertThat(meAfter.point).isLessThan(meBefore.point)
+        assertThat(meAfter.transactions.size).isGreaterThan(meBefore.transactions.size)
 
         verify { userNotificationRequestProducer.produce(any()) }
     }

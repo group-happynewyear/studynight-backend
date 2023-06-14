@@ -7,6 +7,8 @@ import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.studynight.constant.EngagementRole.GUEST
 import kr.happynewyear.studynight.domain.model.InvitationState.*
 import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
+import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 
 @Entity
 @Table(
@@ -47,7 +49,14 @@ class Invitation(
         name = "state",
         nullable = false, updatable = true, unique = false
     )
-    private var state: InvitationState = PENDING // TODO batch delete pending
+    private var state: InvitationState = PENDING
+
+    @Column(
+        name = "createdAt",
+        nullable = false, updatable = false, unique = false
+    )
+    private val createdAt: LocalDateTime = now()
+
 
     fun confirm(accept: Boolean) {
         state = if (accept) ACCEPT else REJECT

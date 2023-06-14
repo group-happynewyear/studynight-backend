@@ -61,5 +61,6 @@ create table invitations
     match_id   uuid         not null,
     student_id uuid         not null,
     state      varchar(255) not null,
+    created_at timestamp(6) not null,
     primary key (id)
 );

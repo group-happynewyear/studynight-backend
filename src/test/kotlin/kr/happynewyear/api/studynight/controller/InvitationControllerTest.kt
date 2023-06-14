@@ -33,7 +33,7 @@ class InvitationControllerTest : ApiTest() {
     }
 
     fun createMatch(studyId: String, matchParam: MatchParameter): String {
-        val createReq = MatchCreateRequest(studyId, matchParam)
+        val createReq = MatchCreateRequest(studyId, matchParam, 1)
         val location = redirect(POST, "/api/matches", createReq, CREATED)
         return location.split("/api/matches/")[1]
     }

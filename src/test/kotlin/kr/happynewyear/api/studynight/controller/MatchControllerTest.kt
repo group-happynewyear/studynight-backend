@@ -53,7 +53,7 @@ class MatchControllerTest : ApiTest() {
         val studyId = createStudy(setOf(WEB, SERVER))
         val meBefore = call(GET, "/api/students/me", OK, StudentMyResponse::class.java)
 
-        val req = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB, SERVER)))
+        val req = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB, SERVER)), 1)
         val location = redirect(
             POST, "/api/matches", req,
             CREATED
@@ -83,7 +83,7 @@ class MatchControllerTest : ApiTest() {
         login()
         createStudent(SERVER)
         val studyId = createStudy(setOf(WEB, SERVER))
-        val createReq = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB)))
+        val createReq = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB)), 1)
         val location = redirect(POST, "/api/matches", createReq, CREATED)
 
         val res = call(

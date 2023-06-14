@@ -22,7 +22,7 @@ class MatchController(
         @Authenticated principal: Principal,
         @Valid @RequestBody req: MatchCreateRequest
     ): ResponseEntity<Void> {
-        val match = matchService.create(principal.userId, UUID.fromString(req.studyId), req.condition)
+        val match = matchService.create(principal.userId, UUID.fromString(req.studyId), req.condition, req.count)
         val location = "/api/matches/${match.id}"
         return ResponseEntity.created(URI.create(location)).build()
     }

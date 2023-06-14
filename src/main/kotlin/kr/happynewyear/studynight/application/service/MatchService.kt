@@ -36,13 +36,14 @@ class MatchService(
     fun create(
         userId: UUID,
         studyId: UUID,
-        condition: MatchParameter
+        condition: MatchParameter,
+        count: Int
     ): MatchResult {
         val student = studentRepository.findByUserId(userId) ?: throw StudentNotFoundException()
         val study = studyRepository.findById(studyId) ?: throw StudyNotFoundException()
 
         val candidates = studentRepository.searchByCondition(condition)
-        val targets = candidates.filter { it.isInvitable(study) } // TODO .subList(0, count)
+        val targets = candidates.filter { it.isInvitable(study) }.take(count)
 
         transactionService.payForMatch(student, targets.size)
 

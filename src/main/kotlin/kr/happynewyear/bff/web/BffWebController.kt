@@ -192,7 +192,8 @@ class BffWebController(
                 condition[POSITION.name]!!.map { Position.valueOf(it) }.toSet(),
                 condition[INTENSITY.name]!!.map { Intensity.valueOf(it) }.first(),
                 condition[SCALE.name]!!.map { Scale.valueOf(it) }.first(),
-            )
+            ),
+            form.count
         )
         val createResponse = matchController.create(principal, request)
         val matchId = createResponse.headers.location.toString().split("/").last()

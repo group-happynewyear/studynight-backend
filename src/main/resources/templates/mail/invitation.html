@@ -2,10 +2,15 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <body>
-<a th:href="@{${studyPage}}">스터디룸</a>
-<a th:href="@{${chatRoom}}">대화하기</a>
-<a th:href="@{${accept}}">초대수락</a>
-<a th:href="@{${reject}}">초대거절</a>
+<div th:object="${study}">
+    <div th:text="*{title}">제목</div>
+    <div th:text="*{description}">설명</div>
+    <div th:text="*{condition}">조건</div>
+</div>
+<div>
+    <a th:href="@{${accept}}">초대수락</a>
+    <a th:href="@{${reject}}">초대거절</a>
+</div>
 </body>
 
 </html>

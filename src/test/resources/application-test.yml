@@ -22,7 +22,6 @@ security:
 
 studynight:
   server-address: http://localhost:8080
-  study-page-root: http://localhost:3000/stuides
 
 notification:
   default-application-address:

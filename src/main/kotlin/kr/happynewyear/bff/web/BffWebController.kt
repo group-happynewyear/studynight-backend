@@ -1,6 +1,5 @@
 package kr.happynewyear.bff.web
 
-import kr.happynewyear.api.studynight.controller.InvitationController
 import kr.happynewyear.api.studynight.controller.MatchController
 import kr.happynewyear.api.studynight.controller.StudentController
 import kr.happynewyear.api.studynight.controller.StudyController
@@ -45,8 +44,7 @@ import java.util.stream.Collectors.toMap
 class BffWebController(
     private val studentController: StudentController,
     private val studyController: StudyController,
-    private val matchController: MatchController,
-    private val invitationController: InvitationController
+    private val matchController: MatchController
 ) {
 
     @GetMapping("/enum")

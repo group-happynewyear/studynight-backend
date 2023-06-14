@@ -13,7 +13,7 @@ data class InvitationResult(
         fun from(invitation: Invitation): InvitationResult = with(invitation) {
             return InvitationResult(
                 id,
-                Match(match.id, Match.Study(match.study.id)),
+                Match(match.id, Match.Study(match.study.id, match.study.title, match.study.contact.address)),
                 Student(student.id)
             )
         }
@@ -25,7 +25,9 @@ data class InvitationResult(
     ) {
 
         data class Study(
-            val id: UUID
+            val id: UUID,
+            val title: String,
+            val contact: String
         )
     }
 

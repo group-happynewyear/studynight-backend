@@ -3,6 +3,7 @@ package kr.happynewyear.studynight.application.service
 import com.github.josh910830.portablemq.core.producer.PortableProducer
 import kr.happynewyear.notification.message.UserNotificationRequest
 import kr.happynewyear.studynight.application.dto.MatchResult
+import kr.happynewyear.studynight.application.dto.StudyResult
 import kr.happynewyear.studynight.application.exception.StudentNotFoundException
 import kr.happynewyear.studynight.application.exception.StudyNotFoundException
 import kr.happynewyear.studynight.constant.ContactType
@@ -28,7 +29,6 @@ class MatchService(
     private val transactionService: TransactionService,
     private val templateEngine: TemplateEngine,
     private val userNotificationRequestProducer: PortableProducer<UserNotificationRequest>,
-    @Value("\${studynight.study-page-root}") private val studyPageRoot: String,
     @Value("\${studynight.server-address}") private val serverAddress: String
 ) {
 
@@ -62,10 +62,9 @@ class MatchService(
         val title = "[스터디나잇] ${match.study.title}에서 당신에게 관심을 보입니다."
 
         val ctx = Context()
-        ctx.setVariable("studyPage", "$studyPageRoot/${match.study.id}")
-        ctx.setVariable("chatRoom", match.study.contact.address)
-        ctx.setVariable("accept", "$serverAddress/api/invitations/$id/accept")
-        ctx.setVariable("reject", "$serverAddress/api/invitations/$id/reject")
+        ctx.setVariable("study", StudyResult.from(match.study))
+        ctx.setVariable("accept", "$serverAddress/invitations/$id/accept")
+        ctx.setVariable("reject", "$serverAddress/invitations/$id/reject")
         val content = templateEngine.process("mail/invitation", ctx)
 
         val message = UserNotificationRequest.of(student.userId, title, content)

@@ -16,9 +16,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
-import org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.HttpStatus.OK
 
-class InvitationControllerTest : ApiTest() {
+class InvitationViewTest : ApiTest() {
 
     fun createStudent(position: Position): String {
         val req = studentCreateRequestFixture(matchSourceFixture(position))
@@ -53,8 +54,8 @@ class InvitationControllerTest : ApiTest() {
         logout()
 
         val invitationId = matchRes.invitations.map { it.id }[0]
-        val location = redirect(GET, "/api/invitations/$invitationId/accept", FOUND)
-        assertThat(location.endsWith(studyId))
+        val html = call(GET, "/invitations/$invitationId/accept", OK)
+        assertThat(html).contains(studyId)
 
         login()
         val studyRes = call(GET, "/api/studies/$studyId", OK, StudyResponse::class.java)

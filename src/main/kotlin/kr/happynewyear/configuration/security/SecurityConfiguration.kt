@@ -57,7 +57,7 @@ class SecurityConfiguration(
             .requestMatchers(PUT, "/api/studies/*").authenticated()
             .requestMatchers(POST, "/api/matches").authenticated()
             .requestMatchers(GET, "/api/matches/*").authenticated()
-            .requestMatchers(GET, "/api/invitations/*/accept", "/api/invitations/*/reject").permitAll()
+            .requestMatchers(GET, "/invitations/*/accept", "/invitations/*/reject").permitAll()
             // bff-web
             .requestMatchers(GET, "/bff-web/enum").permitAll()
             .requestMatchers(GET, "/bff-web/student/me/is_exist").authenticated()

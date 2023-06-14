@@ -41,9 +41,8 @@ class MatchService(
         val student = studentRepository.findByUserId(userId) ?: throw StudentNotFoundException()
         val study = studyRepository.findById(studyId) ?: throw StudyNotFoundException()
 
-        val matched = studentRepository.searchByCondition(condition)
-        val engaged = study.students.toSet()
-        val targets = matched.filter { !engaged.contains(it) }
+        val candidates = studentRepository.searchByCondition(condition)
+        val targets = candidates.filter { it.isInvitable(study) } // TODO .subList(0, count)
 
         transactionService.payForMatch(student, targets.size)
 

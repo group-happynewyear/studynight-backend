@@ -79,6 +79,7 @@ class Student(
         cascade = [REMOVE], orphanRemoval = true
     )
     private val _invitations: MutableList<Invitation> = mutableListOf()
+    val invitations get() = _invitations.toList()
 
 
     private fun register(condition: MatchSource) {
@@ -146,6 +147,13 @@ class Student(
             }
         }
         return MatchSource(schedules, regions, experience, position, intensity, scale)
+    }
+
+
+    fun isInvitable(study: Study): Boolean {
+        if (studies.toSet().contains(study)) return false
+        if (invitations.map { it.match.study }.toSet().contains(study)) return false
+        return true
     }
 
 

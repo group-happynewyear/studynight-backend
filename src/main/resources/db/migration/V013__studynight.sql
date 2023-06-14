@@ -57,8 +57,9 @@ create table matches
 
 create table invitations
 (
-    id         uuid not null,
-    match_id   uuid not null,
-    student_id uuid not null,
+    id         uuid         not null,
+    match_id   uuid         not null,
+    student_id uuid         not null,
+    state      varchar(255) not null,
     primary key (id)
 );

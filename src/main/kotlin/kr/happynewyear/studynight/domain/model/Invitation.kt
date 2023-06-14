@@ -1,12 +1,11 @@
 package kr.happynewyear.studynight.domain.model
 
-import jakarta.persistence.Entity
+import jakarta.persistence.*
+import jakarta.persistence.EnumType.STRING
 import jakarta.persistence.FetchType.LAZY
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
 import kr.happynewyear.library.entity.Identifiable
 import kr.happynewyear.studynight.constant.EngagementRole.GUEST
+import kr.happynewyear.studynight.domain.model.InvitationState.*
 import kr.happynewyear.studynight.domain.service.EngagementRegistrationService
 
 @Entity
@@ -43,10 +42,16 @@ class Invitation(
     )
     val student: Student = student
 
+    @Enumerated(STRING)
+    @Column(
+        name = "state",
+        nullable = false, updatable = true, unique = false
+    )
+    private var state: InvitationState = PENDING // TODO batch delete pending
 
     fun confirm(accept: Boolean) {
+        state = if (accept) ACCEPT else REJECT
         if (accept) EngagementRegistrationService.register(match.study, student, GUEST)
-        // TODO else block
     }
 
 }

@@ -53,7 +53,7 @@ class MatchControllerTest : ApiTest() {
         val studyId = createStudy(setOf(WEB, SERVER))
         val meBefore = call(GET, "/api/students/me", OK, StudentMyResponse::class.java)
 
-        val req = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB)))
+        val req = MatchCreateRequest(studyId, matchParameterFixture(setOf(WEB, SERVER)))
         val location = redirect(
             POST, "/api/matches", req,
             CREATED
@@ -65,7 +65,8 @@ class MatchControllerTest : ApiTest() {
         assertThat(meAfter.point).isLessThan(meBefore.point)
         assertThat(meAfter.transactions.size).isGreaterThan(meBefore.transactions.size)
 
-        verify { userNotificationRequestProducer.produce(any()) }
+        run(POST, "/api/matches", req, CREATED)
+        verify(exactly = 1) { userNotificationRequestProducer.produce(any()) }
     }
     // TODO not mine
     // TODO insufficient

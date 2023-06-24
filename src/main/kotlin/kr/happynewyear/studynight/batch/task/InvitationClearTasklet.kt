@@ -1,4 +1,4 @@
-package kr.happynewyear.authentication.batch.task
+package kr.happynewyear.studynight.batch.task
 
 import kr.happynewyear.studynight.application.service.InvitationService
 import org.springframework.batch.core.StepContribution

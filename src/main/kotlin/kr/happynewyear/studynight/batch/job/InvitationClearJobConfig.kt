@@ -1,4 +1,4 @@
-package kr.happynewyear.authentication.batch.job
+package kr.happynewyear.studynight.batch.job
 
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step

@@ -1,4 +1,4 @@
-package kr.happynewyear.authentication.batch.scheduler
+package kr.happynewyear.studynight.batch.scheduler
 
 import kr.happynewyear.library.exception.ExceptionNotifier
 import org.springframework.batch.core.Job

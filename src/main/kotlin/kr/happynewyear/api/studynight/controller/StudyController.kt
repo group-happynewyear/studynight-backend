@@ -4,6 +4,7 @@ import jakarta.validation.Valid
 import kr.happynewyear.api.studynight.dto.StudyCreateRequest
 import kr.happynewyear.api.studynight.dto.StudyListResponse
 import kr.happynewyear.api.studynight.dto.StudyResponse
+import kr.happynewyear.api.studynight.dto.StudyUpdateRequest
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
 import kr.happynewyear.studynight.application.service.StudyService
@@ -52,7 +53,7 @@ class StudyController(
     fun update(
         @PathVariable studyId: UUID,
         @Authenticated principal: Principal,
-        @Valid @RequestBody req: StudyCreateRequest
+        @Valid @RequestBody req: StudyUpdateRequest
     ): ResponseEntity<Void> {
         studyService.update(
             studyId, principal.userId,

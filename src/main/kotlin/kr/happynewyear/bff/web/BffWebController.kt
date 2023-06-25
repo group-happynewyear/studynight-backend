@@ -3,10 +3,7 @@ package kr.happynewyear.bff.web
 import kr.happynewyear.api.studynight.controller.MatchController
 import kr.happynewyear.api.studynight.controller.StudentController
 import kr.happynewyear.api.studynight.controller.StudyController
-import kr.happynewyear.api.studynight.dto.MatchCreateRequest
-import kr.happynewyear.api.studynight.dto.StudentCreateRequest
-import kr.happynewyear.api.studynight.dto.StudyCreateRequest
-import kr.happynewyear.api.studynight.dto.StudyResponse
+import kr.happynewyear.api.studynight.dto.*
 import kr.happynewyear.authentication.domain.repository.UserRepository
 import kr.happynewyear.bff.web.dto.dictionary.dictionary
 import kr.happynewyear.bff.web.dto.element.ConditionElement
@@ -15,6 +12,7 @@ import kr.happynewyear.bff.web.dto.element.StudySummary
 import kr.happynewyear.bff.web.dto.form.BookingCreateForm
 import kr.happynewyear.bff.web.dto.form.StudentCreateForm
 import kr.happynewyear.bff.web.dto.form.StudyCreateForm
+import kr.happynewyear.bff.web.dto.form.StudyUpdateForm
 import kr.happynewyear.bff.web.dto.view.*
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
@@ -208,6 +206,25 @@ class BffWebController(
         if (study.members.map { it.id }.contains(student.id)) return MEMBER
         if (study.guests.map { it.id }.contains(student.id)) return GUEST
         return null
+    }
+
+    @PutMapping("/study/{studyId}")
+    fun updateStudy(@PathVariable studyId:UUID, @Authenticated principal: Principal, @RequestBody form: StudyUpdateForm) {
+        val condition = form.condition.stream()
+            .collect(toMap({ it.code }, { it.options.filter { o -> o.check }.map { o -> o.code } }))
+        val request = StudyUpdateRequest(
+            form.title, form.introduction,
+            ContactType.KAKAOTALK_OPENCHAT, form.contactURL,
+            MatchParameter(
+                condition[SCHEDULE.name]!!.map { Schedule.valueOf(it) }.first(),
+                condition[REGION.name]!!.map { Region.valueOf(it) }.first(),
+                condition[EXPERIENCE.name]!!.map { Experience.valueOf(it) }.toSet(),
+                condition[POSITION.name]!!.map { Position.valueOf(it) }.toSet(),
+                condition[INTENSITY.name]!!.map { Intensity.valueOf(it) }.first(),
+                condition[SCALE.name]!!.map { Scale.valueOf(it) }.first(),
+            )
+        )
+        studyController.update(studyId, principal, request)
     }
 
 

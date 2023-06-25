@@ -3,6 +3,7 @@ package kr.happynewyear.studynight.infrastructure.database
 import kr.happynewyear.studynight.domain.model.Student
 import kr.happynewyear.studynight.domain.repository.StudentRepository
 import kr.happynewyear.studynight.type.MatchParameter
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.util.*
 
@@ -13,6 +14,10 @@ class StudentRepositoryAdapter(
 
     override fun existsByUserId(userId: UUID): Boolean {
         return studentJpaRepository.existsByUserId(userId)
+    }
+
+    override fun findById(studentId: UUID): Student? {
+        return studentJpaRepository.findByIdOrNull(studentId)
     }
 
     override fun findByUserId(userId: UUID): Student? {

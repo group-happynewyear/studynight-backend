@@ -1,10 +1,7 @@
 package kr.happynewyear.api.studynight.controller
 
 import jakarta.validation.Valid
-import kr.happynewyear.api.studynight.dto.StudentCreateRequest
-import kr.happynewyear.api.studynight.dto.StudentExistResponse
-import kr.happynewyear.api.studynight.dto.StudentMyResponse
-import kr.happynewyear.api.studynight.dto.StudentUpdateRequest
+import kr.happynewyear.api.studynight.dto.*
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
 import kr.happynewyear.studynight.application.service.StudentService
@@ -40,12 +37,20 @@ class StudentController(
         return ResponseEntity.created(URI.create(location)).build()
     }
 
+
+    fun get(studentId: UUID): ResponseEntity<StudentResponse> {
+        val student = studentService.me(studentId)
+        val res = StudentResponse.from(student)
+        return ResponseEntity.ok(res)
+    }
+
     @GetMapping("/me")
     fun me(@Authenticated principal: Principal): ResponseEntity<StudentMyResponse> {
         val student = studentService.me(principal.userId)
         val res = StudentMyResponse.from(student)
         return ResponseEntity.ok(res)
     }
+
 
     @PutMapping("/me")
     fun update(

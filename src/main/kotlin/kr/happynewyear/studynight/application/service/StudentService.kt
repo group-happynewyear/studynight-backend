@@ -2,6 +2,7 @@ package kr.happynewyear.studynight.application.service
 
 import kr.happynewyear.studynight.application.dto.StudentResult
 import kr.happynewyear.studynight.application.exception.DuplicatedStudentException
+import kr.happynewyear.studynight.application.exception.ResourceNotFoundException
 import kr.happynewyear.studynight.application.exception.StudentNotFoundException
 import kr.happynewyear.studynight.domain.model.Student
 import kr.happynewyear.studynight.domain.repository.StudentRepository
@@ -33,10 +34,17 @@ class StudentService(
         return StudentResult.from(student)
     }
 
+
     fun me(userId: UUID): StudentResult {
         val student = studentRepository.findByUserId(userId) ?: throw StudentNotFoundException()
         return StudentResult.from(student)
     }
+
+    fun get(studentId: UUID): StudentResult {
+        val student = studentRepository.findById(studentId) ?: throw ResourceNotFoundException()
+        return StudentResult.from(student)
+    }
+
 
     @Transactional
     fun update(

@@ -7,6 +7,7 @@ import kr.happynewyear.api.studynight.dto.MatchCreateRequest
 import kr.happynewyear.api.studynight.dto.StudentCreateRequest
 import kr.happynewyear.api.studynight.dto.StudyCreateRequest
 import kr.happynewyear.api.studynight.dto.StudyResponse
+import kr.happynewyear.authentication.domain.repository.UserRepository
 import kr.happynewyear.bff.web.dto.dictionary.dictionary
 import kr.happynewyear.bff.web.dto.element.ConditionElement
 import kr.happynewyear.bff.web.dto.element.OptionElement
@@ -39,6 +40,7 @@ import java.util.stream.Collectors.toMap
 @RestController
 @RequestMapping("/bff-web")
 class BffWebController(
+    private val userRepository: UserRepository,
     private val studentController: StudentController,
     private val studyController: StudyController,
     private val matchController: MatchController
@@ -91,10 +93,33 @@ class BffWebController(
     @GetMapping("/student/me")
     fun me(@Authenticated principal: Principal): StudentView {
         val response = studentController.me(principal).body!!
-        val condition = "" // TODO
-        val email = "" // TODO
+
+        val matchSource = response.condition
+        val temp = mapOf(
+            SCHEDULE to matchSource.schedules.map { it.name },
+            REGION to matchSource.regions.map { it.name },
+            EXPERIENCE to setOf(matchSource.experience.name),
+            POSITION to setOf(matchSource.position.name),
+            INTENSITY to setOf(matchSource.intensity.name),
+            SCALE to setOf(matchSource.scale.name)
+        )
+        val options = mapOf(
+            Pair(SCHEDULE, Schedule.values()),
+            Pair(REGION, Region.values()),
+            Pair(EXPERIENCE, Experience.values()),
+            Pair(POSITION, Position.values()),
+            Pair(INTENSITY, Intensity.values()),
+            Pair(SCALE, Scale.values()),
+        )
+        val condition = ConditionKey.values().map {
+            ConditionElement(
+                it.name, dictionary[it.name]!!,
+                options[it]!!.map { o -> OptionElement(o.name, dictionary[o.name]!!, temp[it]!!.contains(o.name)) })
+        }
+
+        val email = userRepository.findById(principal.userId)!!.email
         return StudentView(
-            response.id, response.nickname, email, response.point, response.transactions
+            response.id, response.nickname, email, condition, response.point, response.transactions
         )
     }
 
@@ -130,7 +155,7 @@ class BffWebController(
         condition.add(response.condition.intensity.name)
         condition.add(response.condition.scale.name)
         val role = roleOf(principal, response)
-        val createdBy = studentController.get(UUID.fromString(response.managers.first().id)).body.nickname
+        val createdBy = studentController.get(UUID.fromString(response.managers.first().id)).body!!.nickname
         return StudyView(
             response.title, response.description, response.contactAddress,
             condition.map { dictionary[it]!! },

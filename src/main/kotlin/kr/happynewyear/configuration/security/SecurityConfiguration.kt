@@ -61,10 +61,12 @@ class SecurityConfiguration(
             // bff-web
             .requestMatchers(GET, "/bff-web/enum").permitAll()
             .requestMatchers(GET, "/bff-web/student/me").authenticated()
+            .requestMatchers(PUT, "/bff-web/student/me").authenticated()
             .requestMatchers(GET, "/bff-web/student/me/is_exist").authenticated()
             .requestMatchers(POST, "/bff-web/student").authenticated()
             .requestMatchers(POST, "/bff-web/study").authenticated()
             .requestMatchers(GET, "/bff-web/study/*").authenticated()
+            .requestMatchers(PUT, "/bff-web/study/*").authenticated()
             .requestMatchers(GET, "/bff-web/study/condition/*").authenticated()
             .requestMatchers(GET, "/bff-web/study/list").authenticated()
             .requestMatchers(POST, "/bff-web/booking").authenticated()

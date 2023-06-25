@@ -9,10 +9,7 @@ import kr.happynewyear.bff.web.dto.dictionary.dictionary
 import kr.happynewyear.bff.web.dto.element.ConditionElement
 import kr.happynewyear.bff.web.dto.element.OptionElement
 import kr.happynewyear.bff.web.dto.element.StudySummary
-import kr.happynewyear.bff.web.dto.form.BookingCreateForm
-import kr.happynewyear.bff.web.dto.form.StudentCreateForm
-import kr.happynewyear.bff.web.dto.form.StudyCreateForm
-import kr.happynewyear.bff.web.dto.form.StudyUpdateForm
+import kr.happynewyear.bff.web.dto.form.*
 import kr.happynewyear.bff.web.dto.view.*
 import kr.happynewyear.library.security.authentication.Authenticated
 import kr.happynewyear.library.security.authentication.Principal
@@ -119,6 +116,24 @@ class BffWebController(
         return StudentView(
             response.id, response.nickname, email, condition, response.point, response.transactions
         )
+    }
+
+    @PutMapping("/student/me")
+    fun updateStudent(@Authenticated principal: Principal, @RequestBody form: StudentUpdateForm) {
+        val condition = form.condition.stream()
+            .collect(toMap({ it.code }, { it.options.filter { o -> o.check }.map { o -> o.code } }))
+        val request = StudentUpdateRequest(
+            form.nickName,
+            MatchSource(
+                condition[SCHEDULE.name]!!.map { Schedule.valueOf(it) }.toSet(),
+                condition[REGION.name]!!.map { Region.valueOf(it) }.toSet(),
+                condition[EXPERIENCE.name]!!.map { Experience.valueOf(it) }.first(),
+                condition[POSITION.name]!!.map { Position.valueOf(it) }.first(),
+                condition[INTENSITY.name]!!.map { Intensity.valueOf(it) }.first(),
+                condition[SCALE.name]!!.map { Scale.valueOf(it) }.first(),
+            )
+        )
+        studentController.update(principal, request)
     }
 
 

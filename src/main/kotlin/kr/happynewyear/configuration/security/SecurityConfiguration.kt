@@ -60,6 +60,7 @@ class SecurityConfiguration(
             .requestMatchers(GET, "/invitations/*/accept", "/invitations/*/reject").permitAll()
             // bff-web
             .requestMatchers(GET, "/bff-web/enum").permitAll()
+            .requestMatchers(GET, "/bff-web/student/me").authenticated()
             .requestMatchers(GET, "/bff-web/student/me/is_exist").authenticated()
             .requestMatchers(POST, "/bff-web/student").authenticated()
             .requestMatchers(POST, "/bff-web/study").authenticated()

@@ -39,7 +39,7 @@ class StudentController(
 
 
     fun get(studentId: UUID): ResponseEntity<StudentResponse> {
-        val student = studentService.me(studentId)
+        val student = studentService.get(studentId)
         val res = StudentResponse.from(student)
         return ResponseEntity.ok(res)
     }

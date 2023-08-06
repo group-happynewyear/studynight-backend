@@ -6,14 +6,14 @@ ENV_DIR=$2
 OLD="blue"
 NEW="green"
 PORT=8081
-GREEN_YML=$ENV_DIR/docker-compse.green.yml
+GREEN_YML=$ENV_DIR/docker-compose.green.yml
 if docker-compose -p green -f "$GREEN_YML" ps | grep -q Up; then
   OLD="green"
   NEW="blue"
   PORT=8080
 fi
-OLD_YML=$ENV_DIR/docker-compse.$OLD.yml
-NEW_YML=$ENV_DIR/docker-compse.$NEW.yml
+OLD_YML=$ENV_DIR/docker-compose.$OLD.yml
+NEW_YML=$ENV_DIR/docker-compose.$NEW.yml
 
 export TAG="$TAG"
 docker-compose -p "$NEW" -f "$NEW_YML" up -d
